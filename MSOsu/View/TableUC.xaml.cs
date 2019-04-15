@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MSOsu.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,163 +21,101 @@ namespace MSOsu.View
     /// </summary>
     public partial class TableUC : UserControl
     {
-        List<List<TextBox>> cells;
-        List<string> cHeaders = null, rHeaders = null;
-
-
         public TableUC()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Создать новую таблицу
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="colHeaders"></param>
+        /// <param name="rowHeaders"></param>
         public void NewTable(double[,] matrix, string[] colHeaders = null, string[] rowHeaders = null)
         {
             ClearTable();
-            int n = matrix.GetLength(0);
-            int m = matrix.GetLength(1);
-            cells = new List<List<TextBox>>();
-            CreateGrid(n, m);
+            int m = matrix.GetLength(0);
+            int n = matrix.GetLength(1);
+            CreateGrid(m, n);
             FillColumnsAndRowsHeaders(colHeaders, rowHeaders);
-            for (int i = 0; i < n; i++)
-            {
-                cells.Add(new List<TextBox>());
-                for (int j = 0; j < m; j++)
-                {
-                    cells[i].Add(CreateCell(matrix[i, j], i + 1, j + 1));
-                    cells[i][j].Tag = matrix[i, j];
-                    gTable.Children.Add(cells[i][j]);
-                }
-            }
+            for (int i = 0; i < m; i++)
+                for (int j = 0; j < n; j++)
+                    gTable.Children.Add(CreateCell(matrix[i, j], i + 1, j + 1));
         }
 
+        public void NewTable(ValuesColumn[] table)
+        {
+            string[] colHeaders = TableControl.GetHeaders(table);
+            double[,] matrix = TableControl.GetValues(table);
+            NewTable(matrix, colHeaders);
+        }
+
+        /// <summary>
+        /// Очистить таблицу
+        /// </summary>
         private void ClearTable()
         {
             gTable.Children.Clear();
-            cells = null;
-            cHeaders = null;
-            rHeaders = null;
             gTable.RowDefinitions.Clear();
             gTable.ColumnDefinitions.Clear();
         }
 
-        private void FillColumnsAndRowsHeaders(string[] columnsHeaders, string[] rowsHeaders)
+        /// <summary>
+        /// Заполнить заголовки столбцов и строк
+        /// </summary>
+        /// <param name="columns"></param>
+        /// <param name="rows"></param>
+        private void FillColumnsAndRowsHeaders(string[] columns, string[] rows)
         {
-            if (columnsHeaders != null)
-                cHeaders = columnsHeaders.ToList();
-            if (rowsHeaders != null)
-                rHeaders = rowsHeaders.ToList();
-            bool c = columnsHeaders != null;
-            bool r = rowsHeaders != null;
-            if (c)
+            if (columns != null)
             {
-                int m = columnsHeaders.Length;
                 //Установка заголовков столбцов
-                for (int i = 0; i < m; i++)
-                    gTable.Children.Add(CreateCell(columnsHeaders[i], 0, i + 1));
+                for (int i = 0; i < columns.Length; i++)
+                    gTable.Children.Add(CreateCell(columns[i], 0, i + 1));
             }
-            if (r)
+            if (rows != null)
             {
-                int n = rowsHeaders.Length;
                 //Установка заголовков строк
-                for (int i = 0; i < n; i++)
-                    gTable.Children.Add(CreateCell(rowsHeaders[i], i + 1, 0));
+                for (int i = 0; i < rows.Length; i++)
+                    gTable.Children.Add(CreateCell(rows[i], i + 1, 0));
             }
         }
 
-        private void CreateGrid(int n, int m)
+        /// <summary>
+        /// Создать таблицу
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="m"></param>
+        private void CreateGrid(int m, int n)
         {
-            for (int i = 0; i < n + 1; i++)
+            for (int i = 0; i < m + 1; i++) //+1 для headers
                 gTable.RowDefinitions.Add(new RowDefinition());
-            for (int i = 0; i < m + 1; i++)
+            for (int i = 0; i < n + 1; i++) //+1 для headers
                 gTable.ColumnDefinitions.Add(new ColumnDefinition());
         }
 
-        private TextBox CreateCell(double data, int i, int j)
+        /// <summary>
+        /// Заполнить ячейку в таблице
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <returns></returns>
+        private TextBox CreateCell(object data, int i, int j)
         {
             TextBox tb = new TextBox()
             {
-                Text = (double.IsNaN(data) ? "-" : (double.IsPositiveInfinity(data) ? "" : data.ToString("0.###"))),
+                Text = data is double ?
+                    (double.IsNaN((double)data) ? "-" : data.ToString()) :
+                    data.ToString(),
                 IsReadOnly = true,
                 FontSize = 14,
-                Background = i == 0 || j == 0 ? Brushes.LightSteelBlue : Brushes.White
+                Background = i == 0 || j == 0 ? new SolidColorBrush(Color.FromArgb(0xFF,0xD5,0xEE,0xFF)) : Brushes.White
             };
             Grid.SetRow(tb, i);
             Grid.SetColumn(tb, j);
             return tb;
-        }
-
-        private TextBox CreateCell(string content, int i, int j)
-        {
-            TextBox tb = new TextBox()
-            {
-                Text = content,
-                IsReadOnly = true,
-                FontSize = 14,
-                Background = i == 0 || j == 0 ? Brushes.LightSteelBlue : Brushes.White
-            };
-            Grid.SetRow(tb, i);
-            Grid.SetColumn(tb, j);
-            return tb;
-        }
-
-        public void AddColumn(string[] data, string colHeader)
-        {
-            int n = gTable.RowDefinitions.Count - 1;
-            int m = gTable.ColumnDefinitions.Count - 1;
-            gTable.ColumnDefinitions.Add(new ColumnDefinition());
-            gTable.Children.Add(CreateCell(colHeader, 0, m + 1));
-            cHeaders.Add(colHeader);
-            for (int i = 0; i < n; i++)
-            {
-                cells[i].Add(CreateCell(data[i].ToString(), i + 1, m + 1));
-                gTable.Children.Add(cells[i][m]);
-
-            }
-        }
-
-        public void AddColumn(double[] data, string colHeader)
-        {
-            int n = gTable.RowDefinitions.Count - 1;
-            int m = gTable.ColumnDefinitions.Count - 1;
-            gTable.ColumnDefinitions.Add(new ColumnDefinition());
-            gTable.Children.Add(CreateCell(colHeader, 0, m + 1));
-            cHeaders.Add(colHeader);
-            for (int i = 0; i < n; i++)
-            {
-                cells[i].Add(CreateCell(data[i].ToString("0.#####"), i + 1, m + 1));
-                gTable.Children.Add(cells[i][m]);
-                cells[i][m].Tag = data[i];
-            }
-        }
-
-        public void Highlight(Predicate<double> pred, Brush colour, int column = -1)
-        {
-            foreach (var list in cells)
-            {
-                foreach (var tb in list)
-                {
-                    if (!(tb.Tag is string) && (column == -1 || list.IndexOf(tb) == column))
-                    {
-                        double d = (double)tb.Tag;
-                        if (!double.IsNaN(d) && !double.IsInfinity(d) && pred(d))
-                            tb.Background = colour;
-                    }
-                }
-            }
-        }
-
-        public void Highlight(bool[] correct, Brush colour, int column)
-        {
-            foreach (var list in cells)
-            {
-                foreach (var tb in list)
-                {
-                    if (list.IndexOf(tb) == column && !correct[cells.IndexOf(list)])
-                    {
-                        tb.Background = colour;
-                    }
-                }
-            }
         }
     }
 }

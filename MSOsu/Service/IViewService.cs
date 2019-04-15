@@ -6,14 +6,8 @@ using System.Threading.Tasks;
 
 namespace MSOsu.Service
 {
-    public interface ICodeBehind
+    public interface IViewService
     {
-        /// <summary>
-        /// Показ сообщения для пользователя
-        /// </summary>
-        /// <param name="message">текст сообщения</param>
-        void ShowMessage(string message);
-
         /// <summary>
         /// Загрузка нужной View
         /// </summary>

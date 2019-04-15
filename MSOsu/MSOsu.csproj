@@ -60,7 +60,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Service\ICodeBehind.cs" />
+    <Compile Include="Service\DialogServices\DefaultDialogService.cs" />
+    <Compile Include="Service\FileServices\CSVServiceVC.cs" />
+    <Compile Include="Service\IViewService.cs" />
+    <Compile Include="Service\IDialogService.cs" />
+    <Compile Include="Service\IFileService.cs" />
     <Compile Include="Service\ViewType.cs" />
     <Compile Include="View\TableUC.xaml.cs">
       <DependentUpon>TableUC.xaml</DependentUpon>

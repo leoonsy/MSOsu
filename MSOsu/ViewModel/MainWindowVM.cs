@@ -1,4 +1,5 @@
 ﻿using MSOsu.Command;
+using MSOsu.Model;
 using MSOsu.Service;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MSOsu.ViewModel
 {
-    class MainWindowVM : INotifyPropertyChanged
+    public class MainWindowVM : INotifyPropertyChanged
     {
 
         private string a;
@@ -23,13 +24,22 @@ namespace MSOsu.ViewModel
             }
         }
 
-        private ICodeBehind iCodeBehind;
+        public ValuesColumn[] Table;
 
-        public MainWindowVM(ICodeBehind iCodeBehind)
+        IViewService viewService;
+        IFileService<ValuesColumn[]> fileService;
+        IDialogService dialogService;
+
+        public MainWindowVM(IViewService viewService, IFileService<ValuesColumn[]> fileService, IDialogService dialogService)
         {
-            this.iCodeBehind = iCodeBehind;
+            this.viewService = viewService;
+            this.fileService = fileService;
+            this.dialogService = dialogService;
         }
 
+        /// <summary>
+        /// Загрузить исходные данные
+        /// </summary>
         IDelegateCommand loadBaseDataCommand;
         public IDelegateCommand LoadBaseDataCommand
         {
@@ -38,12 +48,15 @@ namespace MSOsu.ViewModel
                 if (loadBaseDataCommand == null)
                     loadBaseDataCommand = new DelegateCommand(obj =>
                     {
-                        iCodeBehind.LoadView(ViewType.BaseData);
+                        viewService.LoadView(ViewType.BaseData);
                     });
                 return loadBaseDataCommand;
             }
         }
 
+        /// <summary>
+        /// Загрузить главную страницу
+        /// </summary>
         IDelegateCommand loadMainCommand;
         public IDelegateCommand LoadMainCommand
         {
@@ -52,9 +65,26 @@ namespace MSOsu.ViewModel
                 if (loadMainCommand == null)
                     loadMainCommand = new DelegateCommand(obj =>
                     {
-                        iCodeBehind.LoadView(ViewType.Main);
+                        viewService.LoadView(ViewType.Main);
                     });
                 return loadMainCommand;
+            }
+        }
+
+        IDelegateCommand loadTableCommand;
+        public IDelegateCommand LoadTableCommand
+        {
+            get
+            {
+                if (loadTableCommand == null)
+                    loadTableCommand = new DelegateCommand(obj =>
+                    {
+                        if (dialogService.OpenFileDialog(fileService.GetOpenFilter()))
+                        {
+                            Table = fileService.Read(dialogService.GetFilePath());
+                        }
+                    });
+                return loadTableCommand;
             }
         }
 

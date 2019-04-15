@@ -9,8 +9,7 @@
     <Grid VerticalAlignment="Center">
         <StackPanel>
             <TextBlock Text="Загрузить данные" HorizontalAlignment="Center" Padding="5" />
-            <Button Content="Выбрать файл" Padding="5" />
-            <TextBlock x:Name="tblTest" />
+            <Button Content="Выбрать файл" Padding="5" Command="{Binding LoadTableCommand}" />
         </StackPanel>
     </Grid>
 </UserControl>

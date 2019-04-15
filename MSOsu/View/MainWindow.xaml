@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MSOsu"
         mc:Ignorable="d"
-        Title="MSOsu" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="MSOsu" Height="650" Width="1100" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -13,7 +13,7 @@
                 <ColumnDefinition Width="2"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Background="#FFBFFFFF">
+            <StackPanel Background="#FFD5EEFF">
                 <Button Content="Главная" Padding="4" Command="{Binding LoadMainCommand}"/>
                 <TextBlock Padding="4" Text="Данные"  HorizontalAlignment="Center" />
                 <Button Content="Исходные данные" Padding="4" Command="{Binding LoadBaseDataCommand}" />
