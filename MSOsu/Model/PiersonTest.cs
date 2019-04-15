@@ -1,0 +1,72 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MSOsu.Model
+{
+    static class PiersonTest
+    {
+        /// <summary>
+        /// Вычислить значение хи-квадрат
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="intervalNumber"></param>
+        /// <returns></returns>
+        public static double GetChiSquared(double[] values, int intervalNumber)
+        {
+            DescriptiveStatistic stat = new DescriptiveStatistic(values);
+            int[] m = new int[intervalNumber]; //эмпирические частоты
+            double[] mt = new double[intervalNumber]; //теоретические частоты
+            const int round = 13; //насколько округлять расчеты, делается, чтобы все значения попали в интервал
+            //формирование массива m
+            double step = (stat.Interval) / intervalNumber;
+            foreach (double val in values)
+            {
+                for (int i = 0; i < intervalNumber; i++)
+                    if (Math.Round(val, round) <= Math.Round(stat.Min + step * (i + 1), round))
+                    {
+                        ++m[i];
+                        break;
+                    }
+            }
+
+            if (m.Sum() != values.Length)
+                throw new Exception();
+
+            //формирование массива mt
+            for (int i = 0; i < mt.Length; i++)
+            {
+                double x = stat.Min + step * i + step / 2;
+                double u = (x - stat.Average) / stat.StandardDeviation;
+                double f = Math.Pow(Math.E, -u * u / 2) / Math.Sqrt(2 * Math.PI);
+                double p = (step / stat.StandardDeviation) * f;
+                mt[i] = stat.Count * p;
+            }
+
+            Console.WriteLine(string.Join(", ", m) + "\n" + string.Join(", ", mt));
+
+            //вычисление хи-квадрат
+            double chiSquare = 0;
+            for (int i = 0; i < intervalNumber; i++)
+                chiSquare += Math.Pow(m[i] - mt[i], 2) / mt[i];
+
+            return chiSquare;
+        }
+
+        /// <summary>
+        /// Нормально ли распределение
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="chiSquare"></param>
+        /// <returns></returns>
+        public static bool IsNormalDistribution(double[] values, out double chiSquare)
+        {
+            const int intervalNumber = 6; //делим на 6 интервалов
+            chiSquare = GetChiSquared(values, intervalNumber);
+            double krit = 7.81473; //критическое значение для intervalNumber = 6, при другом k = intervalNumber - r - 1 (r = 2 для нормального распределения) стоит вычислить krit снова
+            return chiSquare < krit ? true : false;
+        }
+    }
+}
