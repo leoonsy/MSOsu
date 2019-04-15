@@ -12,19 +12,16 @@ namespace MSOsu.ViewModel
 {
     public class MainWindowVM : INotifyPropertyChanged
     {
-
-        private string a;
-        public string A
+        private ValuesColumn[] table;
+        public ValuesColumn[] Table
         {
-            get { return a; }
+            get { return table; }
             set
             {
-                a = value;
-                RaisePropetyChanged("A");
+                table = value;
+                RaisePropetyChanged("Table");
             }
         }
-
-        public ValuesColumn[] Table;
 
         IViewService viewService;
         IFileService<ValuesColumn[]> fileService;
@@ -82,6 +79,7 @@ namespace MSOsu.ViewModel
                         if (dialogService.OpenFileDialog(fileService.GetOpenFilter()))
                         {
                             Table = fileService.Read(dialogService.GetFilePath());
+                            viewService.LoadView(ViewType.BaseData);
                         }
                     });
                 return loadTableCommand;

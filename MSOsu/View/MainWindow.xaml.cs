@@ -35,9 +35,12 @@ namespace MSOsu.View
         {
             mainVM = new MainWindowVM(this, new CSVServiceVC(), new DefaultDialogService());
             DataContext = mainVM;
+            InitializeMyBindings();
             LoadView(ViewType.Main);
         }
 
+        MainUC mainUC = null;
+        TableUC tableUC = null;
         /// <summary>
         /// Загрузить контент
         /// </summary>
@@ -47,17 +50,37 @@ namespace MSOsu.View
             switch (type)
             {
                 case ViewType.Main:
-                    MainUC mainUc = new MainUC();
-                    mainUc.DataContext = mainVM;
-                    MainContent.Content = mainUc;
+                    if (mainUC == null)
+                    {
+                        mainUC = new MainUC();
+                        mainUC.DataContext = mainVM;
+                    }                   
+                    MainContent.Content = mainUC;
                     break;
                 case ViewType.BaseData:
-                    TableUC tableUc = new TableUC();
-                    tableUc.NewTable(mainVM.Table);
-                    tableUc.DataContext = mainVM;
-                    MainContent.Content = tableUc;
+                    if (tableUC == null)
+                    {
+                        tableUC = new TableUC();
+                        tableUC.NewTable(mainVM.Table);
+                        tableUC.DataContext = mainVM;
+                    }
+                    MainContent.Content = tableUC;
                     break;
             }
+        }
+
+        void InitializeMyBindings()
+        {
+            mainVM.PropertyChanged += (sender, e) =>
+            {
+                switch (e.PropertyName)
+                {
+                    case "Table":
+                        mainUC = null;
+                        tableUC = null;
+                        break;
+                }
+            };
         }
     }
 }
