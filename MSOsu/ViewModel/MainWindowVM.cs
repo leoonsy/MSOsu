@@ -1,4 +1,5 @@
 ﻿using MSOsu.Command;
+using MSOsu.Service;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,28 +12,49 @@ namespace MSOsu.ViewModel
     class MainWindowVM : INotifyPropertyChanged
     {
 
-        private string task2_Result;
-        public string Task2_Result
+        private string a;
+        public string A
         {
-            get { return task2_Result; }
+            get { return a; }
             set
             {
-                task2_Result = value;
-                RaisePropetyChanged("Task2_Result");
+                a = value;
+                RaisePropetyChanged("A");
             }
         }
 
-        IDelegateCommand calculateJacobi;
-        public IDelegateCommand CalculateJacobi
+        private ICodeBehind iCodeBehind;
+
+        public MainWindowVM(ICodeBehind iCodeBehind)
+        {
+            this.iCodeBehind = iCodeBehind;
+        }
+
+        IDelegateCommand loadBaseDataCommand;
+        public IDelegateCommand LoadBaseDataCommand
         {
             get
             {
-                if (calculateJacobi == null)
-                    calculateJacobi = new DelegateCommand(obj =>
+                if (loadBaseDataCommand == null)
+                    loadBaseDataCommand = new DelegateCommand(obj =>
                     {
-
+                        iCodeBehind.LoadView(ViewType.BaseData);
                     });
-                return calculateJacobi;
+                return loadBaseDataCommand;
+            }
+        }
+
+        IDelegateCommand loadMainCommand;
+        public IDelegateCommand LoadMainCommand
+        {
+            get
+            {
+                if (loadMainCommand == null)
+                    loadMainCommand = new DelegateCommand(obj =>
+                    {
+                        iCodeBehind.LoadView(ViewType.Main);
+                    });
+                return loadMainCommand;
             }
         }
 

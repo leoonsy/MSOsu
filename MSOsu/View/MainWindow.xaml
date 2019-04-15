@@ -14,8 +14,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Background="#FFBFFFFF">
+                <Button Content="Главная" Padding="4" Command="{Binding LoadMainCommand}"/>
                 <TextBlock Padding="4" Text="Данные"  HorizontalAlignment="Center" />
-                <Button Content="Исходные данные" Padding="4"/>
+                <Button Content="Исходные данные" Padding="4" Command="{Binding LoadBaseDataCommand}" />
                 <Button Content="Нормализованные данные" Padding="4"/>
                 <TextBlock Padding="4" Text="Анализ данных"  HorizontalAlignment="Center" />
                 <Button Content="Описательная статистика" Padding="4"/>

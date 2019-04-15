@@ -1,4 +1,5 @@
 ﻿using MSOsu.Model;
+using MSOsu.Service;
 using MSOsu.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace MSOsu.View
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, ICodeBehind
     {
         MainWindowVM mainVm;
         public MainWindow()
@@ -30,15 +31,40 @@ namespace MSOsu.View
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            mainVm = new MainWindowVM();
+            mainVm = new MainWindowVM(this);
             this.DataContext = mainVm;
-            MainUC mUc = new MainUC();
-            ValuesColumn[] dataTable = TableControl.GetTable(@"../../../Data/Младенческая смертность.csv");
-            mUc.tblTest.Text = TableControl.GetStringTable(dataTable);
-            TableControl.SaveTable(dataTable, "check.csv");
-            mUc.DataContext = mainVm;
-            MainContent.Content = mUc;
-            
+            LoadView(ViewType.Main);
+        }
+
+        public void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
+        }
+
+
+        public void LoadView(ViewType type)
+        {
+            switch (type)
+            {
+                case ViewType.Main:
+                    MainUC mUc = new MainUC();
+                    mUc.DataContext = mainVm;
+                    MainContent.Content = mUc;
+                    break;
+                case ViewType.BaseData:
+
+                    TableUC tUc = new TableUC();
+                    //
+                    ValuesColumn[] dataTable = TableControl.GetTable(@"../../../Data/Младенческая смертность.csv");
+                    string[] headers = TableControl.GetHeaders(dataTable);
+                    double[,] values = TableControl.GetValues(dataTable);
+                    tUc.NewTable(values, headers);
+
+                    //
+                    tUc.DataContext = mainVm;
+                    MainContent.Content = tUc;
+                    break;
+            }
         }
     }
 }

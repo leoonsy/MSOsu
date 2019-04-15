@@ -33,6 +33,21 @@ namespace MSOsu.Model
             }
         }
 
+        public static double[,] GetValues(ValuesColumn[] valuesColumn)
+        {
+            int rowLength = valuesColumn[0].Values.Length;
+            double[,] matrix = new double[rowLength, valuesColumn.Length];
+            for (int i = 0; i < rowLength; i++)
+                for (int j = 0; j < valuesColumn.Length; j++)
+                    matrix[i, j] = valuesColumn[j].Values[i];
+            return matrix;
+        }
+
+        public static string[] GetHeaders(ValuesColumn[] valuesColumn)
+        {
+            return valuesColumn.Select(e => e.ColumnName).ToArray();
+        }
+
         /// <summary>
         /// Сохранить таблицу в файл
         /// </summary>
