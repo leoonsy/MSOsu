@@ -161,9 +161,18 @@ namespace MSOsu.Model
         /// </summary>
         public double[] GetNormalizedSelection() => Values.Select(e => e / Interval).ToArray();
 
+        /// <summary>
+        /// Заголовки для статистик
+        /// </summary>
         public static string[] Headers = new string[] { "Среднее", "Стандартная ошибка", "Медиана", "Мода", "Стандартное отклонение", "Дисперсия выборки",
             "Эксцесс", "Ассиметричность", "Интервал", "Минимум", "Максимум", "Сумма", "Счет" };
 
+        /// <summary>
+        /// Получить таблицу со статистиками
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="round"></param>
+        /// <returns></returns>
         public static double[][] GetTotalStatistic(double[][] table, int? round = null)
         {
             double[][] result = new double[Headers.Length][].Select(e => e = new double[table.Length]).ToArray();

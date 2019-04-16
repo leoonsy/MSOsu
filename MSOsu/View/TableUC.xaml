@@ -6,17 +6,15 @@
              xmlns:local="clr-namespace:MSOsu.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        
-        <Grid.Resources>
-            <Style TargetType="RowDefinition">
-                <Setter Property="Height" Value="Auto"/>
-            </Style>
-            <Style TargetType="ColumnDefinition">
-                <Setter Property="Width" Value="Auto"/>
-            </Style>
-        </Grid.Resources>
-        
-        <Grid x:Name="gTable"/>
-    </Grid>
+    <Grid x:Name="gTable">
+            <Grid.Resources>
+                <Style TargetType="RowDefinition">
+                    <Setter Property="Height" Value="Auto"/>
+                </Style>
+                <Style TargetType="ColumnDefinition">
+                    <Setter Property="Width" Value="Auto"/>
+                </Style>
+            </Grid.Resources>
+        </Grid>
+
 </UserControl>

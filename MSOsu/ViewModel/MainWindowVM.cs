@@ -29,72 +29,42 @@ namespace MSOsu.ViewModel
         /// <summary>
         /// Заголовки таблицы
         /// </summary>
-        public string[] tableHeaders;
-        public string[] TableHeaders
-        {
-            get { return tableHeaders; }
-            set
-            {
-                tableHeaders = value;
-                RaisePropetyChanged("TableHeaders");
-            }
-        }
+        public string[] TableHeaders;
 
         /// <summary>
         /// Таблица с исходными данными
         /// </summary>
-        public double[][] tableValues;
-        public double[][] TableValues
-        {
-            get { return tableValues; }
-            set
-            {
-                tableValues = value;
-                RaisePropetyChanged("TableValues");
-            }
-        }
+        public double[][] TableValues;
 
         /// <summary>
         /// Таблица с нормированными данными
         /// </summary>
-        private double[][] tableNormalizedValues;
-        public double[][] TableNormalizedValues
-        {
-            get { return tableNormalizedValues; }
-            set
-            {
-                tableNormalizedValues = value;
-                RaisePropetyChanged("TableNormalizedValues");
-            }
-        }
+        public double[][] TableNormalizedValues;
 
         /// <summary>
         /// Таблица с описательной статистикой для исходной выборки
         /// </summary>
-        private double[][] tableStatisticsValues;
-        public double[][] TableStatisticsValues
-        {
-            get { return tableStatisticsValues; }
-            set
-            {
-                tableStatisticsValues = value;
-                RaisePropetyChanged("TableStatisticsValues");
-            }
-        }
+        public double[][] TableStatisticsValues;
 
         /// <summary>
         /// Таблица с описательной статистикой для нормализированной выборки
         /// </summary>
-        private double[][] tableNormalizedStatisticsValues;
-        public double[][] TableNormalizedStatisticsValues
-        {
-            get { return tableNormalizedStatisticsValues; }
-            set
-            {
-                tableNormalizedStatisticsValues = value;
-                RaisePropetyChanged("TableNormalizedStatisticsValues");
-            }
-        }
+        public double[][] TableNormalizedStatisticsValues;
+
+        /// <summary>
+        /// Таблица с проверкой на нормальность распределения
+        /// </summary>
+        public string[][] TableNormalDistribution;
+
+        /// <summary>
+        /// Таблица с проверкой на нормальность распределения
+        /// </summary>
+        public string[] NormalDistributionHeaders = new string[] { "Значение χ2", "Нормальность распределения" };
+
+        /// <summary>
+        /// Критические значение хи-квадрат
+        /// </summary>
+        public double ChiSquareKrit;
 
         /// <summary>
         /// Заголовки для статистик
@@ -111,87 +81,19 @@ namespace MSOsu.ViewModel
         }
 
         /// <summary>
-        /// Загрузить главную страницу
-        /// </summary>
-        IDelegateCommand loadMainCommand;
-        public IDelegateCommand LoadMainCommand
-        {
-            get
-            {
-                if (loadMainCommand == null)
-                    loadMainCommand = new DelegateCommand(obj =>
-                    {
-                        viewService.LoadView(ViewType.Main);
-                    });
-                return loadMainCommand;
-            }
-        }
-
-        /// <summary>
         /// Загрузить исходные данные
         /// </summary>
-        IDelegateCommand loadDataCommand;
-        public IDelegateCommand LoadDataCommand
+        IDelegateCommand loadPageCommand;
+        public IDelegateCommand LoadPageCommand
         {
             get
             {
-                if (loadDataCommand == null)
-                    loadDataCommand = new DelegateCommand(obj =>
+                if (loadPageCommand == null)
+                    loadPageCommand = new DelegateCommand(obj =>
                     {
-                        viewService.LoadView(ViewType.Data);
+                        viewService.LoadView((ViewType)obj);
                     });
-                return loadDataCommand;
-            }
-        }
-
-        /// <summary>
-        /// Загрузить нормализированные данные
-        /// </summary>
-        IDelegateCommand loadNormalizedDataCommand;
-        public IDelegateCommand LoadNormalizedDataCommand
-        {
-            get
-            {
-                if (loadNormalizedDataCommand == null)
-                    loadNormalizedDataCommand = new DelegateCommand(obj =>
-                    {
-                        viewService.LoadView(ViewType.NormalizedData);
-                    });
-                return loadNormalizedDataCommand;
-            }
-        }
-
-        /// <summary>
-        /// Загрузить описательную статистику для исходных выборок
-        /// </summary>
-        IDelegateCommand loadStatisticsCommand;
-        public IDelegateCommand LoadStatisticsCommand
-        {
-            get
-            {
-                if (loadStatisticsCommand == null)
-                    loadStatisticsCommand = new DelegateCommand(obj =>
-                    {
-                        viewService.LoadView(ViewType.Statistic);
-                    });
-                return loadStatisticsCommand;
-            }
-        }
-
-        /// <summary>
-        /// Загрузить описательную статистику для нормализированных выборок
-        /// </summary>
-        IDelegateCommand loadNormalizedStatisticsCommand;
-        public IDelegateCommand LoadNormalizedStatisticsCommand
-        {
-            get
-            {
-                if (loadNormalizedStatisticsCommand == null)
-                    loadNormalizedStatisticsCommand = new DelegateCommand(obj =>
-                    {
-                        viewService.LoadView(ViewType.NormalizedStatistic);
-                    });
-                return loadNormalizedStatisticsCommand;
+                return loadPageCommand;
             }
         }
 
@@ -215,11 +117,25 @@ namespace MSOsu.ViewModel
                             TableNormalizedValues = TableControl.GetNormalizedValues(Table);
                             TableStatisticsValues = DescriptiveStatistic.GetTotalStatistic(TableControl.GetTransposeTable(TableValues));
                             TableNormalizedStatisticsValues = DescriptiveStatistic.GetTotalStatistic(TableControl.GetTransposeTable(TableNormalizedValues));
-                            viewService.LoadView(ViewType.Data);
+                            TableNormalDistribution = GetNormalDistributionTable(TableControl.GetTransposeTable(TableNormalizedValues));
+                            ChiSquareKrit = PiersonTest.GetChiSquareKrit();
+                            LoadPageCommand.Execute(ViewType.Data);
                         }
                     });
                 return loadTableCommand;
             }
+        }
+
+        public string[][] GetNormalDistributionTable(double[][] values)
+        {
+            string[][] result = new string[2][].Select(e => e = new string[values.Length]).ToArray();
+            for (int i = 0; i < values.Length; i++)
+            {
+                (bool isNormal, double chiSquare) = PiersonTest.CheckNormalDistribution(values[i]);
+                result[0][i] = chiSquare.ToString();
+                result[1][i] = isNormal ? "+" : "-";
+            }
+            return result;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

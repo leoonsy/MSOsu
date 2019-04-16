@@ -12,6 +12,7 @@ namespace MSOsu.Service
         Data,
         NormalizedData,
         Statistic,
-        NormalizedStatistic
+        NormalizedStatistic,
+        NormalDistribution
     }
 }

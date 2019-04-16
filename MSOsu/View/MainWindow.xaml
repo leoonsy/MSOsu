@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MSOsu"
+        xmlns:service="clr-namespace:MSOsu.Service"
         mc:Ignorable="d"
         Title="MSOsu" Height="650" Width="1100" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
@@ -14,18 +15,18 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Background="#FFD5F2FF">
-                <Button Content="Главная" Padding="4" Command="{Binding LoadMainCommand}" />
+                <Button Content="Главная" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.Main}" />
                 <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="1">
                     <TextBlock Padding="4" Text="Данные"  HorizontalAlignment="Center" />
                 </Border>
-                <Button Content="Исходные данные" Padding="4" Command="{Binding LoadDataCommand}" />
-                <Button Content="Нормализованные данные" Padding="4" Command="{Binding LoadNormalizedDataCommand}" />
+                <Button Content="Исходные данные" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.Data}" />
+                <Button Content="Нормализованные данные" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalizedData}" />
                 <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="1" >
                     <TextBlock Padding="4" Text="Анализ данных"  HorizontalAlignment="Center" />
                 </Border>
-                <Button Content="Статистика (исходная выборка)" Padding="4" Command="{Binding LoadStatisticsCommand}"/>
-                <Button Content="Статистика (нормализованная выборка)" Padding="4" Command="{Binding LoadNormalizedStatisticsCommand}"/>
-                <Button Content="Нормальность распределения" Padding="4"/>
+                <Button Content="Статистика (исходная выборка)" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.Statistic}"/>
+                <Button Content="Статистика (нормализованная выборка)" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalizedStatistic}"/>
+                <Button Content="Нормальность распределения" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalDistribution}" />
                 <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="1">
                     <TextBlock Padding="4" Text="Корреляционный анализ"  HorizontalAlignment="Center" />
                 </Border>

@@ -56,17 +56,23 @@ namespace MSOsu.Model
         }
 
         /// <summary>
-        /// Нормально ли распределение
+        /// Проверить на нормальность распределения
         /// </summary>
         /// <param name="values"></param>
         /// <param name="chiSquare"></param>
         /// <returns></returns>
-        public static bool IsNormalDistribution(double[] values, out double chiSquare)
+        public static (bool, double chiSquare) CheckNormalDistribution(double[] values)
         {
             const int intervalNumber = 6; //делим на 6 интервалов
-            chiSquare = GetChiSquared(values, intervalNumber);
-            double krit = 7.81473; //критическое значение для intervalNumber = 6, при другом k = intervalNumber - r - 1 (r = 2 для нормального распределения) стоит вычислить krit снова
-            return chiSquare < krit ? true : false;
+            double chiSquare = GetChiSquared(values, intervalNumber);
+            double krit = GetChiSquareKrit(); //критическое значение для intervalNumber = 6, при другом k = intervalNumber - r - 1 (r = 2 для нормального распределения) стоит вычислить krit снова
+            return chiSquare < krit ? (true, chiSquare) : (false, chiSquare);
         }
+
+        /// <summary>
+        /// Получить значение хи-квадрат
+        /// </summary>
+        /// <returns></returns>
+        public static double GetChiSquareKrit() => 7.81473;
     }
 }

@@ -32,7 +32,7 @@ namespace MSOsu.View
         /// <param name="matrix"></param>
         /// <param name="colHeaders"></param>
         /// <param name="rowHeaders"></param>
-        public void SetTable(double[][] matrix, string[] colHeaders = null, string[] rowHeaders = null)
+        public void SetTable<T>(T[][] matrix, string[] colHeaders = null, string[] rowHeaders = null)
         {
             ClearTable();
             int m = matrix.Length;

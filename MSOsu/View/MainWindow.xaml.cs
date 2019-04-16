@@ -43,6 +43,7 @@ namespace MSOsu.View
         DataTableUC normalizedDataUC = null;
         DataTableUC statisticsUC = null;
         DataTableUC normilizeStatisticsUC = null;
+        DataTableUC normalDistribution = null;
         /// <summary>
         /// Загрузить контент
         /// </summary>
@@ -99,10 +100,23 @@ namespace MSOsu.View
                     }
                     MainContent.Content = normilizeStatisticsUC;
                     break;
+                case ViewType.NormalDistribution:
+                    if (normalDistribution == null) //если требуется перерисовка
+                    {
+                        normalDistribution = new DataTableUC();
+                        normalDistribution.SetHeader($"Проверка гипотезы о нормальности распределения выборок (χ-крит = {mainVM.ChiSquareKrit})");
+                        normalDistribution.Table.SetTable(mainVM.TableNormalDistribution, mainVM.TableHeaders, mainVM.NormalDistributionHeaders);
+                        normalDistribution.Table.DataContext = mainVM;
+                    }
+                    MainContent.Content = normalDistribution;
+                    break;
 
             }
         }
 
+        /// <summary>
+        /// Мои привязки
+        /// </summary>
         void InitializeMyBindings()
         {
             mainVM.PropertyChanged += (sender, e) =>
@@ -116,6 +130,7 @@ namespace MSOsu.View
                         normalizedDataUC = null;
                         statisticsUC = null;
                         normilizeStatisticsUC = null;
+                        normalDistribution = null;
                         break;
                 }
             };
