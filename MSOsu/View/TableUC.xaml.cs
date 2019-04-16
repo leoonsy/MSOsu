@@ -32,24 +32,29 @@ namespace MSOsu.View
         /// <param name="matrix"></param>
         /// <param name="colHeaders"></param>
         /// <param name="rowHeaders"></param>
-        public void NewTable(double[,] matrix, string[] colHeaders = null, string[] rowHeaders = null)
+        public void SetTable(double[][] matrix, string[] colHeaders = null, string[] rowHeaders = null)
         {
             ClearTable();
-            int m = matrix.GetLength(0);
-            int n = matrix.GetLength(1);
+            int m = matrix.Length;
+            int n = matrix[0].Length;
             CreateGrid(m, n);
             FillColumnsAndRowsHeaders(colHeaders, rowHeaders);
             for (int i = 0; i < m; i++)
                 for (int j = 0; j < n; j++)
-                    gTable.Children.Add(CreateCell(matrix[i, j], i + 1, j + 1));
+                    gTable.Children.Add(CreateCell(matrix[i][j], i + 1, j + 1));
         }
 
-        public void NewTable(ValuesColumn[] table)
-        {
-            string[] colHeaders = TableControl.GetHeaders(table);
-            double[,] matrix = TableControl.GetValues(table);
-            NewTable(matrix, colHeaders);
-        }
+        ///// <summary>
+        ///// Создать новую таблицу
+        ///// </summary>
+        ///// <param name="table"></param>
+        ///// <param name="rowHeaders"></param>
+        //public void SetTable(ValuesColumn[] table, string[] rowHeaders = null)
+        //{
+        //    string[] colHeaders = TableControl.GetHeaders(table);
+        //    double[,] matrix = TableControl.GetValues(table);
+        //    SetTable(matrix, colHeaders, rowHeaders);
+        //}
 
         /// <summary>
         /// Очистить таблицу

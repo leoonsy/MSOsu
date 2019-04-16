@@ -38,14 +38,27 @@ namespace MSOsu.Model
         /// </summary>
         /// <param name="table"></param>
         /// <returns></returns>
-        public static double[,] GetValues(ValuesColumn[] table)
+        public static double[][] GetValues(ValuesColumn[] table)
         {
             int rowLength = table[0].Values.Length;
-            double[,] matrix = new double[rowLength, table.Length];
+            int colLength = table.Length;
+            double[][] matrix = new double[rowLength][].Select(val => val = new double[colLength]).ToArray();
             for (int i = 0; i < rowLength; i++)
-                for (int j = 0; j < table.Length; j++)
-                    matrix[i, j] = table[j].Values[i];
+                for (int j = 0; j < colLength; j++)
+                    matrix[i][j] = table[j].Values[i];
             return matrix;
+        }
+
+        /// <summary>
+        /// Получить массив нормированных значений
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        public static double[][] GetNormalizedValues(ValuesColumn[] table)
+        {
+            ValuesColumn[] vc = table.Select(e => new ValuesColumn(e.ColumnName, new DescriptiveStatistic(e.Values).GetNormalizedSelection().
+                                Select(u => Math.Round(u, 5)).ToArray())).ToArray();
+            return GetValues(vc);
         }
 
         /// <summary>
@@ -56,6 +69,17 @@ namespace MSOsu.Model
         public static string[] GetHeaders(ValuesColumn[] table)
         {
             return table.Select(e => e.ColumnName).ToArray();
+        }
+
+        public static double[][] GetTransposeTable(double[][] table)
+        {
+            int m = table.Length;
+            int n = table[0].Length;
+            double[][] transTable = new double[n][].Select(e => e = new double[m]).ToArray();
+            for (int i = 0; i < m; i++)
+                for (int j = 0; j < n; j++)
+                    transTable[j][i] = table[i][j];
+            return transTable;
         }
 
         /// <summary>
@@ -72,19 +96,6 @@ namespace MSOsu.Model
                 result.AppendLine(String.Join(";", values.Select(e => e.Values[i])));
 
             File.WriteAllText(path, result.ToString(), Encoding.GetEncoding(1251));
-        }
-
-        /// <summary>
-        /// Получить таблицу в строковом виде (пока не реализовал и не буду, сделал пока просто вывод вниз)
-        /// </summary>
-        /// <param name="values"></param>
-        /// <returns></returns>
-        public static string GetStringTable(ValuesColumn[] values)
-        {
-            string result = String.Empty;
-            foreach (ValuesColumn value in values)
-                result += value.ColumnName + "\r\n" + String.Join("\r\n", value.Values) + "\r\n\r\n";
-            return result;
         }
     }
 }

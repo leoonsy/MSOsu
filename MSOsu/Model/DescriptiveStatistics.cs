@@ -161,29 +161,58 @@ namespace MSOsu.Model
         /// </summary>
         public double[] GetNormalizedSelection() => Values.Select(e => e / Interval).ToArray();
 
-        /// <summary>
-        /// Получить итоговую статистику
-        /// </summary>
-        /// <returns></returns>
-        public string GetTotalStatistic(int? round = null)
+        public static string[] Headers = new string[] { "Среднее", "Стандартная ошибка", "Медиана", "Мода", "Стандартное отклонение", "Дисперсия выборки",
+            "Эксцесс", "Ассиметричность", "Интервал", "Минимум", "Максимум", "Сумма", "Счет" };
+
+        public static double[][] GetTotalStatistic(double[][] table, int? round = null)
         {
-            StringBuilder sb = new StringBuilder();
+            double[][] result = new double[Headers.Length][].Select(e => e = new double[table.Length]).ToArray();
+            for (int i = 0; i < table.Length; i++)
+            {
+                DescriptiveStatistic stat = new DescriptiveStatistic(table[i]);
 
-            sb.AppendLine($"Среднее {(round == null ? Average : Math.Round(Average, (int)round))}");
-            sb.AppendLine($"Стандартная ошибка {(round == null ? StandardError : Math.Round(StandardError, (int)round))}");
-            sb.AppendLine($"Медиана {(round == null ? Median : Math.Round(Median, (int)round))}");
-            sb.AppendLine($"Мода {(round == null ? Mode : Math.Round(Mode, (int)round))}");
-            sb.AppendLine($"Стандартное отклонение {(round == null ? StandardDeviation : Math.Round(StandardDeviation, (int)round))}");
-            sb.AppendLine($"Дисперсия выборки {(round == null ? Dispersion : Math.Round(Dispersion, (int)round))}");
-            sb.AppendLine($"Эксцесс {(round == null ? Excess : Math.Round(Excess, (int)round))}");
-            sb.AppendLine($"Ассиметричность {(round == null ? Asymmetry : Math.Round(Asymmetry, (int)round))}");
-            sb.AppendLine($"Интервал {(round == null ? Interval : Math.Round(Interval, (int)round))}");
-            sb.AppendLine($"Минимум {(round == null ? Min : Math.Round(Min, (int)round))}");
-            sb.AppendLine($"Максимум {(round == null ? Max : Math.Round(Max, (int)round))}");
-            sb.AppendLine($"Сумма {(round == null ? Sum : Math.Round(Sum, (int)round))}");
-            sb.AppendLine($"Счет {(round == null ? Count : Math.Round(Count, (int)round))}");
+                result[0][i] = stat.Average;
+                result[1][i] = stat.StandardError;
+                result[2][i] = stat.Median;
+                result[3][i] = stat.Mode;
+                result[4][i] = stat.StandardDeviation;
+                result[5][i] = stat.Dispersion;
+                result[6][i] = stat.Excess;
+                result[7][i] = stat.Asymmetry;
+                result[8][i] = stat.Interval;
+                result[9][i] = stat.Min;
+                result[10][i] = stat.Max;
+                result[11][i] = stat.Sum;
+                result[12][i] = stat.Count;
+            }
 
-            return sb.ToString();
+            return result;
         }
+
+
+        ///// <summary>
+        ///// Получить итоговую статистику
+        ///// </summary>
+        ///// <returns></returns>
+        //public string GetTotalStringStatistic(int? round = null)
+        //{
+        //    StringBuilder sb = new StringBuilder();
+
+        //    sb.AppendLine($"Среднее {(round == null ? Average : Math.Round(Average, (int)round))}");
+        //    sb.AppendLine($"Стандартная ошибка {(round == null ? StandardError : Math.Round(StandardError, (int)round))}");
+        //    sb.AppendLine($"Медиана {(round == null ? Median : Math.Round(Median, (int)round))}");
+        //    sb.AppendLine($"Мода {(round == null ? Mode : Math.Round(Mode, (int)round))}");
+        //    sb.AppendLine($"Стандартное отклонение {(round == null ? StandardDeviation : Math.Round(StandardDeviation, (int)round))}");
+        //    sb.AppendLine($"Дисперсия выборки {(round == null ? Dispersion : Math.Round(Dispersion, (int)round))}");
+        //    sb.AppendLine($"Эксцесс {(round == null ? Excess : Math.Round(Excess, (int)round))}");
+        //    sb.AppendLine($"Ассиметричность {(round == null ? Asymmetry : Math.Round(Asymmetry, (int)round))}");
+        //    sb.AppendLine($"Интервал {(round == null ? Interval : Math.Round(Interval, (int)round))}");
+        //    sb.AppendLine($"Минимум {(round == null ? Min : Math.Round(Min, (int)round))}");
+        //    sb.AppendLine($"Максимум {(round == null ? Max : Math.Round(Max, (int)round))}");
+        //    sb.AppendLine($"Сумма {(round == null ? Sum : Math.Round(Sum, (int)round))}");
+        //    sb.AppendLine($"Счет {(round == null ? Count : Math.Round(Count, (int)round))}");
+
+        //    return sb.ToString();
+        //}
     }
 }

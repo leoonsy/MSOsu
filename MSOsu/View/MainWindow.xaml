@@ -13,20 +13,29 @@
                 <ColumnDefinition Width="2"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Background="#FFD5EEFF">
-                <Button Content="Главная" Padding="4" Command="{Binding LoadMainCommand}"/>
-                <TextBlock Padding="4" Text="Данные"  HorizontalAlignment="Center" />
-                <Button Content="Исходные данные" Padding="4" Command="{Binding LoadBaseDataCommand}" />
-                <Button Content="Нормализованные данные" Padding="4"/>
-                <TextBlock Padding="4" Text="Анализ данных"  HorizontalAlignment="Center" />
-                <Button Content="Описательная статистика" Padding="4"/>
+            <StackPanel Background="#FFD5F2FF">
+                <Button Content="Главная" Padding="4" Command="{Binding LoadMainCommand}" />
+                <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="1">
+                    <TextBlock Padding="4" Text="Данные"  HorizontalAlignment="Center" />
+                </Border>
+                <Button Content="Исходные данные" Padding="4" Command="{Binding LoadDataCommand}" />
+                <Button Content="Нормализованные данные" Padding="4" Command="{Binding LoadNormalizedDataCommand}" />
+                <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="1" >
+                    <TextBlock Padding="4" Text="Анализ данных"  HorizontalAlignment="Center" />
+                </Border>
+                <Button Content="Статистика (исходная выборка)" Padding="4" Command="{Binding LoadStatisticsCommand}"/>
+                <Button Content="Статистика (нормализованная выборка)" Padding="4" Command="{Binding LoadNormalizedStatisticsCommand}"/>
                 <Button Content="Нормальность распределения" Padding="4"/>
-                <TextBlock Padding="4" Text="Корреляционный анализ"  HorizontalAlignment="Center" />
+                <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="1">
+                    <TextBlock Padding="4" Text="Корреляционный анализ"  HorizontalAlignment="Center" />
+                </Border>
                 <Button Content="Парная корреляция" Padding="4"/>
                 <Button Content="Частная корреляция" Padding="4"/>
                 <Button Content="Диаграммы корреляционных плеяд" Padding="4"/>
                 <Button Content="Множественная корреляция" Padding="4"/>
-                <TextBlock Padding="4" Text="Регрессионный анализ"  HorizontalAlignment="Center" />
+                <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="1">
+                    <TextBlock Padding="4" Text="Регрессионный анализ"  HorizontalAlignment="Center" />
+                </Border>
                 <Button Content="Please stand by" Padding="4"/>
             </StackPanel>
             <Grid Grid.Column="1" Background="#FFB2B2B2" />

@@ -64,6 +64,9 @@
     <Compile Include="Service\IViewService.cs" />
     <Compile Include="Service\IDialogService.cs" />
     <Compile Include="Service\ViewType.cs" />
+    <Compile Include="View\DataTableUC.xaml.cs">
+      <DependentUpon>DataTableUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TableUC.xaml.cs">
       <DependentUpon>TableUC.xaml</DependentUpon>
     </Compile>
@@ -93,6 +96,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\DataTableUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\TableUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

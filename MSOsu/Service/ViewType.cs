@@ -9,7 +9,9 @@ namespace MSOsu.Service
     public enum ViewType
     {
         Main,
-        BaseData,
-        NormalizedData
+        Data,
+        NormalizedData,
+        Statistic,
+        NormalizedStatistic
     }
 }
