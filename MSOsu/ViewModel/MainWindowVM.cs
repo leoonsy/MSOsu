@@ -12,6 +12,9 @@ namespace MSOsu.ViewModel
 {
     public class MainWindowVM : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Таблица с данными
+        /// </summary>
         private ValuesColumn[] table;
         public ValuesColumn[] Table
         {
@@ -24,13 +27,11 @@ namespace MSOsu.ViewModel
         }
 
         IViewService viewService;
-        IFileService<ValuesColumn[]> fileService;
         IDialogService dialogService;
 
-        public MainWindowVM(IViewService viewService, IFileService<ValuesColumn[]> fileService, IDialogService dialogService)
+        public MainWindowVM(IViewService viewService, IDialogService dialogService)
         {
             this.viewService = viewService;
-            this.fileService = fileService;
             this.dialogService = dialogService;
         }
 
@@ -68,6 +69,9 @@ namespace MSOsu.ViewModel
             }
         }
 
+        /// <summary>
+        /// Загрузить таблицу
+        /// </summary>
         IDelegateCommand loadTableCommand;
         public IDelegateCommand LoadTableCommand
         {
@@ -76,9 +80,10 @@ namespace MSOsu.ViewModel
                 if (loadTableCommand == null)
                     loadTableCommand = new DelegateCommand(obj =>
                     {
-                        if (dialogService.OpenFileDialog(fileService.GetOpenFilter()))
+                        string filter = "Файл CSV|*.csv";
+                        if (dialogService.OpenFileDialog(filter))
                         {
-                            Table = fileService.Read(dialogService.GetFilePath());
+                            Table =TableControl.GetTable(dialogService.GetFilePath());
                             viewService.LoadView(ViewType.BaseData);
                         }
                     });

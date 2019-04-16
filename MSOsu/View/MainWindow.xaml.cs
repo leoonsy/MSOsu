@@ -1,7 +1,6 @@
 ﻿using MSOsu.Model;
 using MSOsu.Service;
 using MSOsu.Service.DialogServices;
-using MSOsu.Service.FileServices;
 using MSOsu.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -33,7 +32,7 @@ namespace MSOsu.View
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            mainVM = new MainWindowVM(this, new CSVServiceVC(), new DefaultDialogService());
+            mainVM = new MainWindowVM(this, new DefaultDialogService());
             DataContext = mainVM;
             InitializeMyBindings();
             LoadView(ViewType.Main);
@@ -50,7 +49,7 @@ namespace MSOsu.View
             switch (type)
             {
                 case ViewType.Main:
-                    if (mainUC == null)
+                    if (mainUC == null) //если требуется перерисовка
                     {
                         mainUC = new MainUC();
                         mainUC.DataContext = mainVM;
@@ -58,7 +57,7 @@ namespace MSOsu.View
                     MainContent.Content = mainUC;
                     break;
                 case ViewType.BaseData:
-                    if (tableUC == null)
+                    if (tableUC == null) //если требуется перерисовка
                     {
                         tableUC = new TableUC();
                         tableUC.NewTable(mainVM.Table);
@@ -76,8 +75,9 @@ namespace MSOsu.View
                 switch (e.PropertyName)
                 {
                     case "Table":
-                        mainUC = null;
-                        tableUC = null;
+                        //обнулить кэш
+                        mainUC = null; 
+                        tableUC = null; 
                         break;
                 }
             };
