@@ -7,14 +7,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid x:Name="gTable">
-            <Grid.Resources>
-                <Style TargetType="RowDefinition">
-                    <Setter Property="Height" Value="Auto"/>
-                </Style>
-                <Style TargetType="ColumnDefinition">
-                    <Setter Property="Width" Value="Auto"/>
-                </Style>
-            </Grid.Resources>
-        </Grid>
-
+        <Grid.Resources>
+            <Style TargetType="RowDefinition">
+                <Setter Property="Height" Value="Auto"/>
+            </Style>
+            <Style TargetType="ColumnDefinition">
+                <Setter Property="Width" Value="Auto"/>
+            </Style>
+        </Grid.Resources>
+    </Grid>
 </UserControl>

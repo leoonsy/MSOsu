@@ -57,58 +57,58 @@ namespace MSOsu.View
                     {
                         mainUC = new MainUC();
                         mainUC.DataContext = mainVM;
-                    }                   
-                    MainContent.Content = mainUC;
+                    }
+                    cpMainContent.Content = mainUC;
                     break;
                 case ViewType.Data:
-                    if (normalDataUC == null) //если требуется перерисовка
+                    if (normalDataUC == null) 
                     {
                         normalDataUC = new DataTableUC();
                         normalDataUC.SetHeader("Исходные данные:");
                         normalDataUC.Table.SetTable(mainVM.TableValues, mainVM.TableHeaders);
                         normalDataUC.Table.DataContext = mainVM;
                     }
-                    MainContent.Content = normalDataUC;
+                    cpMainContent.Content = normalDataUC;
                     break;
                 case ViewType.NormalizedData:
-                    if (normalizedDataUC == null) //если требуется перерисовка
+                    if (normalizedDataUC == null) 
                     {
                         normalizedDataUC = new DataTableUC();
                         normalizedDataUC.SetHeader("Нормализованные данные:");
                         normalizedDataUC.Table.SetTable(mainVM.TableNormalizedValues, mainVM.TableHeaders);
                         normalizedDataUC.Table.DataContext = mainVM;
                     }
-                    MainContent.Content = normalizedDataUC;
+                    cpMainContent.Content = normalizedDataUC;
                     break;
                 case ViewType.Statistic:
-                    if (statisticsUC == null) //если требуется перерисовка
+                    if (statisticsUC == null) 
                     {
                         statisticsUC = new DataTableUC();
                         statisticsUC.SetHeader("Описательная статистика для исходной выборки:");
                         statisticsUC.Table.SetTable(mainVM.TableStatisticsValues, mainVM.TableHeaders, mainVM.StatisticsHeaders);
                         statisticsUC.Table.DataContext = mainVM;
                     }
-                    MainContent.Content = statisticsUC;
+                    cpMainContent.Content = statisticsUC;
                     break;
                 case ViewType.NormalizedStatistic:
-                    if (normilizeStatisticsUC == null) //если требуется перерисовка
+                    if (normilizeStatisticsUC == null) 
                     {
                         normilizeStatisticsUC = new DataTableUC();
                         normilizeStatisticsUC.SetHeader("Описательная статистика для нормализованной выборки:");
                         normilizeStatisticsUC.Table.SetTable(mainVM.TableNormalizedStatisticsValues, mainVM.TableHeaders, mainVM.StatisticsHeaders);
                         normilizeStatisticsUC.Table.DataContext = mainVM;
                     }
-                    MainContent.Content = normilizeStatisticsUC;
+                    cpMainContent.Content = normilizeStatisticsUC;
                     break;
                 case ViewType.NormalDistribution:
-                    if (normalDistribution == null) //если требуется перерисовка
+                    if (normalDistribution == null)
                     {
                         normalDistribution = new DataTableUC();
                         normalDistribution.SetHeader($"Проверка гипотезы о нормальности распределения выборок (χ-крит = {mainVM.ChiSquareKrit})");
                         normalDistribution.Table.SetTable(mainVM.TableNormalDistribution, mainVM.TableHeaders, mainVM.NormalDistributionHeaders);
                         normalDistribution.Table.DataContext = mainVM;
                     }
-                    MainContent.Content = normalDistribution;
+                    cpMainContent.Content = normalDistribution;
                     break;
 
             }

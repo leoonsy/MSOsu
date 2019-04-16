@@ -81,7 +81,7 @@ namespace MSOsu.ViewModel
         }
 
         /// <summary>
-        /// Загрузить исходные данные
+        /// Загрузить страницу
         /// </summary>
         IDelegateCommand loadPageCommand;
         public IDelegateCommand LoadPageCommand

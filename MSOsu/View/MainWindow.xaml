@@ -40,7 +40,7 @@
                 <Button Content="Please stand by" Padding="4"/>
             </StackPanel>
             <Grid Grid.Column="1" Background="#FFB2B2B2" />
-            <ContentPresenter Grid.Column="2" x:Name="MainContent" />
+            <ContentPresenter Grid.Column="2" x:Name="cpMainContent" />
         </Grid>
     </ScrollViewer>
 </Window>
