@@ -13,6 +13,7 @@ namespace MSOsu.Service
         NormalizedData,
         Statistic,
         NormalizedStatistic,
-        NormalDistribution
+        NormalDistribution,
+        PairCorrelations
     }
 }

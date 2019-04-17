@@ -14,6 +14,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Media;
 using MSOsu.Common;
 
 namespace MSOsu.View
@@ -43,13 +44,15 @@ namespace MSOsu.View
         DataTableUC statisticsUC = null;
         DataTableUC normilizeStatisticsUC = null;
         DataTableUC normalDistribution = null;
+        DataTableUC pairCorrelations = null;
+
         /// <summary>
         /// Загрузить контент
         /// </summary>
         /// <param name="type"></param>
         public void LoadView(ViewType type)
         {
-            const int round = 5; //насколько округлять 
+            const int round = 4; //насколько округлять 
             switch (type)
             {
                 case ViewType.Main:
@@ -65,7 +68,7 @@ namespace MSOsu.View
                     {
                         normalDataUC = new DataTableUC();
                         normalDataUC.SetHeader("Исходные данные:");
-                        normalDataUC.Table.SetTable( Matrix.RoundMatrix(Matrix.GetTransposeTable(mainVM.TableValues), round), mainVM.TableHeaders);
+                        normalDataUC.Table.SetTable( MatrixOperations.RoundMatrix(MatrixOperations.GetTransposeTable(mainVM.TableValues), round), mainVM.TableHeaders);
                         normalDataUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normalDataUC;
@@ -75,7 +78,7 @@ namespace MSOsu.View
                     {
                         normalizedDataUC = new DataTableUC();
                         normalizedDataUC.SetHeader("Нормализованные данные:");
-                        normalizedDataUC.Table.SetTable(Matrix.RoundMatrix(Matrix.GetTransposeTable(mainVM.TableNormalizedValues), round), mainVM.TableHeaders);
+                        normalizedDataUC.Table.SetTable(MatrixOperations.RoundMatrix(MatrixOperations.GetTransposeTable(mainVM.TableNormalizedValues), round), mainVM.TableHeaders);
                         normalizedDataUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normalizedDataUC;
@@ -85,7 +88,7 @@ namespace MSOsu.View
                     {
                         statisticsUC = new DataTableUC();
                         statisticsUC.SetHeader("Описательная статистика для исходной выборки:");
-                        statisticsUC.Table.SetTable(Matrix.RoundMatrix(Matrix.GetTransposeTable(mainVM.TableStatisticsValues), round), mainVM.TableHeaders, mainVM.StatisticsHeaders);
+                        statisticsUC.Table.SetTable(MatrixOperations.RoundMatrix(MatrixOperations.GetTransposeTable(mainVM.TableStatisticsValues), round), mainVM.TableHeaders, mainVM.StatisticsHeaders);
                         statisticsUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = statisticsUC;
@@ -95,7 +98,7 @@ namespace MSOsu.View
                     {
                         normilizeStatisticsUC = new DataTableUC();
                         normilizeStatisticsUC.SetHeader("Описательная статистика для нормализованной выборки:");
-                        normilizeStatisticsUC.Table.SetTable(Matrix.RoundMatrix(Matrix.GetTransposeTable(mainVM.TableNormalizedStatisticsValues), round), mainVM.TableHeaders, mainVM.StatisticsHeaders);
+                        normilizeStatisticsUC.Table.SetTable(MatrixOperations.RoundMatrix(MatrixOperations.GetTransposeTable(mainVM.TableNormalizedStatisticsValues), round), mainVM.TableHeaders, mainVM.StatisticsHeaders);
                         normilizeStatisticsUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normilizeStatisticsUC;
@@ -105,10 +108,25 @@ namespace MSOsu.View
                     {
                         normalDistribution = new DataTableUC();
                         normalDistribution.SetHeader($"Проверка гипотезы о нормальности распределения выборок (χ-крит = {mainVM.ChiSquareKrit})");
-                        normalDistribution.Table.SetTable(Matrix.GetTransposeTable(mainVM.TableNormalDistribution), mainVM.TableHeaders, mainVM.NormalDistributionHeaders);
+                        normalDistribution.Table.SetTable(MatrixOperations.GetTransposeTable(mainVM.TableNormalDistribution), mainVM.TableHeaders, mainVM.NormalDistributionHeaders);
                         normalDistribution.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normalDistribution;
+                    break;
+                case ViewType.PairCorrelations:
+                    if (pairCorrelations == null)
+                    {
+                        pairCorrelations = new DataTableUC();
+                        pairCorrelations.SetHeader($"Матрица парных корреляций");
+                        pairCorrelations.Table.SetTable(MatrixOperations.RoundMatrix(mainVM.PairCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
+                        pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.3 && Math.Abs(e) < 0.5, new SolidColorBrush(Color.FromArgb(0xFF,0xDA,0xE0,0xB5)));
+                        pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, new SolidColorBrush(Color.FromArgb(0xFF,0xF3,0xFF,0x00)));
+                        pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, new SolidColorBrush(Color.FromArgb(0xFF,0xFF,0x86,0x40)));
+                        pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) <= 1, new SolidColorBrush(Color.FromArgb(0xFF,0xFF,0x3A,0x3A)));
+                        pairCorrelations.cpFooter.Content = new CorrelationColor();
+                        pairCorrelations.Table.DataContext = mainVM;
+                    }
+                    cpMainContent.Content = pairCorrelations;
                     break;
 
             }
@@ -123,7 +141,7 @@ namespace MSOsu.View
             {
                 switch (e.PropertyName)
                 {
-                    case "Table":
+                    case "TableValues":
                         //обнулить кэш
                         mainUC = null;
                         normalDataUC = null;

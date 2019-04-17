@@ -21,7 +21,16 @@ namespace MSOsu.ViewModel
         /// <summary>
         /// Таблица с исходными данными
         /// </summary>
-        public double[][] TableValues;
+        private double[][] tableValues;
+        public double[][] TableValues
+        {
+            get => tableValues;
+            set
+            {
+                tableValues = value;
+                RaisePropetyChanged("TableValues");
+            }
+        }
 
         /// <summary>
         /// Таблица с нормированными данными
@@ -47,6 +56,11 @@ namespace MSOsu.ViewModel
         /// Таблица с проверкой на нормальность распределения
         /// </summary>
         public string[] NormalDistributionHeaders = new string[] { "Значение χ2", "Нормальность распределения" };
+
+        /// <summary>
+        /// Матрица парных корреляций
+        /// </summary>
+        public double[][] PairCorrelationsMatrix;
 
         /// <summary>
         /// Критические значение хи-квадрат
@@ -104,6 +118,7 @@ namespace MSOsu.ViewModel
                             TableNormalizedStatisticsValues = DescriptiveStatistic.GetTotalStatistic(TableNormalizedValues);
                             TableNormalDistribution = PiersonTest.GetNormalDistributionTable(TableNormalizedValues);
                             ChiSquareKrit = PiersonTest.GetChiSquareKrit();
+                            PairCorrelationsMatrix = new CorrelationsAnalysis(TableNormalizedValues).GetPairCorrelationsMatrix();
                             LoadPageCommand.Execute(ViewType.Data);
                         }
                     });

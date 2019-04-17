@@ -90,7 +90,7 @@ namespace MSOsu.Model
                 result[0][i] = Math.Round(chiSquare, 6).ToString();
                 result[1][i] = isNormal ? "+" : "-";
             }
-            return Matrix.GetTransposeTable(result);
+            return MatrixOperations.GetTransposeTable(result);
         }
     }
 }

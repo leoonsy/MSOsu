@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MSOsu.Common
 {
-    class Matrix
+    class MatrixOperations
     {
         /// <summary>
         /// Транспонировать матрицу
@@ -34,6 +34,20 @@ namespace MSOsu.Common
         public static double[][] RoundMatrix(double[][] matrix, int round)
         {
             return matrix.Select(e => e.Select(u => Math.Round(u, round)).ToArray()).ToArray();
+        }
+
+        /// <summary>
+        /// Скалярное произведение векторов
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static double ScalarMultiplication(double[] x, double[] y)
+        {
+            double r = 0;
+            for (int i = 0; i < x.Length; i++)
+                r += x[i] * y[i];
+            return r;
         }
     }
 }

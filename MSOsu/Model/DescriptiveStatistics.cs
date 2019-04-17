@@ -198,7 +198,7 @@ namespace MSOsu.Model
                 }
             }
 
-            return Matrix.GetTransposeTable(result);
+            return MatrixOperations.GetTransposeTable(result);
         }
 
         /// <summary>
@@ -222,6 +222,23 @@ namespace MSOsu.Model
             yield return Count;
         }
 
+        /// <summary>
+        /// Переопределение индексатора
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public double this[int index]
+        {
+            get
+            {
+                return Values[index];
+            }
+
+            set
+            {
+                Values[index] = value;
+            }
+        }
 
         ///// <summary>
         ///// Получить итоговую статистику

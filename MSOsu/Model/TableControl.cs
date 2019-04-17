@@ -26,7 +26,7 @@ namespace MSOsu.Model
                 List<string[]> fields = new List<string[]>();
                 while (!parser.EndOfData)
                     fields.Add(parser.ReadFields());
-                var strValues = Matrix.GetTransposeTable(fields.ToArray());
+                var strValues = MatrixOperations.GetTransposeTable(fields.ToArray());
                 double[][] values = strValues.Select(e => e.Select(u => double.Parse(u)).ToArray()).ToArray();
 
                 return (headers, values);

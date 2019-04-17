@@ -26,6 +26,27 @@ namespace MSOsu.View
             InitializeComponent();
         }
 
+        List<List<TextBox>> cells;
+
+        /// <summary>
+        /// Подсветить определенные double ячейки
+        /// </summary>
+        /// <param name="pred"></param>
+        /// <param name="colour"></param>
+        /// <param name="column"></param>
+        public void Highlight(Predicate<double> pred, Brush colour)
+        {
+            foreach (var list in cells)
+            {
+                foreach (var tb in list)
+                {
+                    double d;
+                    if (double.TryParse(tb.Text, out d) && pred(d))
+                        tb.Background = colour;
+                }
+            }
+        }
+
         /// <summary>
         /// Создать новую таблицу
         /// </summary>
@@ -37,11 +58,18 @@ namespace MSOsu.View
             ClearTable();
             int m = matrix.Length;
             int n = matrix[0].Length;
+            cells = new List<List<TextBox>>();
             CreateGrid(m, n);
             FillColumnsAndRowsHeaders(colHeaders, rowHeaders);
             for (int i = 0; i < m; i++)
+            {
+                cells.Add(new List<TextBox>());
                 for (int j = 0; j < n; j++)
-                    gTable.Children.Add(CreateCell(matrix[i][j], i + 1, j + 1));
+                {
+                    cells[i].Add(CreateCell(matrix[i][j], i + 1, j + 1));
+                    gTable.Children.Add(cells[i][j]);
+                }
+            }
         }
 
         ///// <summary>
@@ -64,6 +92,7 @@ namespace MSOsu.View
             gTable.Children.Clear();
             gTable.RowDefinitions.Clear();
             gTable.ColumnDefinitions.Clear();
+            cells = null;
         }
 
         /// <summary>

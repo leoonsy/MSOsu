@@ -10,6 +10,7 @@
         <Border Padding="3 5 5 5" Background="#FFF7F7F7">
             <TextBlock x:Name="tblHeader" Text="Заголовок" FontSize="14" />
         </Border>
-        <ContentPresenter Grid.Column="2" x:Name="cpTable" />
+        <ContentPresenter x:Name="cpTable" />
+        <ContentPresenter x:Name="cpFooter" />
     </StackPanel>
 </UserControl>
