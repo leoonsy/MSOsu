@@ -16,13 +16,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using MSOsu.Common;
+using MahApps.Metro.Controls;
 
 namespace MSOsu.View
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IViewService
+    public partial class MainWindow : MetroWindow, IViewService
     {
         MainWindowVM mainVM;
         public MainWindow()

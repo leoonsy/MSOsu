@@ -21,7 +21,7 @@
         </WrapPanel>
         <WrapPanel>
             <Rectangle Fill="#FFFF3A3A" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
-            <TextBlock Text="0.7 ⩽ |r| &lt; 1 - очень сильная связь" VerticalAlignment="Center" FontSize="14" />
+            <TextBlock Text="0.7 ⩽ |r| ⩽ 1 - очень сильная связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
     </StackPanel>
 </UserControl>

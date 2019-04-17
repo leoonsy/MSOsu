@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:MSOsu.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Border BorderBrush="#FF959595" BorderThickness="0,0.5">
-        <Grid x:Name="gTable" Background="WhiteSmoke">
+    <Border BorderBrush="#FFE0E0E0" BorderThickness="0,0.5">
+        <Grid x:Name="gTable" Background="#FFECECEC">
         <Grid.Resources>
             <Style TargetType="RowDefinition">
                 <Setter Property="Height" Value="Auto"/>

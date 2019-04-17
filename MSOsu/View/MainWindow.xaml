@@ -1,47 +1,68 @@
-﻿<Window x:Class="MSOsu.View.MainWindow"
+﻿<Controls:MetroWindow x:Class="MSOsu.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MSOsu"
         xmlns:service="clr-namespace:MSOsu.Service"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="MSOsu" Height="650" Width="1100" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" >
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        Title="Курсовая работа по ТВМС (ЯШАНОВСКИЙ С.В.)" Height="650" Width="1000" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" FontSize="10" FontFamily="Segoe UI Symbol" GlowBrush="{DynamicResource AccentColorBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="2"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
-            <StackPanel Background="#FFD5F2FF">
-                <Button Content="Главная" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.Main}" HorizontalAlignment="Stretch" />
-                <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="2" HorizontalAlignment="Stretch">
-                    <TextBlock Padding="4" Text="Данные"  HorizontalAlignment="Center" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button Content="Загрузить данные" Padding="4" Command="{Binding LoadTableCommand}" Grid.ColumnSpan="2" Margin="2" />
+            <StackPanel Grid.Row="1">
+                <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="3" BorderBrush="#FF9B9B9B" HorizontalAlignment="Stretch" Margin="1 0 1 1" Height="25">
+                    <TextBlock Padding="4" Text="ДАННЫЕ →" FontWeight="Bold"  HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Border>
-                <Button Content="Исходные данные" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.Data}" HorizontalAlignment="Stretch" />
-                <Button Content="Нормализованные данные" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalizedData}" HorizontalAlignment="Stretch"/>
-                <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="2" >
-                    <TextBlock Padding="4" Text="Анализ данных"  HorizontalAlignment="Center" />
+                <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="1" Height="25">
+                    <TextBlock Padding="4" Text="АНАЛИЗ ДАННЫХ →"  FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Border>
-                <Button Content="Статистика (исходная выборка)" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.Statistic}" HorizontalAlignment="Stretch"/>
-                <Button Content="Статистика (нормализованная выборка)" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalizedStatistic}" HorizontalAlignment="Stretch"/>
-                <Button Content="Нормальность распределения" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalDistribution}" HorizontalAlignment="Stretch"/>
-                <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="2">
-                    <TextBlock Padding="4" Text="Корреляционный анализ"  HorizontalAlignment="Center" />
+                <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="1" Height="25">
+                    <TextBlock Padding="4" Text="КОРРЕЛЯЦИОННЫЙ АНАЛИЗ →" FontWeight="Bold"  HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Border>
-                <Button Content="Парная корреляция" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.PairCorrelations}" HorizontalAlignment="Stretch"/>
-                <Button Content="Частная корреляция" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.PairCorrelations}" HorizontalAlignment="Stretch"/>
-                <Button Content="Диаграммы корреляционных плеяд" Padding="4" HorizontalAlignment="Stretch"/>
-                <Button Content="Множественная корреляция" Padding="4" HorizontalAlignment="Stretch"/>
-                <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="2">
-                    <TextBlock Padding="4" Text="Регрессионный анализ"  HorizontalAlignment="Center" />
+                <Border Background="#FF8CD0FF" BorderThickness="1" CornerRadius="5" BorderBrush="#FF9B9B9B" Margin="1 1 1 0" Height="25">
+                    <TextBlock Padding="4" Text="РЕГРЕССИОННЫЙ АНАЛИЗ →" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Border>
-                <Button Content="Please stand by" Padding="4"/>
             </StackPanel>
-            <Grid Grid.Column="1" Background="#FFB2B2B2" />
-            <ContentPresenter Grid.Column="2" x:Name="cpMainContent" />
+            <StackPanel Background="#FFD5F2FF" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" >
+                <WrapPanel Margin="1 0 1 1" Height="25">
+                    <Button Content="Исходные данные" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.Data}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0 0 1 0" />
+                    <Button Content="Нормализованные данные" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalizedData}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                </WrapPanel>
+                <WrapPanel Margin="1" Height="25">
+                    <Button Content="Статистика (исходная выборка)" Margin="0 0 1 0" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.Statistic}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                    <Button Content="Статистика (нормированная выборка)" Padding="4" Margin="0 0 1 0" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalizedStatistic}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                    <Button Content="Нормальность распределения" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalDistribution}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                </WrapPanel>
+                <WrapPanel Margin="1" Height="25">
+                    <Button Content="Парная корреляция" Margin="0 0 1 0" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.PairCorrelations}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                    <Button Content="Частная корреляция" Margin="0 0 1 0" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.PairCorrelations}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                    <Button Content="Диаграммы корреляционных плеяд" Padding="4" Margin="0 0 1 0" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                    <Button Content="Множественная корреляция" Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                </WrapPanel>
+                <WrapPanel Margin="1 1 1 0" Height="25">
+                    <Button Content="Please stand by" Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0 0 1 0"/>
+                </WrapPanel>
+            </StackPanel>
         </Grid>
-    </ScrollViewer>
-</Window>
+        <Grid Grid.Row="1" Background="#FFB2B2B2" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="2" >
+            <ContentPresenter x:Name="cpMainContent" />
+        </ScrollViewer>
+    </Grid>
+</Controls:MetroWindow>

@@ -93,7 +93,7 @@ namespace MSOsu.ViewModel
                     loadPageCommand = new DelegateCommand(obj =>
                     {
                         viewService.LoadView((ViewType)obj);
-                    });
+                    }, obj => TableValues != null ? true : false);
                 return loadPageCommand;
             }
         }
@@ -120,6 +120,7 @@ namespace MSOsu.ViewModel
                             ChiSquareKrit = PiersonTest.GetChiSquareKrit();
                             PairCorrelationsMatrix = new CorrelationsAnalysis(TableNormalizedValues).GetPairCorrelationsMatrix();
                             LoadPageCommand.Execute(ViewType.Data);
+                            LoadPageCommand.RaiseCanExecuteChanged();
                         }
                     });
                 return loadTableCommand;
