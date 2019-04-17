@@ -87,7 +87,7 @@ namespace MSOsu.Model
             for (int i = 0; i < values.Length; i++)
             {
                 (bool isNormal, double chiSquare) = CheckNormalDistribution(values[i]);
-                result[0][i] = chiSquare.ToString();
+                result[0][i] = Math.Round(chiSquare, 6).ToString();
                 result[1][i] = isNormal ? "+" : "-";
             }
             return Matrix.GetTransposeTable(result);

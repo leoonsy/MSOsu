@@ -49,6 +49,7 @@ namespace MSOsu.View
         /// <param name="type"></param>
         public void LoadView(ViewType type)
         {
+            const int round = 5; //насколько округлять 
             switch (type)
             {
                 case ViewType.Main:
@@ -64,7 +65,7 @@ namespace MSOsu.View
                     {
                         normalDataUC = new DataTableUC();
                         normalDataUC.SetHeader("Исходные данные:");
-                        normalDataUC.Table.SetTable( Matrix.GetTransposeTable(mainVM.TableValues), mainVM.TableHeaders);
+                        normalDataUC.Table.SetTable( Matrix.RoundMatrix(Matrix.GetTransposeTable(mainVM.TableValues), round), mainVM.TableHeaders);
                         normalDataUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normalDataUC;
@@ -74,7 +75,7 @@ namespace MSOsu.View
                     {
                         normalizedDataUC = new DataTableUC();
                         normalizedDataUC.SetHeader("Нормализованные данные:");
-                        normalizedDataUC.Table.SetTable(Matrix.GetTransposeTable(mainVM.TableNormalizedValues), mainVM.TableHeaders);
+                        normalizedDataUC.Table.SetTable(Matrix.RoundMatrix(Matrix.GetTransposeTable(mainVM.TableNormalizedValues), round), mainVM.TableHeaders);
                         normalizedDataUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normalizedDataUC;
@@ -84,7 +85,7 @@ namespace MSOsu.View
                     {
                         statisticsUC = new DataTableUC();
                         statisticsUC.SetHeader("Описательная статистика для исходной выборки:");
-                        statisticsUC.Table.SetTable(Matrix.GetTransposeTable(mainVM.TableStatisticsValues), mainVM.TableHeaders, mainVM.StatisticsHeaders);
+                        statisticsUC.Table.SetTable(Matrix.RoundMatrix(Matrix.GetTransposeTable(mainVM.TableStatisticsValues), round), mainVM.TableHeaders, mainVM.StatisticsHeaders);
                         statisticsUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = statisticsUC;
@@ -94,7 +95,7 @@ namespace MSOsu.View
                     {
                         normilizeStatisticsUC = new DataTableUC();
                         normilizeStatisticsUC.SetHeader("Описательная статистика для нормализованной выборки:");
-                        normilizeStatisticsUC.Table.SetTable(Matrix.GetTransposeTable(mainVM.TableNormalizedStatisticsValues), mainVM.TableHeaders, mainVM.StatisticsHeaders);
+                        normilizeStatisticsUC.Table.SetTable(Matrix.RoundMatrix(Matrix.GetTransposeTable(mainVM.TableNormalizedStatisticsValues), round), mainVM.TableHeaders, mainVM.StatisticsHeaders);
                         normilizeStatisticsUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normilizeStatisticsUC;
