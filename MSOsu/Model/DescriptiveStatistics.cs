@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MSOsu.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -157,9 +158,19 @@ namespace MSOsu.Model
         public double Count => !double.IsNaN(count) ? count : count = Values.Length;
 
         /// <summary>
-        /// Получить нормализированную выборку
+        /// Получить нормированные значения
         /// </summary>
-        public double[] GetNormalizedSelection() => Values.Select(e => e / Interval).ToArray();
+        public double[] GetNormalizedValues() => Values.Select(e => e / Interval).ToArray();
+
+        /// <summary>
+        /// Получить массив нормированных значений
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        public static double[][] GetNormalizedValues(double[][] values)
+        {
+            return values.Select(e => e = new DescriptiveStatistic(e).GetNormalizedValues()).ToArray();
+        }
 
         /// <summary>
         /// Заголовки для статистик
@@ -173,29 +184,42 @@ namespace MSOsu.Model
         /// <param name="table"></param>
         /// <param name="round"></param>
         /// <returns></returns>
-        public static double[][] GetTotalStatistic(double[][] table, int? round = null)
+        public static double[][] GetTotalStatistic(double[][] table)
         {
             double[][] result = new double[Headers.Length][].Select(e => e = new double[table.Length]).ToArray();
             for (int i = 0; i < table.Length; i++)
             {
                 DescriptiveStatistic stat = new DescriptiveStatistic(table[i]);
-
-                result[0][i] = stat.Average;
-                result[1][i] = stat.StandardError;
-                result[2][i] = stat.Median;
-                result[3][i] = stat.Mode;
-                result[4][i] = stat.StandardDeviation;
-                result[5][i] = stat.Dispersion;
-                result[6][i] = stat.Excess;
-                result[7][i] = stat.Asymmetry;
-                result[8][i] = stat.Interval;
-                result[9][i] = stat.Min;
-                result[10][i] = stat.Max;
-                result[11][i] = stat.Sum;
-                result[12][i] = stat.Count;
+                int j = 0;
+                foreach (double value in stat.GetNextStatistic())
+                {
+                    result[j][i] = value;
+                    j++;
+                }
             }
 
-            return result;
+            return Matrix.GetTransposeTable(result);
+        }
+
+        /// <summary>
+        /// Получить следующую статистику
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<double> GetNextStatistic()
+        {
+            yield return Average;
+            yield return StandardError;
+            yield return Median;
+            yield return Mode;
+            yield return StandardDeviation;
+            yield return Dispersion;
+            yield return Excess;
+            yield return Asymmetry;
+            yield return Interval;
+            yield return Min;
+            yield return Max;
+            yield return Sum;
+            yield return Count;
         }
 
 

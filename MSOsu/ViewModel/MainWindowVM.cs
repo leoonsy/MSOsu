@@ -1,4 +1,5 @@
 ﻿using MSOsu.Command;
+using MSOsu.Common;
 using MSOsu.Model;
 using MSOsu.Service;
 using System;
@@ -12,20 +13,6 @@ namespace MSOsu.ViewModel
 {
     public class MainWindowVM : INotifyPropertyChanged
     {
-        /// <summary>
-        /// Таблица с данными ValuesColums
-        /// </summary>
-        private ValuesColumn[] table;
-        public ValuesColumn[] Table
-        {
-            get { return table; }
-            set
-            {
-                table = value;
-                RaisePropetyChanged("Table");
-            }
-        }
-
         /// <summary>
         /// Заголовки таблицы
         /// </summary>
@@ -111,31 +98,17 @@ namespace MSOsu.ViewModel
                         string filter = "Файл CSV|*.csv";
                         if (dialogService.OpenFileDialog(filter))
                         {
-                            Table = TableControl.GetTable(dialogService.GetFilePath());
-                            TableHeaders = TableControl.GetHeaders(Table);
-                            TableValues = TableControl.GetValues(Table);
-                            TableNormalizedValues = TableControl.GetNormalizedValues(Table);
-                            TableStatisticsValues = DescriptiveStatistic.GetTotalStatistic(TableControl.GetTransposeTable(TableValues));
-                            TableNormalizedStatisticsValues = DescriptiveStatistic.GetTotalStatistic(TableControl.GetTransposeTable(TableNormalizedValues));
-                            TableNormalDistribution = GetNormalDistributionTable(TableControl.GetTransposeTable(TableNormalizedValues));
+                            (TableHeaders, TableValues) = TableControl.GetTable(dialogService.GetFilePath());
+                            TableNormalizedValues = DescriptiveStatistic.GetNormalizedValues(TableValues);
+                            TableStatisticsValues = DescriptiveStatistic.GetTotalStatistic(TableValues);
+                            TableNormalizedStatisticsValues = DescriptiveStatistic.GetTotalStatistic(TableNormalizedValues);
+                            TableNormalDistribution = PiersonTest.GetNormalDistributionTable(TableNormalizedValues);
                             ChiSquareKrit = PiersonTest.GetChiSquareKrit();
                             LoadPageCommand.Execute(ViewType.Data);
                         }
                     });
                 return loadTableCommand;
             }
-        }
-
-        public string[][] GetNormalDistributionTable(double[][] values)
-        {
-            string[][] result = new string[2][].Select(e => e = new string[values.Length]).ToArray();
-            for (int i = 0; i < values.Length; i++)
-            {
-                (bool isNormal, double chiSquare) = PiersonTest.CheckNormalDistribution(values[i]);
-                result[0][i] = chiSquare.ToString();
-                result[1][i] = isNormal ? "+" : "-";
-            }
-            return result;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

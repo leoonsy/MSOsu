@@ -12,10 +12,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MSOsu.Common;
 
 namespace MSOsu.View
 {
@@ -65,7 +64,7 @@ namespace MSOsu.View
                     {
                         normalDataUC = new DataTableUC();
                         normalDataUC.SetHeader("Исходные данные:");
-                        normalDataUC.Table.SetTable(mainVM.TableValues, mainVM.TableHeaders);
+                        normalDataUC.Table.SetTable( Matrix.GetTransposeTable(mainVM.TableValues), mainVM.TableHeaders);
                         normalDataUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normalDataUC;
@@ -75,7 +74,7 @@ namespace MSOsu.View
                     {
                         normalizedDataUC = new DataTableUC();
                         normalizedDataUC.SetHeader("Нормализованные данные:");
-                        normalizedDataUC.Table.SetTable(mainVM.TableNormalizedValues, mainVM.TableHeaders);
+                        normalizedDataUC.Table.SetTable(Matrix.GetTransposeTable(mainVM.TableNormalizedValues), mainVM.TableHeaders);
                         normalizedDataUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normalizedDataUC;
@@ -85,7 +84,7 @@ namespace MSOsu.View
                     {
                         statisticsUC = new DataTableUC();
                         statisticsUC.SetHeader("Описательная статистика для исходной выборки:");
-                        statisticsUC.Table.SetTable(mainVM.TableStatisticsValues, mainVM.TableHeaders, mainVM.StatisticsHeaders);
+                        statisticsUC.Table.SetTable(Matrix.GetTransposeTable(mainVM.TableStatisticsValues), mainVM.TableHeaders, mainVM.StatisticsHeaders);
                         statisticsUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = statisticsUC;
@@ -95,7 +94,7 @@ namespace MSOsu.View
                     {
                         normilizeStatisticsUC = new DataTableUC();
                         normilizeStatisticsUC.SetHeader("Описательная статистика для нормализованной выборки:");
-                        normilizeStatisticsUC.Table.SetTable(mainVM.TableNormalizedStatisticsValues, mainVM.TableHeaders, mainVM.StatisticsHeaders);
+                        normilizeStatisticsUC.Table.SetTable(Matrix.GetTransposeTable(mainVM.TableNormalizedStatisticsValues), mainVM.TableHeaders, mainVM.StatisticsHeaders);
                         normilizeStatisticsUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normilizeStatisticsUC;
@@ -105,7 +104,7 @@ namespace MSOsu.View
                     {
                         normalDistribution = new DataTableUC();
                         normalDistribution.SetHeader($"Проверка гипотезы о нормальности распределения выборок (χ-крит = {mainVM.ChiSquareKrit})");
-                        normalDistribution.Table.SetTable(mainVM.TableNormalDistribution, mainVM.TableHeaders, mainVM.NormalDistributionHeaders);
+                        normalDistribution.Table.SetTable(Matrix.GetTransposeTable(mainVM.TableNormalDistribution), mainVM.TableHeaders, mainVM.NormalDistributionHeaders);
                         normalDistribution.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normalDistribution;

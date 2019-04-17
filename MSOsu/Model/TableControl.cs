@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic.FileIO;
+using MSOsu.Common;
 
 namespace MSOsu.Model
 {
@@ -15,77 +16,21 @@ namespace MSOsu.Model
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static ValuesColumn[] GetTable(string path)
+        public static (string[] headers, double[][] values) GetTable(string path)
         {
             using (TextFieldParser parser = new TextFieldParser(path, Encoding.GetEncoding(1251)))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(";");
-                string[] headlines = parser.ReadFields();
-                var fields = new List<string[]>();
+                string[] headers = parser.ReadFields();
+                List<string[]> fields = new List<string[]>();
                 while (!parser.EndOfData)
                     fields.Add(parser.ReadFields());
-                var result = Enumerable.Range(0, headlines.Length).Select(idx => new ValuesColumn(headlines[idx], null)).ToArray();
-                for (int i = 0; i < result.Length; i++)
-                    result[i].Values = fields.Select(e => double.Parse(e[i])).ToArray();
+                var strValues = Matrix.GetTransposeTable(fields.ToArray());
+                double[][] values = strValues.Select(e => e.Select(u => double.Parse(u)).ToArray()).ToArray();
 
-                return result;
+                return (headers, values);
             }
-        }
-
-        /// <summary>
-        /// Получить массив значений
-        /// </summary>
-        /// <param name="table"></param>
-        /// <returns></returns>
-        public static double[][] GetValues(ValuesColumn[] table)
-        {
-            int rowLength = table[0].Values.Length;
-            int colLength = table.Length;
-            double[][] matrix = new double[rowLength][].Select(val => val = new double[colLength]).ToArray();
-            for (int i = 0; i < rowLength; i++)
-                for (int j = 0; j < colLength; j++)
-                    matrix[i][j] = table[j].Values[i];
-            return matrix;
-        }
-
-        /// <summary>
-        /// Получить массив нормированных значений
-        /// </summary>
-        /// <param name="table"></param>
-        /// <returns></returns>
-        public static double[][] GetNormalizedValues(ValuesColumn[] table)
-        {
-            ValuesColumn[] vc = table.Select(e => new ValuesColumn(e.ColumnName, new DescriptiveStatistic(e.Values).GetNormalizedSelection().
-                                Select(u => Math.Round(u, 5)).ToArray())).ToArray();
-            return GetValues(vc);
-        }
-
-        /// <summary>
-        /// Получить массив заголовков
-        /// </summary>
-        /// <param name="table"></param>
-        /// <returns></returns>
-        public static string[] GetHeaders(ValuesColumn[] table)
-        {
-            return table.Select(e => e.ColumnName).ToArray();
-        }
-
-        /// <summary>
-        /// Транспонировать матрицу
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="table"></param>
-        /// <returns></returns>
-        public static T[][] GetTransposeTable<T>(T[][] table)
-        {
-            int m = table.Length;
-            int n = table[0].Length;
-            T[][] transTable = new T[n][].Select(e => e = new T[m]).ToArray();
-            for (int i = 0; i < m; i++)
-                for (int j = 0; j < n; j++)
-                    transTable[j][i] = table[i][j];
-            return transTable;
         }
 
         /// <summary>
@@ -93,13 +38,13 @@ namespace MSOsu.Model
         /// </summary>
         /// <param name="values"></param>
         /// <param name="path"></param>
-        public static void SaveTable(ValuesColumn[] values, string path)
+        public static void SaveTable(string[] headers, double[][] values, string path)
         {
             StringBuilder result = new StringBuilder();
-            int countOfValues = values[0].Values.Length;
-            result.AppendLine( String.Join(";",values.Select(e => e.ColumnName)) );
+            int countOfValues = headers.Length;
+            result.AppendLine(String.Join(";", headers));
             for (int i = 0; i < countOfValues; i++)
-                result.AppendLine(String.Join(";", values.Select(e => e.Values[i])));
+                result.AppendLine(String.Join(";", values[i]));
 
             File.WriteAllText(path, result.ToString(), Encoding.GetEncoding(1251));
         }

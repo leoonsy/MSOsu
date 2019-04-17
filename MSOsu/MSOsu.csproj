@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\Matrix.cs" />
     <Compile Include="Service\DialogServices\DefaultDialogService.cs" />
     <Compile Include="Service\IViewService.cs" />
     <Compile Include="Service\IDialogService.cs" />
@@ -87,7 +88,6 @@
     <Compile Include="Model\DescriptiveStatistics.cs" />
     <Compile Include="Model\PiersonTest.cs" />
     <Compile Include="Model\TableControl.cs" />
-    <Compile Include="Model\ValuesColumn.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="View\MainUC.xaml.cs">
       <DependentUpon>MainUC.xaml</DependentUpon>

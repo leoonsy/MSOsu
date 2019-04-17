@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MSOsu.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -74,5 +75,22 @@ namespace MSOsu.Model
         /// </summary>
         /// <returns></returns>
         public static double GetChiSquareKrit() => 7.81473;
+
+        /// <summary>
+        /// Получить таблицу нормального распределения
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static string[][] GetNormalDistributionTable(double[][] values)
+        {
+            string[][] result = new string[2][].Select(e => e = new string[values.Length]).ToArray();
+            for (int i = 0; i < values.Length; i++)
+            {
+                (bool isNormal, double chiSquare) = CheckNormalDistribution(values[i]);
+                result[0][i] = chiSquare.ToString();
+                result[1][i] = isNormal ? "+" : "-";
+            }
+            return Matrix.GetTransposeTable(result);
+        }
     }
 }
