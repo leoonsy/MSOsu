@@ -9,7 +9,8 @@ namespace MSOsu.Model
 {
     class CorrelationsAnalysis
     {
-        public double[][] matrix;
+        public double[][] matrix; //исходная матрица
+        private double[][] pairMatrix; //матрица парных корреляций
         public CorrelationsAnalysis(double[][] matrix)
         {
             this.matrix = matrix;
@@ -42,6 +43,25 @@ namespace MSOsu.Model
                         r[i][j] = 1;
                     else
                         r[i][j] = r[j][i];
+                }
+            }
+            return pairMatrix = r;
+        }
+
+        public double[][] GetParticalCorrelationsMatrix()
+        {
+            if (pairMatrix == null)
+                pairMatrix = GetPairCorrelationsMatrix();
+            double[][] r = new double[pairMatrix.Length][].Select(e => e = new double[pairMatrix.Length]).ToArray();
+            for (int i = 0; i < pairMatrix.Length; i++)
+            {
+                for (int j = 0; j < pairMatrix.Length; j++)
+                {
+                    if (i == j)
+                        r[i][j] = 1;
+                    else
+                        r[i][j] = -Math.Pow(-1, i + j) * MatrixOperations.GetExtraMinor(pairMatrix, i, j) / 
+                            Math.Sqrt(MatrixOperations.GetExtraMinor(pairMatrix, i, i) * MatrixOperations.GetExtraMinor(pairMatrix, j, j));
                 }
             }
             return r;

@@ -46,6 +46,7 @@ namespace MSOsu.View
         DataTableUC normilizeStatisticsUC = null;
         DataTableUC normalDistribution = null;
         DataTableUC pairCorrelations = null;
+        DataTableUC particalCorrelations = null;
 
         /// <summary>
         /// Загрузить контент
@@ -108,7 +109,7 @@ namespace MSOsu.View
                     if (normalDistribution == null)
                     {
                         normalDistribution = new DataTableUC();
-                        normalDistribution.SetHeader($"Проверка гипотезы о нормальности распределения выборок (χ-крит = {mainVM.ChiSquareKrit})");
+                        normalDistribution.SetHeader($"Проверка гипотезы о нормальности распределения выборок (χ-крит = {mainVM.ChiSquareKrit}):");
                         normalDistribution.Table.SetTable(MatrixOperations.GetTransposeTable(mainVM.TableNormalDistribution), mainVM.TableHeaders, mainVM.NormalDistributionHeaders);
                         normalDistribution.Table.DataContext = mainVM;
                     }
@@ -118,7 +119,7 @@ namespace MSOsu.View
                     if (pairCorrelations == null)
                     {
                         pairCorrelations = new DataTableUC();
-                        pairCorrelations.SetHeader($"Матрица парных корреляций");
+                        pairCorrelations.SetHeader($"Матрица парных корреляций:");
                         pairCorrelations.Table.SetTable(MatrixOperations.RoundMatrix(mainVM.PairCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
                         pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.3 && Math.Abs(e) < 0.5, new SolidColorBrush(Color.FromArgb(0xFF,0xDA,0xE0,0xB5)));
                         pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, new SolidColorBrush(Color.FromArgb(0xFF,0xF3,0xFF,0x00)));
@@ -128,6 +129,21 @@ namespace MSOsu.View
                         pairCorrelations.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = pairCorrelations;
+                    break;
+                case ViewType.ParticalCorrelations:
+                    if (particalCorrelations == null)
+                    {
+                        particalCorrelations = new DataTableUC();
+                        particalCorrelations.SetHeader($"Матрица частных корреляций:");
+                        particalCorrelations.Table.SetTable(MatrixOperations.RoundMatrix(mainVM.ParticalCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
+                        particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.3 && Math.Abs(e) < 0.5, new SolidColorBrush(Color.FromArgb(0xFF, 0xDA, 0xE0, 0xB5)));
+                        particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, new SolidColorBrush(Color.FromArgb(0xFF, 0xF3, 0xFF, 0x00)));
+                        particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0x86, 0x40)));
+                        particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) <= 1, new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0x3A, 0x3A)));
+                        particalCorrelations.cpFooter.Content = new CorrelationColor();
+                        particalCorrelations.Table.DataContext = mainVM;
+                    }
+                    cpMainContent.Content = particalCorrelations;
                     break;
 
             }
@@ -150,6 +166,7 @@ namespace MSOsu.View
                         statisticsUC = null;
                         normilizeStatisticsUC = null;
                         normalDistribution = null;
+                        particalCorrelations = null;
                         break;
                 }
             };

@@ -9,19 +9,19 @@
     <StackPanel>
         <WrapPanel>
             <Rectangle Fill="#FFDAE0B5" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
-            <TextBlock Text="|r| &lt; 0.3 - малая связь" VerticalAlignment="Center" FontSize="14" />
+            <TextBlock Text="0.3 ⩽ |r| &lt; 0.5 - малая связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
         <WrapPanel>
             <Rectangle Fill="#FFF3FF00" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
-            <TextBlock Text="0.3 ⩽ |r| &lt; 0.5 - средняя связь" VerticalAlignment="Center" FontSize="14" />
+            <TextBlock Text="0.5 ⩽ |r| &lt; 0.7 - средняя связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
         <WrapPanel>
             <Rectangle Fill="#FFFF8640" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
-            <TextBlock Text="0.5 ⩽ |r| &lt; 0.7 - сильная связь" VerticalAlignment="Center" FontSize="14" />
+            <TextBlock Text="0.7 ⩽ |r| &lt; 1 - сильная связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
         <WrapPanel>
             <Rectangle Fill="#FFFF3A3A" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
-            <TextBlock Text="0.7 ⩽ |r| ⩽ 1 - очень сильная связь" VerticalAlignment="Center" FontSize="14" />
+            <TextBlock Text="0.9 ⩽ |r| ⩽ 1 - очень сильная связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
     </StackPanel>
 </UserControl>

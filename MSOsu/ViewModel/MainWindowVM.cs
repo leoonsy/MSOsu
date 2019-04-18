@@ -63,6 +63,11 @@ namespace MSOsu.ViewModel
         public double[][] PairCorrelationsMatrix;
 
         /// <summary>
+        /// Матрица частных корреляций
+        /// </summary>
+        public double[][] ParticalCorrelationsMatrix;
+
+        /// <summary>
         /// Критические значение хи-квадрат
         /// </summary>
         public double ChiSquareKrit;
@@ -118,7 +123,9 @@ namespace MSOsu.ViewModel
                             TableNormalizedStatisticsValues = DescriptiveStatistic.GetTotalStatistic(TableNormalizedValues);
                             TableNormalDistribution = PiersonTest.GetNormalDistributionTable(TableNormalizedValues);
                             ChiSquareKrit = PiersonTest.GetChiSquareKrit();
-                            PairCorrelationsMatrix = new CorrelationsAnalysis(TableNormalizedValues).GetPairCorrelationsMatrix();
+                            CorrelationsAnalysis correlations = new CorrelationsAnalysis(TableNormalizedValues);
+                            PairCorrelationsMatrix = correlations.GetPairCorrelationsMatrix();
+                            ParticalCorrelationsMatrix = correlations.GetParticalCorrelationsMatrix();
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
                         }
