@@ -8,19 +8,19 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel>
         <WrapPanel>
-            <Rectangle Fill="#FFDAE0B5" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
-            <TextBlock Text="0.3 ⩽ |r| &lt; 0.5 - малая связь" VerticalAlignment="Center" FontSize="14" />
+            <Rectangle Fill="GreenYellow" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
+            <TextBlock Text="0.3 ⩽ |r| &lt; 0.5 - слабая связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
         <WrapPanel>
-            <Rectangle Fill="#FFF3FF00" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
+            <Rectangle Fill="Yellow" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
             <TextBlock Text="0.5 ⩽ |r| &lt; 0.7 - средняя связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
         <WrapPanel>
-            <Rectangle Fill="#FFFF8640" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
-            <TextBlock Text="0.7 ⩽ |r| &lt; 1 - сильная связь" VerticalAlignment="Center" FontSize="14" />
+            <Rectangle Fill="Orange" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
+            <TextBlock Text="0.7 ⩽ |r| &lt; 0.9 - сильная связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
         <WrapPanel>
-            <Rectangle Fill="#FFFF3A3A" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
+            <Rectangle Fill="Red" Width="70" Height="30" Margin="10" HorizontalAlignment="Left" />
             <TextBlock Text="0.9 ⩽ |r| ⩽ 1 - очень сильная связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
     </StackPanel>

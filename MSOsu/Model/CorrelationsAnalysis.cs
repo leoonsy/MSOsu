@@ -49,6 +49,29 @@ namespace MSOsu.Model
             return pairMatrix = r;
         }
 
+        /// <summary>
+        /// Получить матрицу частных корреляций
+        /// </summary>
+        /// <returns></returns>
+        public double[][] GetParticalCorrelationsMatrix()
+        {
+            if (pairMatrix == null)
+                pairMatrix = GetPairCorrelationsMatrix();
+            double[][] r = new double[pairMatrix.Length][].Select(e => e = new double[pairMatrix.Length]).ToArray();
+            for (int i = 0; i < pairMatrix.Length; i++)
+            {
+                for (int j = 0; j < pairMatrix.Length; j++)
+                {
+                    if (i == j)
+                        r[i][j] = 1;
+                    else
+                        r[i][j] = -Math.Pow(-1, i + j) * MatrixOperations.GetExtraMinor(pairMatrix, i, j) /
+                            Math.Sqrt(MatrixOperations.GetExtraMinor(pairMatrix, i, i) * MatrixOperations.GetExtraMinor(pairMatrix, j, j));
+                }
+            }
+            return particalMatrix = r;
+        }
+
 
         /// <summary>
         /// Получить матрицу значимости коэффициентов
@@ -78,7 +101,7 @@ namespace MSOsu.Model
         /// Получить матрицу значимости коэффициентов парной корреляции
         /// </summary>
         /// <returns></returns>
-        public double[][] GetPairSignificanceCorrelation()
+        public double[][] GetPairSignificanceCorrelationMatrix()
         {
             if (pairMatrix == null)
                 pairMatrix = GetPairCorrelationsMatrix();
@@ -89,7 +112,7 @@ namespace MSOsu.Model
         /// Получить матрицу значимости коэффициентов частной корреляции
         /// </summary>
         /// <returns></returns>
-        public double[][] GetParticalSignificanceCorrelation()
+        public double[][] GetParticalSignificanceCorrelationMatrix()
         {
             if (particalMatrix == null)
                 particalMatrix = GetPairCorrelationsMatrix();
@@ -97,26 +120,15 @@ namespace MSOsu.Model
         }
 
         /// <summary>
-        /// Получить матрицу частных корреляций
+        /// Получить множественный коэффициент корреляции
         /// </summary>
+        /// <param name="idx"></param>
         /// <returns></returns>
-        public double[][] GetParticalCorrelationsMatrix()
+        public double GetOneMultipleCorrelation(int idx)
         {
             if (pairMatrix == null)
                 pairMatrix = GetPairCorrelationsMatrix();
-            double[][] r = new double[pairMatrix.Length][].Select(e => e = new double[pairMatrix.Length]).ToArray();
-            for (int i = 0; i < pairMatrix.Length; i++)
-            {
-                for (int j = 0; j < pairMatrix.Length; j++)
-                {
-                    if (i == j)
-                        r[i][j] = 1;
-                    else
-                        r[i][j] = -Math.Pow(-1, i + j) * MatrixOperations.GetExtraMinor(pairMatrix, i, j) / 
-                            Math.Sqrt(MatrixOperations.GetExtraMinor(pairMatrix, i, i) * MatrixOperations.GetExtraMinor(pairMatrix, j, j));
-                }
-            }
-            return particalMatrix = r;
+            return Math.Sqrt(1 - MatrixOperations.GetDeterminantLU(pairMatrix) / MatrixOperations.GetExtraMinor(pairMatrix, idx, idx));
         }
     }
 }

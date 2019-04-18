@@ -16,6 +16,8 @@ namespace MSOsu.Service
         NormalDistribution,
         PairCorrelations,
         ParticalCorrelations,
-        SignificanceCorrelations
+        SignificanceCorrelations,
+        CorrelativePleiad,
+        MultipleCorrelation
     }
 }

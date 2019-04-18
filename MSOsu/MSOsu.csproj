@@ -79,13 +79,23 @@
     <Compile Include="View\CorrelationColor.xaml.cs">
       <DependentUpon>CorrelationColor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\CorrelativePleiadUC.xaml.cs">
+      <DependentUpon>CorrelativePleiadUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\DataTableUC.xaml.cs">
       <DependentUpon>DataTableUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MultipleCorrelationUC.xaml.cs">
+      <DependentUpon>MultipleCorrelationUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TableUC.xaml.cs">
       <DependentUpon>TableUC.xaml</DependentUpon>
     </Compile>
     <Page Include="View\CorrelationColor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CorrelativePleiadUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -115,6 +125,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\DataTableUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MultipleCorrelationUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

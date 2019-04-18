@@ -83,6 +83,11 @@ namespace MSOsu.ViewModel
         public double ChiSquareKrit;
 
         /// <summary>
+        /// Множественный коэффициент корреляции
+        /// </summary>
+        public double MultipleCorrelation;
+
+        /// <summary>
         /// Заголовки для статистик
         /// </summary>
         public string[] StatisticsHeaders = DescriptiveStatistic.Headers;
@@ -141,9 +146,10 @@ namespace MSOsu.ViewModel
                             CorrelationsAnalysis correlations = new CorrelationsAnalysis(TableNormalizedValues);
                             PairCorrelationsMatrix = correlations.GetPairCorrelationsMatrix();
                             ParticalCorrelationsMatrix = correlations.GetParticalCorrelationsMatrix();
-                            PairSignificanceCorrelationsMatrix = correlations.GetPairSignificanceCorrelation();
-                            ParticalSignificanceCorrelationsMatrix = correlations.GetParticalSignificanceCorrelation();
+                            PairSignificanceCorrelationsMatrix = correlations.GetPairSignificanceCorrelationMatrix();
+                            ParticalSignificanceCorrelationsMatrix = correlations.GetParticalSignificanceCorrelationMatrix();
                             TStudentKrit = DataBase.GetTCrit(TableNormalizedValues[0].Length - 2);
+                            MultipleCorrelation = correlations.GetOneMultipleCorrelation(0);
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
                         }

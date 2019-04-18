@@ -48,6 +48,8 @@ namespace MSOsu.View
         DataTableUC pairCorrelations = null;
         DataTableUC particalCorrelations = null;
         DataTableUC significanceCorrelations = null;
+        MultipleCorrelationUC multipleCorrelation = null;
+        CorrelativePleiad correlativePleiad = null;
 
         /// <summary>
         /// Загрузить контент
@@ -122,10 +124,10 @@ namespace MSOsu.View
                         pairCorrelations = new DataTableUC();
                         pairCorrelations.SetHeader($"Матрица парных корреляций:");
                         pairCorrelations.Table.SetTable(MatrixOperations.RoundMatrix(mainVM.PairCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
-                        pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.3 && Math.Abs(e) < 0.5, new SolidColorBrush(Color.FromArgb(0xFF,0xDA,0xE0,0xB5)));
-                        pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, new SolidColorBrush(Color.FromArgb(0xFF,0xF3,0xFF,0x00)));
-                        pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, new SolidColorBrush(Color.FromArgb(0xFF,0xFF,0x86,0x40)));
-                        pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) <= 1, new SolidColorBrush(Color.FromArgb(0xFF,0xFF,0x3A,0x3A)));
+                        pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.3 && Math.Abs(e) < 0.5, Brushes.GreenYellow);
+                        pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, Brushes.Yellow);
+                        pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, Brushes.Orange);
+                        pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) <= 1, Brushes.Red);
                         pairCorrelations.cpFooter.Content = new CorrelationColor();
                         pairCorrelations.Table.DataContext = mainVM;
                     }
@@ -137,10 +139,10 @@ namespace MSOsu.View
                         particalCorrelations = new DataTableUC();
                         particalCorrelations.SetHeader($"Матрица частных корреляций:");
                         particalCorrelations.Table.SetTable(MatrixOperations.RoundMatrix(mainVM.ParticalCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
-                        particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.3 && Math.Abs(e) < 0.5, new SolidColorBrush(Color.FromArgb(0xFF, 0xDA, 0xE0, 0xB5)));
-                        particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, new SolidColorBrush(Color.FromArgb(0xFF, 0xF3, 0xFF, 0x00)));
-                        particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0x86, 0x40)));
-                        particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) <= 1, new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0x3A, 0x3A)));
+                        particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.3 && Math.Abs(e) < 0.5, Brushes.GreenYellow);
+                        particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, Brushes.Yellow);
+                        particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, Brushes.Orange);
+                        particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) <= 1, Brushes.Red);
                         particalCorrelations.cpFooter.Content = new CorrelationColor();
                         particalCorrelations.Table.DataContext = mainVM;
                     }
@@ -162,7 +164,23 @@ namespace MSOsu.View
                     }
                     cpMainContent.Content = significanceCorrelations;
                     break;
-
+                case ViewType.MultipleCorrelation:
+                    if (multipleCorrelation == null)
+                    {
+                        multipleCorrelation = new MultipleCorrelationUC();
+                        multipleCorrelation.SetHeader(mainVM.TableHeaders[0]);
+                        multipleCorrelation.SetMultipleCorrelation( Math.Round(mainVM.MultipleCorrelation, round));
+                        multipleCorrelation.SetDetermination(Math.Round(mainVM.MultipleCorrelation * mainVM.MultipleCorrelation, round));
+                    }
+                    cpMainContent.Content = multipleCorrelation;
+                    break;
+                case ViewType.CorrelativePleiad:
+                    if (correlativePleiad == null)
+                    {
+                        correlativePleiad = new CorrelativePleiad(MatrixOperations.RoundMatrix(mainVM.PairCorrelationsMatrix, round));
+                    }
+                    cpMainContent.Content = correlativePleiad;
+                    break;
             }
         }
 
@@ -185,6 +203,7 @@ namespace MSOsu.View
                         normalDistribution = null;
                         particalCorrelations = null;
                         significanceCorrelations = null;
+                        multipleCorrelation = null;
                         break;
                 }
             };
