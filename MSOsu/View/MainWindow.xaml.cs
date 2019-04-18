@@ -47,6 +47,7 @@ namespace MSOsu.View
         DataTableUC normalDistribution = null;
         DataTableUC pairCorrelations = null;
         DataTableUC particalCorrelations = null;
+        DataTableUC significanceCorrelations = null;
 
         /// <summary>
         /// Загрузить контент
@@ -145,6 +146,22 @@ namespace MSOsu.View
                     }
                     cpMainContent.Content = particalCorrelations;
                     break;
+                case ViewType.SignificanceCorrelations:
+                    if (significanceCorrelations == null)
+                    {
+                        significanceCorrelations = new DataTableUC();
+                        significanceCorrelations.SetHeader($"Значимость коэффициентов парной корреляции (t-крит = {mainVM.TStudentKrit}):");
+                        significanceCorrelations.Table.SetTable(MatrixOperations.RoundMatrix(mainVM.PairSignificanceCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
+                        significanceCorrelations.Table.Highlight(e => e >= mainVM.TStudentKrit, new SolidColorBrush(Color.FromArgb(0xFF,0x75,0xFF,0x5F)));
+                        DataTableUC particalCorrelation = new DataTableUC();
+                        particalCorrelation.SetHeader($"Значимость коэффициентов частной корреляции (t-крит = {mainVM.TStudentKrit}):");
+                        particalCorrelation.Table.SetTable(MatrixOperations.RoundMatrix(mainVM.ParticalSignificanceCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
+                        particalCorrelation.Table.Highlight(e => e >= mainVM.TStudentKrit, new SolidColorBrush(Color.FromArgb(0xFF, 0x75, 0xFF, 0x5F)));
+                        significanceCorrelations.cpFooter.Content = particalCorrelation;
+                        significanceCorrelations.Table.DataContext = mainVM;
+                    }
+                    cpMainContent.Content = significanceCorrelations;
+                    break;
 
             }
         }
@@ -167,6 +184,7 @@ namespace MSOsu.View
                         normilizeStatisticsUC = null;
                         normalDistribution = null;
                         particalCorrelations = null;
+                        significanceCorrelations = null;
                         break;
                 }
             };

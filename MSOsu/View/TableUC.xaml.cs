@@ -72,18 +72,6 @@ namespace MSOsu.View
             }
         }
 
-        ///// <summary>
-        ///// Создать новую таблицу
-        ///// </summary>
-        ///// <param name="table"></param>
-        ///// <param name="rowHeaders"></param>
-        //public void SetTable(ValuesColumn[] table, string[] rowHeaders = null)
-        //{
-        //    string[] colHeaders = TableControl.GetHeaders(table);
-        //    double[,] matrix = TableControl.GetValues(table);
-        //    SetTable(matrix, colHeaders, rowHeaders);
-        //}
-
         /// <summary>
         /// Очистить таблицу
         /// </summary>

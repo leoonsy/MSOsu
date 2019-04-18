@@ -68,6 +68,16 @@ namespace MSOsu.ViewModel
         public double[][] ParticalCorrelationsMatrix;
 
         /// <summary>
+        /// Значимость коэффициентов парной корреляции
+        /// </summary>
+        public double[][] PairSignificanceCorrelationsMatrix;
+
+        /// <summary>
+        /// Значимость коэффициентов частной корреляции
+        /// </summary>
+        public double[][] ParticalSignificanceCorrelationsMatrix;
+
+        /// <summary>
         /// Критические значение хи-квадрат
         /// </summary>
         public double ChiSquareKrit;
@@ -76,6 +86,11 @@ namespace MSOsu.ViewModel
         /// Заголовки для статистик
         /// </summary>
         public string[] StatisticsHeaders = DescriptiveStatistic.Headers;
+
+        /// <summary>
+        /// Критическое значение Стьюдента (для определения значимости корреляции)
+        /// </summary>
+        public double TStudentKrit;
 
         IViewService viewService; //сервис для отображения страниц
         IDialogService dialogService; //сервис для работы с диалоговыми окнами
@@ -126,6 +141,9 @@ namespace MSOsu.ViewModel
                             CorrelationsAnalysis correlations = new CorrelationsAnalysis(TableNormalizedValues);
                             PairCorrelationsMatrix = correlations.GetPairCorrelationsMatrix();
                             ParticalCorrelationsMatrix = correlations.GetParticalCorrelationsMatrix();
+                            PairSignificanceCorrelationsMatrix = correlations.GetPairSignificanceCorrelation();
+                            ParticalSignificanceCorrelationsMatrix = correlations.GetParticalSignificanceCorrelation();
+                            TStudentKrit = DataBase.GetTCrit(TableNormalizedValues[0].Length - 2);
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
                         }
