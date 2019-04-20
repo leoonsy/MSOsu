@@ -7,7 +7,7 @@
         xmlns:service="clr-namespace:MSOsu.Service"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="Курсовая работа по ТВМС (ЯШАНОВСКИЙ С.В.)" Height="650" Width="1000" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" FontSize="10" FontFamily="Segoe UI Symbol" GlowBrush="{DynamicResource AccentColorBrush}">
+        Title="Курсовая работа по ТВМС (ЯШАНОВСКИЙ С.В.)" Height="650" Width="1000" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" FontSize="10" FontFamily="Segoe UI Symbol"  MinWidth="910" MinHeight="250" GlowBrush="{DynamicResource AccentColorBrush}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -42,7 +42,7 @@
             <StackPanel Background="#FFD5F2FF" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" >
                 <WrapPanel Margin="1 0 1 1" Height="25">
                     <Button Content="Исходные данные" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.Data}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0 0 1 0" />
-                    <Button Content="Нормализованные данные" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalizedData}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                    <Button Content="Нормированные данные" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalizedData}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 </WrapPanel>
                 <WrapPanel Margin="1" Height="25">
                     <Button Content="Статистика (исходная выборка)" Margin="0 0 1 0" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.Statistic}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>

@@ -79,14 +79,23 @@
     <Compile Include="View\CorrelationColor.xaml.cs">
       <DependentUpon>CorrelationColor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\CorrelativePleiadUC.xaml.cs">
-      <DependentUpon>CorrelativePleiadUC.xaml</DependentUpon>
+    <Compile Include="View\CorrelationDiagramMainUC.xaml.cs">
+      <DependentUpon>CorrelationDiagramMainUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CorrelationDiagramUC.xaml.cs">
+      <DependentUpon>CorrelationDiagramUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DataTableUC.xaml.cs">
       <DependentUpon>DataTableUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MultipleCorrelationUC.xaml.cs">
       <DependentUpon>MultipleCorrelationUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CorrelationSignDiagram.xaml.cs">
+      <DependentUpon>CorrelationSignDiagram.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SignificanceUC.xaml.cs">
+      <DependentUpon>SignificanceUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TableUC.xaml.cs">
       <DependentUpon>TableUC.xaml</DependentUpon>
@@ -95,7 +104,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\CorrelativePleiadUC.xaml">
+    <Page Include="View\CorrelationDiagramMainUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CorrelationDiagramUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,6 +142,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MultipleCorrelationUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CorrelationSignDiagram.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SignificanceUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

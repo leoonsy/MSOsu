@@ -18,10 +18,10 @@ namespace MSOsu.View
     /// <summary>
     /// Логика взаимодействия для CorrelativePleiad.xaml
     /// </summary>
-    public partial class CorrelativePleiad : UserControl
+    public partial class CorrelationDiagramUC : UserControl
     {
         private double[][] correlationsMatrix;
-        public CorrelativePleiad(double[][] correlationsMatrix)
+        public CorrelationDiagramUC(double[][] correlationsMatrix)
         {
             InitializeComponent();
             this.correlationsMatrix = correlationsMatrix;

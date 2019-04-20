@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="MSOsu.View.CorrelationSignDiagram"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MSOsu.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="500" FontSize="14">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Line  X1="0" Y1="7" X2="130" Y2="7" StrokeThickness="10" Stroke="#FF727272" Grid.Row="0" Grid.Column="0" Fill="Black" Height="10" />
+        <Line  X1="0" Y1="7" X2="130" Y2="7" StrokeThickness="10" Stroke="#FF727272" Grid.Row="1" Grid.Column="0" Fill="Black" Height="10" StrokeDashArray="2 2" />
+
+        <TextBlock Text="Положительная корреляция" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="10 0 0 0" />
+        <TextBlock Text="Отрицательная корреляция" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10 0 0 0" />
+    </Grid>
+</UserControl>

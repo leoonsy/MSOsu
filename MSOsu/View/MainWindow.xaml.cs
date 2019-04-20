@@ -47,9 +47,9 @@ namespace MSOsu.View
         DataTableUC normalDistribution = null;
         DataTableUC pairCorrelations = null;
         DataTableUC particalCorrelations = null;
-        DataTableUC significanceCorrelations = null;
+        SignificanceUC significanceCorrelations = null;
         MultipleCorrelationUC multipleCorrelation = null;
-        CorrelativePleiad correlativePleiad = null;
+        CorrelationDiagramMainUC correlationDiagramPage = null;
 
         /// <summary>
         /// Загрузить контент
@@ -74,7 +74,6 @@ namespace MSOsu.View
                         normalDataUC = new DataTableUC();
                         normalDataUC.SetHeader("Исходные данные:");
                         normalDataUC.Table.SetTable( MatrixOperations.RoundMatrix(MatrixOperations.GetTransposeTable(mainVM.TableValues), round), mainVM.TableHeaders);
-                        normalDataUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normalDataUC;
                     break;
@@ -84,7 +83,6 @@ namespace MSOsu.View
                         normalizedDataUC = new DataTableUC();
                         normalizedDataUC.SetHeader("Нормализованные данные:");
                         normalizedDataUC.Table.SetTable(MatrixOperations.RoundMatrix(MatrixOperations.GetTransposeTable(mainVM.TableNormalizedValues), round), mainVM.TableHeaders);
-                        normalizedDataUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normalizedDataUC;
                     break;
@@ -94,7 +92,6 @@ namespace MSOsu.View
                         statisticsUC = new DataTableUC();
                         statisticsUC.SetHeader("Описательная статистика для исходной выборки:");
                         statisticsUC.Table.SetTable(MatrixOperations.RoundMatrix(MatrixOperations.GetTransposeTable(mainVM.TableStatisticsValues), round), mainVM.TableHeaders, mainVM.StatisticsHeaders);
-                        statisticsUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = statisticsUC;
                     break;
@@ -104,7 +101,6 @@ namespace MSOsu.View
                         normilizeStatisticsUC = new DataTableUC();
                         normilizeStatisticsUC.SetHeader("Описательная статистика для нормализованной выборки:");
                         normilizeStatisticsUC.Table.SetTable(MatrixOperations.RoundMatrix(MatrixOperations.GetTransposeTable(mainVM.TableNormalizedStatisticsValues), round), mainVM.TableHeaders, mainVM.StatisticsHeaders);
-                        normilizeStatisticsUC.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normilizeStatisticsUC;
                     break;
@@ -112,9 +108,8 @@ namespace MSOsu.View
                     if (normalDistribution == null)
                     {
                         normalDistribution = new DataTableUC();
-                        normalDistribution.SetHeader($"Проверка гипотезы о нормальности распределения выборок (χ-крит = {mainVM.ChiSquareKrit}):");
+                        normalDistribution.SetHeader($"Проверка гипотезы о нормальности распределения выборок (χ2-крит = {mainVM.ChiSquareKrit}):");
                         normalDistribution.Table.SetTable(MatrixOperations.GetTransposeTable(mainVM.TableNormalDistribution), mainVM.TableHeaders, mainVM.NormalDistributionHeaders);
-                        normalDistribution.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = normalDistribution;
                     break;
@@ -129,7 +124,6 @@ namespace MSOsu.View
                         pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, Brushes.Orange);
                         pairCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) <= 1, Brushes.Red);
                         pairCorrelations.cpFooter.Content = new CorrelationColor();
-                        pairCorrelations.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = pairCorrelations;
                     break;
@@ -144,23 +138,19 @@ namespace MSOsu.View
                         particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, Brushes.Orange);
                         particalCorrelations.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) <= 1, Brushes.Red);
                         particalCorrelations.cpFooter.Content = new CorrelationColor();
-                        particalCorrelations.Table.DataContext = mainVM;
                     }
                     cpMainContent.Content = particalCorrelations;
                     break;
                 case ViewType.SignificanceCorrelations:
                     if (significanceCorrelations == null)
                     {
-                        significanceCorrelations = new DataTableUC();
-                        significanceCorrelations.SetHeader($"Значимость коэффициентов парной корреляции (t-крит = {mainVM.TStudentKrit}):");
-                        significanceCorrelations.Table.SetTable(MatrixOperations.RoundMatrix(mainVM.PairSignificanceCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
-                        significanceCorrelations.Table.Highlight(e => e >= mainVM.TStudentKrit, new SolidColorBrush(Color.FromArgb(0xFF,0x75,0xFF,0x5F)));
-                        DataTableUC particalCorrelation = new DataTableUC();
-                        particalCorrelation.SetHeader($"Значимость коэффициентов частной корреляции (t-крит = {mainVM.TStudentKrit}):");
-                        particalCorrelation.Table.SetTable(MatrixOperations.RoundMatrix(mainVM.ParticalSignificanceCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
-                        particalCorrelation.Table.Highlight(e => e >= mainVM.TStudentKrit, new SolidColorBrush(Color.FromArgb(0xFF, 0x75, 0xFF, 0x5F)));
-                        significanceCorrelations.cpFooter.Content = particalCorrelation;
-                        significanceCorrelations.Table.DataContext = mainVM;
+                        significanceCorrelations = new SignificanceUC();
+                        significanceCorrelations.SetHeader1($"Значимость коэффициентов парной корреляции (t-крит = {mainVM.TStudentKrit}):");
+                        significanceCorrelations.Table1.SetTable(MatrixOperations.RoundMatrix(mainVM.PairSignificanceCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
+                        significanceCorrelations.Table1.Highlight(e => e >= mainVM.TStudentKrit, new SolidColorBrush(Color.FromArgb(0xFF,0x75,0xFF,0x5F)));
+                        significanceCorrelations.SetHeader2($"Значимость коэффициентов частной корреляции (t-крит = {mainVM.TStudentKrit}):");
+                        significanceCorrelations.Table2.SetTable(MatrixOperations.RoundMatrix(mainVM.ParticalSignificanceCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
+                        significanceCorrelations.Table2.Highlight(e => e >= mainVM.TStudentKrit, new SolidColorBrush(Color.FromArgb(0xFF, 0x75, 0xFF, 0x5F)));
                     }
                     cpMainContent.Content = significanceCorrelations;
                     break;
@@ -175,11 +165,27 @@ namespace MSOsu.View
                     cpMainContent.Content = multipleCorrelation;
                     break;
                 case ViewType.CorrelativePleiad:
-                    if (correlativePleiad == null)
+                    if (correlationDiagramPage == null)
                     {
-                        correlativePleiad = new CorrelativePleiad(MatrixOperations.RoundMatrix(mainVM.PairCorrelationsMatrix, round));
+                        CorrelationDiagramUC pairDiagram = new CorrelationDiagramUC(MatrixOperations.RoundMatrix(mainVM.PairCorrelationsMatrix, round));
+                        CorrelationDiagramUC particalDiagram = new CorrelationDiagramUC(MatrixOperations.RoundMatrix(mainVM.ParticalCorrelationsMatrix, round));
+                        correlationDiagramPage = new CorrelationDiagramMainUC();
+                        correlationDiagramPage.SetPairDiagram(pairDiagram);
+                        correlationDiagramPage.SetParticalDiagram(particalDiagram);
+                        correlationDiagramPage.SetHeader("Диаграммы корреляционных плеяд для коэффициентов парной (слева) и частной (справа) корреляций");
+                        correlationDiagramPage.SetCorrelationColor(new CorrelationColor());
+                        StringBuilder statHeader = new StringBuilder();
+
+                        //--формирование statHeader--//
+                        statHeader.AppendLine($"Y: {mainVM.TableHeaders[0]}");
+                        for (int i = 1; i < mainVM.TableHeaders.Length; i++)
+                            statHeader.AppendLine($"X{i}: {mainVM.TableHeaders[i]}");
+                        //--//
+
+                        correlationDiagramPage.SetStatHeader(statHeader.ToString());
+                        correlationDiagramPage.SetCorrelationSign(new CorrelationSignDiagram());
                     }
-                    cpMainContent.Content = correlativePleiad;
+                    cpMainContent.Content = correlationDiagramPage;
                     break;
             }
         }
@@ -204,6 +210,7 @@ namespace MSOsu.View
                         particalCorrelations = null;
                         significanceCorrelations = null;
                         multipleCorrelation = null;
+                        correlationDiagramPage = null;
                         break;
                 }
             };

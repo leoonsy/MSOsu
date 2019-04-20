@@ -11,6 +11,6 @@
             <TextBlock x:Name="tblHeader" Text="Заголовок" FontSize="14" Margin="4 0 0 0" />
         </Border>
         <ContentPresenter x:Name="cpTable" />
-        <ContentPresenter x:Name="cpFooter" />
+        <ContentPresenter x:Name="cpFooter" Margin="10" />
     </StackPanel>
 </UserControl>

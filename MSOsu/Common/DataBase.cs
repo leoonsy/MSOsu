@@ -19,9 +19,9 @@ namespace MSOsu.Common
             if (tIndex != -1)
                 return tStudentKrit[tIndex];
             int y = 0;
-            while (kStudent[y] < k) y++;
+            while (kStudent[y] < k)
+                y++;
             return tStudentKrit[y - 1] + (tStudentKrit[y] - tStudentKrit[y - 1]) * (k - kStudent[y - 1]) / (kStudent[y] - kStudent[y - 1]);
-            throw new Exception("Ошибка при поиске критического значения по таблице t-критерия Стьюдента");
         }
     }
 }
