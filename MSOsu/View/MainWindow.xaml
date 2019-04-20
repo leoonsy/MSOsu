@@ -7,6 +7,8 @@
         xmlns:service="clr-namespace:MSOsu.Service"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
+        Icon="/favicon.ico"
+        ShowIconOnTitleBar="True"
         Title="Курсовая работа по ТВМС (ЯШАНОВСКИЙ С.В.)" Height="650" Width="1200" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" FontSize="10" FontFamily="Segoe UI Symbol"  MinWidth="910" MinHeight="250" GlowBrush="{DynamicResource AccentColorBrush}">
     <Grid>
         <Grid.RowDefinitions>
@@ -45,8 +47,7 @@
                     <Button Content="Нормированные данные" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalizedData}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 </WrapPanel>
                 <WrapPanel Margin="1" Height="25">
-                    <Button Content="Статистика (исходная выборка)" Margin="0 0 1 0" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.Statistic}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                    <Button Content="Статистика (нормированная выборка)" Padding="4" Margin="0 0 1 0" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalizedStatistic}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                    <Button Content="Статистики" Padding="4" Margin="0 0 1 0" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalizedStatistic}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                     <Button Content="Нормальность распределения" Padding="4" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.NormalDistribution}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 </WrapPanel>
                 <WrapPanel Margin="1" Height="25">

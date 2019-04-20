@@ -38,11 +38,6 @@ namespace MSOsu.ViewModel
         public double[][] TableNormalizedValues;
 
         /// <summary>
-        /// Таблица с описательной статистикой для исходной выборки
-        /// </summary>
-        public double[][] TableStatisticsValues;
-
-        /// <summary>
         /// Таблица с описательной статистикой для нормализированной выборки
         /// </summary>
         public double[][] TableNormalizedStatisticsValues;
@@ -95,7 +90,7 @@ namespace MSOsu.ViewModel
         /// <summary>
         /// Критическое значение Стьюдента (для определения значимости корреляции)
         /// </summary>
-        public double TStudentKrit;
+        public double TStudentKritSign;
 
         IViewService viewService; //сервис для отображения страниц
         IDialogService dialogService; //сервис для работы с диалоговыми окнами
@@ -139,7 +134,6 @@ namespace MSOsu.ViewModel
                         {
                             (TableHeaders, TableValues) = TableControl.GetTable(dialogService.GetFilePath());
                             TableNormalizedValues = DescriptiveStatistic.GetNormalizedValues(TableValues);
-                            TableStatisticsValues = DescriptiveStatistic.GetTotalStatistic(TableValues);
                             TableNormalizedStatisticsValues = DescriptiveStatistic.GetTotalStatistic(TableNormalizedValues);
                             TableNormalDistribution = PiersonTest.GetNormalDistributionTable(TableNormalizedValues);
                             ChiSquareKrit = PiersonTest.GetChiSquareKrit();
@@ -148,7 +142,7 @@ namespace MSOsu.ViewModel
                             ParticalCorrelationsMatrix = correlations.GetParticalCorrelationsMatrix();
                             PairSignificanceCorrelationsMatrix = correlations.GetPairSignificanceCorrelationMatrix();
                             ParticalSignificanceCorrelationsMatrix = correlations.GetParticalSignificanceCorrelationMatrix();
-                            TStudentKrit = DataBase.GetTCrit(TableNormalizedValues[0].Length - 2);
+                            TStudentKritSign = DataBase.GetTCrit(TableNormalizedValues[0].Length - 2);
                             MultipleCorrelation = correlations.GetOneMultipleCorrelation(0);
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();

@@ -81,25 +81,16 @@ namespace MSOsu.View
                     if (normalizedDataUC == null) 
                     {
                         normalizedDataUC = new DataTableUC();
-                        normalizedDataUC.SetHeader("Нормализованные данные:");
+                        normalizedDataUC.SetHeader("Нормированные данные:");
                         normalizedDataUC.Table.SetTable(MatrixOperations.RoundMatrix(MatrixOperations.GetTransposeTable(mainVM.TableNormalizedValues), round), mainVM.TableHeaders);
                     }
                     cpMainContent.Content = normalizedDataUC;
-                    break;
-                case ViewType.Statistic:
-                    if (statisticsUC == null) 
-                    {
-                        statisticsUC = new DataTableUC();
-                        statisticsUC.SetHeader("Описательная статистика для исходной выборки:");
-                        statisticsUC.Table.SetTable(MatrixOperations.RoundMatrix(MatrixOperations.GetTransposeTable(mainVM.TableStatisticsValues), round), mainVM.TableHeaders, mainVM.StatisticsHeaders);
-                    }
-                    cpMainContent.Content = statisticsUC;
                     break;
                 case ViewType.NormalizedStatistic:
                     if (normilizeStatisticsUC == null) 
                     {
                         normilizeStatisticsUC = new DataTableUC();
-                        normilizeStatisticsUC.SetHeader("Описательная статистика для нормализованной выборки:");
+                        normilizeStatisticsUC.SetHeader("Описательная статистика для нормированной выборки:");
                         normilizeStatisticsUC.Table.SetTable(MatrixOperations.RoundMatrix(MatrixOperations.GetTransposeTable(mainVM.TableNormalizedStatisticsValues), round), mainVM.TableHeaders, mainVM.StatisticsHeaders);
                     }
                     cpMainContent.Content = normilizeStatisticsUC;
@@ -145,12 +136,12 @@ namespace MSOsu.View
                     if (significanceCorrelations == null)
                     {
                         significanceCorrelations = new SignificanceUC();
-                        significanceCorrelations.SetHeader1($"Значимость коэффициентов парной корреляции (t-крит = {mainVM.TStudentKrit}):");
+                        significanceCorrelations.SetHeader1($"Значимость коэффициентов парной корреляции (t-крит = {mainVM.TStudentKritSign}):");
                         significanceCorrelations.Table1.SetTable(MatrixOperations.RoundMatrix(mainVM.PairSignificanceCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
-                        significanceCorrelations.Table1.Highlight(e => e >= mainVM.TStudentKrit, Brushes.LightGreen);
-                        significanceCorrelations.SetHeader2($"Значимость коэффициентов частной корреляции (t-крит = {mainVM.TStudentKrit}):");
+                        significanceCorrelations.Table1.Highlight(e => e >= mainVM.TStudentKritSign, Brushes.LightGreen);
+                        significanceCorrelations.SetHeader2($"Значимость коэффициентов частной корреляции (t-крит = {mainVM.TStudentKritSign}):");
                         significanceCorrelations.Table2.SetTable(MatrixOperations.RoundMatrix(mainVM.ParticalSignificanceCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
-                        significanceCorrelations.Table2.Highlight(e => e >= mainVM.TStudentKrit, Brushes.LightGreen);
+                        significanceCorrelations.Table2.Highlight(e => e >= mainVM.TStudentKritSign, Brushes.LightGreen);
                     }
                     cpMainContent.Content = significanceCorrelations;
                     break;

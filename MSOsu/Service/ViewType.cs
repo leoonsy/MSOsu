@@ -11,7 +11,6 @@ namespace MSOsu.Service
         Main,
         Data,
         NormalizedData,
-        Statistic,
         NormalizedStatistic,
         NormalDistribution,
         PairCorrelations,

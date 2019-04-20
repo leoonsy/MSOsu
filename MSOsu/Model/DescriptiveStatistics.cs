@@ -23,6 +23,9 @@ namespace MSOsu.Model
         private double excess = double.NaN;
         private double asymmetry = double.NaN;
         private double count = double.NaN;
+        private double limitError = double.NaN;
+        private double requiredValuesCount = double.NaN;
+        private double recalculatedLimitError = double.NaN;
 
         /// <summary>
         /// Массив значений
@@ -158,6 +161,21 @@ namespace MSOsu.Model
         public double Count => !double.IsNaN(count) ? count : count = Values.Length;
 
         /// <summary>
+        /// Предельная ошибка
+        /// </summary>
+        public double LimitError => !double.IsNaN(limitError) ? limitError : limitError = DataBase.GetTCrit((int)Count - 1) * Math.Sqrt(Dispersion / Count);
+
+        /// <summary>
+        /// Необходимый объем выборки для предельной ошибки = 0.01
+        /// </summary>
+        public double RequiredValuesCount => !double.IsNaN(requiredValuesCount) ? requiredValuesCount : requiredValuesCount = (int)(Math.Pow(DataBase.GetTCrit((int)Count - 1) / 0.01, 2) * Dispersion); 
+
+        /// <summary>
+        /// Пересчитанная предельная ошибка
+        /// </summary>
+        public double RecalculatedLimitError => !double.IsNaN(recalculatedLimitError) ? recalculatedLimitError : recalculatedLimitError = DataBase.GetTCrit((int)Count - 1) * Math.Sqrt(Dispersion / RequiredValuesCount);
+        
+        /// <summary>
         /// Получить нормированные значения
         /// </summary>
         public double[] GetNormalizedValues() => Values.Select(e => e / Interval).ToArray();
@@ -176,7 +194,7 @@ namespace MSOsu.Model
         /// Заголовки для статистик
         /// </summary>
         public static string[] Headers = new string[] { "Среднее", "Стандартная ошибка", "Медиана", "Мода", "Стандартное отклонение", "Дисперсия выборки",
-            "Эксцесс", "Ассиметричность", "Интервал", "Минимум", "Максимум", "Сумма", "Счет" };
+            "Эксцесс", "Ассиметричность", "Интервал", "Минимум", "Максимум", "Сумма", "Счет", "Предельная ошибка", "Необходимый объем выборки", "Предельная ошибка при необходимом объеме выборки" };
 
         /// <summary>
         /// Получить таблицу со статистиками
@@ -220,6 +238,9 @@ namespace MSOsu.Model
             yield return Max;
             yield return Sum;
             yield return Count;
+            yield return LimitError;
+            yield return RequiredValuesCount;
+            yield return RecalculatedLimitError;
         }
 
         /// <summary>
