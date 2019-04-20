@@ -140,13 +140,13 @@ namespace MSOsu.View
             //};
             Path pathLinesWP = new Path()
             {
-                Stroke = Brushes.GreenYellow,
+                Stroke = Brushes.LightGreen,
                 Data = ggLinesWeakPos,
                 StrokeThickness = 2
             };
             Path pathLinesMP = new Path()
             {
-                Stroke = Brushes.Yellow, 
+                Stroke = new SolidColorBrush(Color.FromArgb(0xFF,0xDF,0x9B,0xFF)),
                 Data = ggLinesMediumPos,
                 StrokeThickness = 2
             };
@@ -172,13 +172,13 @@ namespace MSOsu.View
             //};
             Path pathLinesWN = new Path()
             {
-                Stroke = Brushes.GreenYellow,
+                Stroke = Brushes.LightGreen,
                 Data = ggLinesWeakNeg,
                 StrokeThickness = 2
             };
             Path pathLinesMN = new Path()
             {
-                Stroke = Brushes.Yellow,
+                Stroke = new SolidColorBrush(Color.FromArgb(0xFF, 0xDF, 0x9B, 0xFF)),
                 Data = ggLinesMediumNeg,
                 StrokeThickness = 2
             };
