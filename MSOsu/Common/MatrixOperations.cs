@@ -166,5 +166,63 @@ namespace MSOsu.Common
         {
             return (double[])array.Clone();
         }
+
+        /// <summary>
+        /// Найти прозведение матрицы и вектора
+        /// </summary>
+        /// <param name="m1"></param>
+        /// <param name="m2"></param>
+        /// <returns></returns>
+        public static double[] MultMatrixAndVector(double[][] matrix, double[] vector)
+        {
+            double[] result = new double[matrix.Length];
+
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                result[i] = 0;
+                for (int j = 0; j < matrix[i].Length; j++)
+                    result[i] += matrix[i][j] * vector[j];
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Найти прозведение двух матриц
+        /// </summary>
+        /// <param name="m1"></param>
+        /// <param name="m2"></param>
+        /// <returns></returns>
+        public static double[][] MultMatrix(double[][] m1, double[][] m2)
+        {
+            var result = new double[m1.Length][].Select(e => e = new double[m2[0].Length]).ToArray();
+
+            for (var i = 0; i < m1.Length; ++i)
+                for (var j = 0; j < m2[0].Length; ++j)
+                    for (var k = 0; k < m2.Length; ++k)
+                        result[i][j] += m1[i][k] * m2[k][j];
+            return result;
+        }
+
+        /// <summary>
+        /// Получить обратную матрицу через решения СЛАУ
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="error"></param>
+        /// <returns></returns>
+        public static double[][] GetInverseMatrixSLAU(double[][] matrix)
+        {
+            int count = matrix.Length;
+
+            double[][] result = new double[count][].Select(e => e = new double[count]).ToArray();
+
+            for (int i = 0; i < count; i++)
+            {
+                double[] b = new double[count];
+                b[i] = 1;
+                result[i] = SLAU.GetSLAUResolve(matrix, b, SLAU.GaussMethod.All);
+            }
+
+            return GetTransposeTable(result);
+        }
     }
 }

@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="MSOsu.View.RegressionUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MSOsu.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" FontSize="14">
+    <Grid>
+        <StackPanel>
+            <Border Padding="7 5 5 5" Background="#FFF7F7F7">
+                <TextBlock Text="Регрессионный анализ" />
+            </Border>
+            <ContentPresenter x:Name="cpCoeffTable" />
+            <Border Padding="7 5 5 10" Background="#FFF7F7F7">
+                <WrapPanel>
+                    <TextBlock Text="Уравнение регрессии: " VerticalAlignment="Center" />
+                    <TextBlock x:Name="tblRegressionEquation" VerticalAlignment="Center" />
+                </WrapPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

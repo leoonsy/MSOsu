@@ -71,7 +71,9 @@
     </ApplicationDefinition>
     <Compile Include="Common\DataBase.cs" />
     <Compile Include="Common\MatrixOperations.cs" />
+    <Compile Include="Common\SLAU.cs" />
     <Compile Include="Model\CorrelationsAnalysis.cs" />
+    <Compile Include="Model\Regression.cs" />
     <Compile Include="Service\DialogServices\DefaultDialogService.cs" />
     <Compile Include="Service\IViewService.cs" />
     <Compile Include="Service\IDialogService.cs" />
@@ -93,6 +95,9 @@
     </Compile>
     <Compile Include="View\CorrelationSignDiagram.xaml.cs">
       <DependentUpon>CorrelationSignDiagram.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RegressionUC.xaml.cs">
+      <DependentUpon>RegressionUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SignificanceUC.xaml.cs">
       <DependentUpon>SignificanceUC.xaml</DependentUpon>
@@ -146,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CorrelationSignDiagram.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RegressionUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

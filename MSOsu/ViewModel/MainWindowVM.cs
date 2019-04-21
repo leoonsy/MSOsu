@@ -92,6 +92,11 @@ namespace MSOsu.ViewModel
         /// </summary>
         public double TStudentKritSign;
 
+        /// <summary>
+        /// Коэффициенты регрессии
+        /// </summary>
+        public double[] RegressionCoeffs;
+
         IViewService viewService; //сервис для отображения страниц
         IDialogService dialogService; //сервис для работы с диалоговыми окнами
 
@@ -144,6 +149,8 @@ namespace MSOsu.ViewModel
                             ParticalSignificanceCorrelationsMatrix = correlations.GetParticalSignificanceCorrelationMatrix();
                             TStudentKritSign = DataBase.GetTCrit(TableNormalizedValues[0].Length - 2);
                             MultipleCorrelation = correlations.GetOneMultipleCorrelation(0);
+                            Regression regression = new Regression(TableNormalizedValues);
+                            RegressionCoeffs = regression.GetRegressionCoeffs();
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
                         }

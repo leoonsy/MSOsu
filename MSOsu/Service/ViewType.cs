@@ -17,6 +17,7 @@ namespace MSOsu.Service
         ParticalCorrelations,
         SignificanceCorrelations,
         CorrelativePleiad,
-        MultipleCorrelation
+        MultipleCorrelation,
+        Regression
     }
 }

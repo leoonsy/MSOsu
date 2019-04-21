@@ -58,7 +58,7 @@
                     <Button Content="Множественная корреляция" Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.MultipleCorrelation}"/>
                 </WrapPanel>
                 <WrapPanel Margin="1 1 1 0" Height="25">
-                    <Button Content="Please stand by" Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0 0 1 0"/>
+                    <Button Content="Регрессионный анализ" Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0 0 1 0" Command="{Binding LoadPageCommand}" CommandParameter="{x:Static service:ViewType.Regression}"/>
                 </WrapPanel>
             </StackPanel>
         </Grid>
