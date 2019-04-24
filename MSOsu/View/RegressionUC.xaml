@@ -9,16 +9,16 @@
     <Grid>
         <StackPanel>
             <Border Padding="7 5 5 5" Background="#FFF7F7F7">
-                <TextBlock Text="Регрессионный анализ" />
+                <TextBlock Text="Регрессионный анализ:" />
             </Border>
             <ContentPresenter x:Name="cpCoeffTable" />
-            <WrapPanel Margin="7 5 5 5">
+            <WrapPanel Margin="7 5 5 0">
                 <TextBlock Text="Уравнение регрессии: " VerticalAlignment="Center" />
                 <TextBlock x:Name="tblRegressionEquation" VerticalAlignment="Center" />
             </WrapPanel>
-            <TextBlock Margin="7 3 5 5" Text="Оценка точности приближения" />
+            <TextBlock Margin="7 5 5 5" Text="Оценка точности приближения:" />
             <ContentPresenter x:Name="cpErrorTable" />
-            <WrapPanel Margin="7 3 5 5">
+            <WrapPanel Margin="7 5 5 0">
                 <TextBlock Text="Сумма квадратов отклонений: " />
                 <TextBlock x:Name="tblLSMError" />
             </WrapPanel>

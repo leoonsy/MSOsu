@@ -205,7 +205,6 @@ namespace MSOsu.View
                         regression.ErrorTable.SetTable(MatrixOperations.RoundMatrix(errors, round), null, new string[] { "Y исходные", "Ỹ расчетные (Ỹ = X*b)", "Абсолютная ошибка (Y - Ỹ)" });
                         regression.SetSLMError(Math.Round(mainVM.LSMError, round).ToString());
                         //--//
-
                     }
                     cpMainContent.Content = regression;
                     break;
