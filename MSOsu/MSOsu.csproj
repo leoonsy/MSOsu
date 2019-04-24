@@ -90,9 +90,6 @@
     <Compile Include="View\DataTableUC.xaml.cs">
       <DependentUpon>DataTableUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MultipleCorrelationUC.xaml.cs">
-      <DependentUpon>MultipleCorrelationUC.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\CorrelationSignDiagram.xaml.cs">
       <DependentUpon>CorrelationSignDiagram.xaml</DependentUpon>
     </Compile>
@@ -143,10 +140,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\DataTableUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\MultipleCorrelationUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

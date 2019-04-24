@@ -12,12 +12,16 @@
                 <TextBlock Text="Регрессионный анализ" />
             </Border>
             <ContentPresenter x:Name="cpCoeffTable" />
-            <Border Padding="7 5 5 10" Background="#FFF7F7F7">
-                <WrapPanel>
-                    <TextBlock Text="Уравнение регрессии: " VerticalAlignment="Center" />
-                    <TextBlock x:Name="tblRegressionEquation" VerticalAlignment="Center" />
-                </WrapPanel>
-            </Border>
+            <WrapPanel Margin="7 5 5 5">
+                <TextBlock Text="Уравнение регрессии: " VerticalAlignment="Center" />
+                <TextBlock x:Name="tblRegressionEquation" VerticalAlignment="Center" />
+            </WrapPanel>
+            <TextBlock Margin="7 3 5 5" Text="Оценка точности приближения" />
+            <ContentPresenter x:Name="cpErrorTable" />
+            <WrapPanel Margin="7 3 5 5">
+                <TextBlock Text="Сумма квадратов отклонений: " />
+                <TextBlock x:Name="tblLSMError" />
+            </WrapPanel>
         </StackPanel>
     </Grid>
 </UserControl>

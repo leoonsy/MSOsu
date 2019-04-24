@@ -78,9 +78,9 @@ namespace MSOsu.ViewModel
         public double ChiSquareKrit;
 
         /// <summary>
-        /// Множественный коэффициент корреляции
+        /// Множественный коэффициент корреляции для всех параметров
         /// </summary>
-        public double MultipleCorrelation;
+        public double[] MultipleCorrelation;
 
         /// <summary>
         /// Заголовки для статистик
@@ -96,6 +96,21 @@ namespace MSOsu.ViewModel
         /// Коэффициенты регрессии
         /// </summary>
         public double[] RegressionCoeffs;
+
+        /// <summary>
+        /// Вычесленные значения выходного параметра
+        /// </summary>
+        public double[] CalculatedY;
+
+        /// <summary>
+        /// Абсолютная ошибка вычисленного выходного параметра
+        /// </summary>
+        public double[] AbsoluteErrorY;
+
+        /// <summary>
+        /// Сумма квадратов отклонений
+        /// </summary>
+        public double LSMError;
 
         IViewService viewService; //сервис для отображения страниц
         IDialogService dialogService; //сервис для работы с диалоговыми окнами
@@ -148,9 +163,12 @@ namespace MSOsu.ViewModel
                             PairSignificanceCorrelationsMatrix = correlations.GetPairSignificanceCorrelationMatrix();
                             ParticalSignificanceCorrelationsMatrix = correlations.GetParticalSignificanceCorrelationMatrix();
                             TStudentKritSign = DataBase.GetTCrit(TableNormalizedValues[0].Length - 2);
-                            MultipleCorrelation = correlations.GetOneMultipleCorrelation(0);
+                            MultipleCorrelation = correlations.GetMultipleCorrelation();
                             Regression regression = new Regression(TableNormalizedValues);
                             RegressionCoeffs = regression.GetRegressionCoeffs();
+                            CalculatedY = regression.GetCalculatedY();
+                            AbsoluteErrorY = regression.GetAbsoluteError();
+                            LSMError = regression.GetSLMError();
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
                         }

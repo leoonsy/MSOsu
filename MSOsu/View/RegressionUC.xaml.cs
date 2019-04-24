@@ -21,16 +21,24 @@ namespace MSOsu.View
     public partial class RegressionUC : UserControl
     {
         public TableUC CoeffTable { get; }
+        public TableUC ErrorTable { get; }
         public RegressionUC()
         {
             InitializeComponent();
             CoeffTable = new TableUC();
+            ErrorTable = new TableUC();
             cpCoeffTable.Content = CoeffTable;
+            cpErrorTable.Content = ErrorTable;
         }
 
         public void SetRegressionEquation(string equation)
         {
             tblRegressionEquation.Text = equation;
+        }
+
+        public void SetSLMError(string error)
+        {
+            tblLSMError.Text = error;
         }
     }
 }

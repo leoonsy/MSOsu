@@ -47,7 +47,7 @@ namespace MSOsu.View
         DataTableUC pairCorrelationsUC = null;
         DataTableUC particalCorrelationsUC = null;
         SignificanceUC significanceCorrelationsUC = null;
-        MultipleCorrelationUC multipleCorrelationUC = null;
+        DataTableUC multipleCorrelationUC = null;
         CorrelationDiagramMainUC correlationDiagramPageUC = null;
         RegressionUC regression = null;
         /// <summary>
@@ -147,10 +147,12 @@ namespace MSOsu.View
                 case ViewType.MultipleCorrelation:
                     if (multipleCorrelationUC == null)
                     {
-                        multipleCorrelationUC = new MultipleCorrelationUC();
-                        multipleCorrelationUC.SetHeader(mainVM.TableHeaders[0]);
-                        multipleCorrelationUC.SetMultipleCorrelation( Math.Round(mainVM.MultipleCorrelation, round));
-                        multipleCorrelationUC.SetDetermination(Math.Round(mainVM.MultipleCorrelation * mainVM.MultipleCorrelation, round));
+                        multipleCorrelationUC = new DataTableUC();
+                        multipleCorrelationUC.SetHeader("Множественная корреляция:");
+                        double[][] table = new double[2][].Select(e => e = new double[mainVM.MultipleCorrelation.Length]).ToArray();
+                        table[0] = mainVM.MultipleCorrelation;
+                        table[1] = mainVM.MultipleCorrelation.Select(e => e * e).ToArray();
+                        multipleCorrelationUC.Table.SetTable(MatrixOperations.RoundMatrix(table, round), mainVM.TableHeaders, new string[] { "R", "D" });
                     }
                     cpMainContent.Content = multipleCorrelationUC;
                     break;
@@ -162,7 +164,7 @@ namespace MSOsu.View
                         correlationDiagramPageUC = new CorrelationDiagramMainUC();
                         correlationDiagramPageUC.SetPairDiagram(pairDiagram);
                         correlationDiagramPageUC.SetParticalDiagram(particalDiagram);
-                        correlationDiagramPageUC.SetHeader("Диаграммы корреляционных плеяд для коэффициентов парной (слева) и частной (справа) корреляций");
+                        correlationDiagramPageUC.SetHeader("Диаграммы корреляционных плеяд для коэффициентов парной (слева) и частной (справа) корреляций:");
                         correlationDiagramPageUC.SetCorrelationColor(new CorrelationColor());
                         StringBuilder statHeader = new StringBuilder();
 
@@ -183,7 +185,7 @@ namespace MSOsu.View
                         double[][] regressionCoeffs = new double[1][];
                         regressionCoeffs[0] = mainVM.RegressionCoeffs;
                         regressionCoeffs = MatrixOperations.RoundMatrix(regressionCoeffs, round);
-                        string[] rowHeader = { "Коэффициенты регрессии" };
+                        string[] rowHeader = { "Коэффициенты регрессии:" };
                         string[] colHeader = new string[mainVM.TableHeaders.Length].Select((e, idx) => $"a{idx}").ToArray();
                         regression = new RegressionUC();
                         regression.CoeffTable.SetTable(regressionCoeffs, colHeader, rowHeader);
@@ -194,6 +196,15 @@ namespace MSOsu.View
                         equation += regressionCoeffs[0][0].ToString();
                         //--//
                         regression.SetRegressionEquation(equation);
+
+                        //Формирование матрицы оценки точности уравнения//
+                        double[][] errors = new double[3][].Select(e => e = new double[mainVM.TableNormalizedValues[0].Length]).ToArray();
+                        errors[0] = mainVM.TableNormalizedValues[0];
+                        errors[1] = mainVM.CalculatedY;
+                        errors[2] = mainVM.AbsoluteErrorY;
+                        regression.ErrorTable.SetTable(MatrixOperations.RoundMatrix(errors, round), null, new string[] { "Y исходные", "Ỹ расчетные (Ỹ = X*b)", "Абсолютная ошибка (Y - Ỹ)" });
+                        regression.SetSLMError(Math.Round(mainVM.LSMError, round).ToString());
+                        //--//
 
                     }
                     cpMainContent.Content = regression;

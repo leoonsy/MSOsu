@@ -130,5 +130,17 @@ namespace MSOsu.Model
                 pairMatrix = GetPairCorrelationsMatrix();
             return Math.Sqrt(1 - MatrixOperations.GetDeterminantLU(pairMatrix) / MatrixOperations.GetExtraMinor(pairMatrix, idx, idx));
         }
+
+        /// <summary>
+        /// Получить Множественный коэффициент корреляции для всех параметров
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetMultipleCorrelation()
+        {
+            double[] result = new double[pairMatrix.Length];
+            for (int i = 0; i < result.Length; i++)
+                result[i] = GetOneMultipleCorrelation(i);
+            return result;
+        }
     }
 }
