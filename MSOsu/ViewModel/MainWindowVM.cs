@@ -78,19 +78,25 @@ namespace MSOsu.ViewModel
         public double ChiSquareKrit;
 
         /// <summary>
-        /// Множественный коэффициент корреляции для всех параметров
+        /// Матрица для множественной корреляции (с коэффициентом детерминации и значимостью)
         /// </summary>
-        public double[] MultipleCorrelation;
+        public double[][] MultipleCorrelationMatrix;
 
         /// <summary>
         /// Заголовки для статистик
         /// </summary>
         public string[] StatisticsHeaders = DescriptiveStatistic.Headers;
 
+
         /// <summary>
         /// Критическое значение Стьюдента (для определения значимости корреляции)
         /// </summary>
         public double TStudentKritSign;
+
+        /// <summary>
+        /// Критическое значение Фишера (для определения значимости множественной корреляции)
+        /// </summary>
+        public double FFisherKritSign;
 
         /// <summary>
         /// Коэффициенты регрессии
@@ -163,7 +169,10 @@ namespace MSOsu.ViewModel
                             PairSignificanceCorrelationsMatrix = correlations.GetPairSignificanceCorrelationMatrix();
                             ParticalSignificanceCorrelationsMatrix = correlations.GetParticalSignificanceCorrelationMatrix();
                             TStudentKritSign = DataBase.GetTCrit(TableNormalizedValues[0].Length - 2);
-                            MultipleCorrelation = correlations.GetMultipleCorrelation();
+                            MultipleCorrelationMatrix = correlations.GetMultipleCorrelationMatrix();
+                            int k = TableValues.Length;
+                            int n = TableValues[0].Length;
+                            FFisherKritSign = DataBase.GetFCrit(k, n - k - 1);
                             Regression regression = new Regression(TableNormalizedValues);
                             RegressionCoeffs = regression.GetRegressionCoeffs();
                             CalculatedY = regression.GetCalculatedY();

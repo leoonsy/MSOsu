@@ -66,7 +66,7 @@ namespace MSOsu.Model
         {
             const int intervalNumber = 6; //делим на 6 интервалов
             double chiSquare = GetChiSquared(values, intervalNumber);
-            double krit = GetChiSquareKrit(); //критическое значение для intervalNumber = 6, при другом k = intervalNumber - r - 1 (r = 2 для нормального распределения) стоит вычислить krit снова
+            double krit = GetChiSquareKrit(); 
             return chiSquare < krit ? (true, chiSquare) : (false, chiSquare);
         }
 
@@ -74,7 +74,7 @@ namespace MSOsu.Model
         /// Получить значение хи-квадрат
         /// </summary>
         /// <returns></returns>
-        public static double GetChiSquareKrit() => 7.81473;
+        public static double GetChiSquareKrit() => 7.81473; //критическое значение для intervalNumber = 6, при другом k = intervalNumber - r - 1 (r = 2 для нормального распределения) стоит вычислить krit снова
 
         /// <summary>
         /// Получить таблицу нормального распределения
@@ -90,7 +90,7 @@ namespace MSOsu.Model
                 result[0][i] = Math.Round(chiSquare, 6).ToString();
                 result[1][i] = isNormal ? "+" : "-";
             }
-            return MatrixOperations.GetTransposeTable(result);
+            return result;
         }
     }
 }

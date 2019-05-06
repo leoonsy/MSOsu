@@ -34,8 +34,29 @@ namespace MSOsu.View
         /// <param name="pred"></param>
         /// <param name="colour"></param>
         /// <param name="column"></param>
-        public void Highlight(Predicate<double> pred, Brush colour)
+        public void Highlight(Predicate<double> pred, Brush colour, int row = -1, int col = -1)
         {
+            if (row != -1)
+            {
+                foreach (var tb in cells[row])
+                {
+                    double d;
+                    if (double.TryParse(tb.Text, out d) && pred(d))
+                        tb.Background = colour;
+                }
+            }
+
+            if (col != -1)
+            {
+                foreach (var tbs in cells)
+                {
+                    var tb = tbs[col];
+                    double d;
+                    if (double.TryParse(tb.Text, out d) && pred(d))
+                        tb.Background = colour;
+                }
+            }
+
             foreach (var list in cells)
             {
                 foreach (var tb in list)

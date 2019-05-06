@@ -99,7 +99,7 @@ namespace MSOsu.View
                     {
                         normalDistributionUC = new DataTableUC();
                         normalDistributionUC.SetHeader($"Проверка гипотезы о нормальности распределения выборок (χ2-крит = {mainVM.ChiSquareKrit}):");
-                        normalDistributionUC.Table.SetTable(MatrixOperations.GetTransposeTable(mainVM.TableNormalDistribution), mainVM.TableHeaders, mainVM.NormalDistributionHeaders);
+                        normalDistributionUC.Table.SetTable(mainVM.TableNormalDistribution, mainVM.TableHeaders, mainVM.NormalDistributionHeaders);
                     }
                     cpMainContent.Content = normalDistributionUC;
                     break;
@@ -113,6 +113,7 @@ namespace MSOsu.View
                         pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, new SolidColorBrush(Color.FromArgb(0xFF, 0xDF, 0x9B, 0xFF)));
                         pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, Brushes.Orange);
                         pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) <= 1, Brushes.Red);
+                        pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) == 1, Brushes.Black);
                         pairCorrelationsUC.cpFooter.Content = new CorrelationColor();
                     }
                     cpMainContent.Content = pairCorrelationsUC;
@@ -126,7 +127,8 @@ namespace MSOsu.View
                         particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.3 && Math.Abs(e) < 0.5, Brushes.LightGreen);
                         particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, new SolidColorBrush(Color.FromArgb(0xFF, 0xDF, 0x9B, 0xFF)));
                         particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, Brushes.Orange);
-                        particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) <= 1, Brushes.Red);
+                        particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) < 1, Brushes.Red);
+                        particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) == 1, Brushes.Black);
                         particalCorrelationsUC.cpFooter.Content = new CorrelationColor();
                     }
                     cpMainContent.Content = particalCorrelationsUC;
@@ -148,11 +150,10 @@ namespace MSOsu.View
                     if (multipleCorrelationUC == null)
                     {
                         multipleCorrelationUC = new DataTableUC();
-                        multipleCorrelationUC.SetHeader("Множественная корреляция:");
-                        double[][] table = new double[2][].Select(e => e = new double[mainVM.MultipleCorrelation.Length]).ToArray();
-                        table[0] = mainVM.MultipleCorrelation;
-                        table[1] = mainVM.MultipleCorrelation.Select(e => e * e).ToArray();
-                        multipleCorrelationUC.Table.SetTable(MatrixOperations.RoundMatrix(table, round), mainVM.TableHeaders, new string[] { "R", "D" });
+                        multipleCorrelationUC.SetHeader($"Множественная корреляция (f-крит = {mainVM.FFisherKritSign}):");
+                        double[][] table = mainVM.MultipleCorrelationMatrix;
+                        multipleCorrelationUC.Table.SetTable(MatrixOperations.RoundMatrix(table, round), mainVM.TableHeaders, new string[] { "R", "D", "Значимость" });
+                        multipleCorrelationUC.Table.Highlight(e => e >= mainVM.FFisherKritSign, Brushes.LightGreen, 2);
                     }
                     cpMainContent.Content = multipleCorrelationUC;
                     break;

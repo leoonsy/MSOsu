@@ -12,6 +12,7 @@ namespace MSOsu.Model
         public double[][] matrix; //исходная матрица
         private double[][] pairMatrix; //матрица парных корреляций
         private double[][] particalMatrix; //матрица частных корреляций
+        private double[] multipleCorrelationVector; //вектор множественной корреляции
         public CorrelationsAnalysis(double[][] matrix)
         {
             this.matrix = matrix;
@@ -79,8 +80,9 @@ namespace MSOsu.Model
         /// <param name="R"></param>
         /// <param name="n"></param>
         /// <returns></returns>
-        private double[][] GetSignificanceCorrelation(double[][] r, int n)
+        private double[][] GetSignificanceCorrelationMatrix(double[][] r)
         {
+            int n = matrix[0].Length;
             int count = r.Length;
             double[][] s = new double[count][].Select(e => e = new double[count]).ToArray();
             for (int i = 0; i < count; i++)
@@ -105,7 +107,7 @@ namespace MSOsu.Model
         {
             if (pairMatrix == null)
                 pairMatrix = GetPairCorrelationsMatrix();
-            return GetSignificanceCorrelation(pairMatrix, matrix[0].Length);
+            return GetSignificanceCorrelationMatrix(pairMatrix);
         }
 
         /// <summary>
@@ -116,7 +118,7 @@ namespace MSOsu.Model
         {
             if (particalMatrix == null)
                 particalMatrix = GetPairCorrelationsMatrix();
-            return GetSignificanceCorrelation(particalMatrix, matrix[0].Length);
+            return GetSignificanceCorrelationMatrix(particalMatrix);
         }
 
         /// <summary>
@@ -132,14 +134,43 @@ namespace MSOsu.Model
         }
 
         /// <summary>
-        /// Получить Множественный коэффициент корреляции для всех параметров
+        /// Получить коэфициенты множественной корреляции
         /// </summary>
         /// <returns></returns>
-        public double[] GetMultipleCorrelation()
+        public double[] GetMultipleCorrelationVector()
         {
             double[] result = new double[pairMatrix.Length];
             for (int i = 0; i < result.Length; i++)
                 result[i] = GetOneMultipleCorrelation(i);
+            return multipleCorrelationVector = result;
+        }
+
+        /// <summary>
+        /// Получить значимость коэффициентов множественной корреляции
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetMultipleSignificanceCorrelationVector()
+        {
+            if (multipleCorrelationVector == null)
+                GetMultipleCorrelationVector();
+            int n = matrix[0].Length;
+            int k = multipleCorrelationVector.Length;
+            double[] result = new double[k];
+            for (int i = 0; i < result.Length; i++)
+                result[i] = Math.Pow(multipleCorrelationVector[i], 2) * (n - k - 1) / ((1 - Math.Pow(multipleCorrelationVector[i], 2)) * k);
+            return result;
+        }
+
+        /// <summary>
+        /// Получить матрицу множественной корреляции (с коэффициентами детерминации и значимостью)
+        /// </summary>
+        /// <returns></returns>
+        public double[][] GetMultipleCorrelationMatrix()
+        {
+            double[][] result = new double[3][].Select(e => e = new double[matrix.Length]).ToArray();
+            result[0] = GetMultipleCorrelationVector();
+            result[1] = result[0].Select(e => e * e).ToArray();
+            result[2] = GetMultipleSignificanceCorrelationVector();
             return result;
         }
     }
