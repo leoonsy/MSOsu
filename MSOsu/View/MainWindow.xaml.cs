@@ -193,18 +193,18 @@ namespace MSOsu.View
                         //--формирование уравнения регрессии в виде строки--//
                         string equation = "y = ";
                         for (int i = 1; i < regressionCoeffs[0].Length; i++)
-                            equation += regressionCoeffs[0][i] < 0 ? $"({regressionCoeffs[0][i]})⋅x{i-1} + " : $"{regressionCoeffs[0][i]}⋅x{i-1} + ";
+                            equation += regressionCoeffs[0][i] < 0 ? $"({regressionCoeffs[0][i]})⋅x{i} + " : $"{regressionCoeffs[0][i]}⋅x{i} + ";
                         equation += regressionCoeffs[0][0].ToString();
                         //--//
                         regression.SetRegressionEquation(equation);
 
-                        //Формирование матрицы оценки точности уравнения//
+                        //Формирование матрицы оценки точности уравнения (точечная)//
                         double[][] errors = new double[3][].Select(e => e = new double[mainVM.TableNormalizedValues[0].Length]).ToArray();
                         errors[0] = mainVM.TableNormalizedValues[0];
                         errors[1] = mainVM.CalculatedY;
                         errors[2] = mainVM.AbsoluteErrorY;
-                        regression.ErrorTable.SetTable(MatrixOperations.RoundMatrix(errors, round), null, new string[] { "Y исходные", "Ỹ расчетные (Ỹ = X*b)", "Абсолютная ошибка (Y - Ỹ)" });
-                        regression.SetSLMError(Math.Round(mainVM.LSMError, round).ToString());
+                        regression.ErrorTable.SetTable(MatrixOperations.RoundMatrix(errors, round), null, new string[] { "Y исходные", "Ŷ расчетные (Ŷ = X*b)", "Абсолютная ошибка (Y - Ŷ)" });
+                        regression.SetQost(Math.Round(mainVM.Qost, round).ToString());
                         //--//
                     }
                     cpMainContent.Content = regression;

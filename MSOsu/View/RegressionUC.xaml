@@ -16,11 +16,11 @@
                 <TextBlock Text="Уравнение регрессии: " VerticalAlignment="Center" />
                 <TextBlock x:Name="tblRegressionEquation" VerticalAlignment="Center" />
             </WrapPanel>
-            <TextBlock Margin="7 5 5 5" Text="Оценка точности приближения:" />
+            <TextBlock Margin="7 5 5 5" Text="Оценка точности приближения (точечная):" />
             <ContentPresenter x:Name="cpErrorTable" />
             <WrapPanel Margin="7 5 5 0">
                 <TextBlock Text="Сумма квадратов отклонений: " />
-                <TextBlock x:Name="tblLSMError" />
+                <TextBlock x:Name="tblQost" />
             </WrapPanel>
         </StackPanel>
     </Grid>

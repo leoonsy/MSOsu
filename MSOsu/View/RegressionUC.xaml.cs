@@ -36,9 +36,9 @@ namespace MSOsu.View
             tblRegressionEquation.Text = equation;
         }
 
-        public void SetSLMError(string error)
+        public void SetQost(string error)
         {
-            tblLSMError.Text = error;
+            tblQost.Text = error;
         }
     }
 }

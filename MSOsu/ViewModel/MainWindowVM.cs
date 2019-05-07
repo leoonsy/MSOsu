@@ -116,7 +116,7 @@ namespace MSOsu.ViewModel
         /// <summary>
         /// Сумма квадратов отклонений
         /// </summary>
-        public double LSMError;
+        public double Qost;
 
         IViewService viewService; //сервис для отображения страниц
         IDialogService dialogService; //сервис для работы с диалоговыми окнами
@@ -159,10 +159,13 @@ namespace MSOsu.ViewModel
                         if (dialogService.OpenFileDialog(filter))
                         {
                             (TableHeaders, TableValues) = TableControl.GetTable(dialogService.GetFilePath());
+                            //статистики
                             TableNormalizedValues = DescriptiveStatistic.GetNormalizedValues(TableValues);
                             TableNormalizedStatisticsValues = DescriptiveStatistic.GetTotalStatistic(TableNormalizedValues);
+                            //нормальное распределение
                             TableNormalDistribution = PiersonTest.GetNormalDistributionTable(TableNormalizedValues);
                             ChiSquareKrit = PiersonTest.GetChiSquareKrit();
+                            //корреляция
                             CorrelationsAnalysis correlations = new CorrelationsAnalysis(TableNormalizedValues);
                             PairCorrelationsMatrix = correlations.GetPairCorrelationsMatrix();
                             ParticalCorrelationsMatrix = correlations.GetParticalCorrelationsMatrix();
@@ -173,11 +176,12 @@ namespace MSOsu.ViewModel
                             int k = TableValues.Length;
                             int n = TableValues[0].Length;
                             FFisherKritSign = DataBase.GetFCrit(k, n - k - 1);
+                            //регрессия
                             Regression regression = new Regression(TableNormalizedValues);
                             RegressionCoeffs = regression.GetRegressionCoeffs();
                             CalculatedY = regression.GetCalculatedY();
                             AbsoluteErrorY = regression.GetAbsoluteError();
-                            LSMError = regression.GetSLMError();
+                            Qost = regression.GetQost();
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
                         }

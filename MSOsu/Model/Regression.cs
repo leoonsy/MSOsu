@@ -9,10 +9,26 @@ namespace MSOsu.Model
 {
     class Regression
     {
+        /// <summary>
+        /// Исходная матрица
+        /// </summary>
         private double[][] matrix;
+        /// <summary>
+        /// Вычисленные коеффициенты регрессии
+        /// </summary>
         private double[] regressionCoeffs;
+        /// <summary>
+        /// Вычисленные значения Ỹ по данному уравнению регрессии
+        /// </summary>
         private double[] сalculatedY;
+        /// <summary>
+        /// Массив абсолютных ошибок
+        /// </summary>
         private double[] absoluteErrorY;
+        /// <summary>
+        /// Сумма квадратов отклонений
+        /// </summary>
+        private double qost;
 
         public Regression(double[][] matrix)
         {
@@ -66,11 +82,11 @@ namespace MSOsu.Model
         /// <param name="bs"></param>
         /// <param name="error"></param>
         /// <returns></returns>
-        public double GetSLMError()
+        public double GetQost()
         {
             if (absoluteErrorY == null)
                 GetAbsoluteError();
-            return absoluteErrorY.Select(e => e * e).Sum();
+            return qost = absoluteErrorY.Select(e => e * e).Sum();
         }
 
         /// <summary>
@@ -95,7 +111,7 @@ namespace MSOsu.Model
         {
             if (сalculatedY == null)
                 GetCalculatedY();
-            return absoluteErrorY = GetDiff(сalculatedY, matrix[0]);
+            return absoluteErrorY = GetDiff(matrix[0], сalculatedY);
         }
     }
 }
