@@ -216,7 +216,7 @@ namespace MSOsu.Model
                 }
             }
 
-            return MatrixOperations.GetTransposeTable(result);
+            return MatrixOperations.Transpose(result);
         }
 
         /// <summary>

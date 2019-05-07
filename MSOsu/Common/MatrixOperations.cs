@@ -14,15 +14,29 @@ namespace MSOsu.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        public static T[][] GetTransposeTable<T>(T[][] matrix)
+        public static T[][] Transpose<T>(T[][] matrix)
         {
             int m = matrix.Length;
             int n = matrix[0].Length;
-            T[][] transTable = new T[n][].Select(e => e = new T[m]).ToArray();
+            T[][] transMatrix = new T[n][].Select(e => e = new T[m]).ToArray();
             for (int i = 0; i < m; i++)
                 for (int j = 0; j < n; j++)
-                    transTable[j][i] = matrix[i][j];
-            return transTable;
+                    transMatrix[j][i] = matrix[i][j];
+            return transMatrix;
+        }
+
+        /// <summary>
+        /// Транспонировать вектор
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
+        public static T[][] Transpose<T>(T[] vector)
+        {
+            T[][] result = new T[1][];
+            result[0] = new T[vector.Length];
+            result[0] = (T[])vector.Clone();
+            return result;
         }
 
         /// <summary>
@@ -31,7 +45,7 @@ namespace MSOsu.Common
         /// <param name="matrix"></param>
         /// <param name="round"></param>
         /// <returns></returns>
-        public static double[][] RoundMatrix(double[][] matrix, int round)
+        public static double[][] Round(double[][] matrix, int round)
         {
             return matrix.Select(e => e.Select(u => Math.Round(u, round)).ToArray()).ToArray();
         }
@@ -56,7 +70,7 @@ namespace MSOsu.Common
         /// <param name="matrix"></param>
         /// <param name="l"></param>
         /// <param name="u"></param>
-        public static (double[][] l, double[][] u) GetLUDecomp(double[][] matrix)
+        public static (double[][] l, double[][] u) LUDecomp(double[][] matrix)
         {
             int n = matrix.Length;
             var l = new double[n][].Select(e => e = new double[n]).ToArray();
@@ -93,12 +107,12 @@ namespace MSOsu.Common
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        public static double GetDeterminantLU(double[][] matrix)
+        public static double DeterminantLU(double[][] matrix)
         {
-            matrix = GetCopyMatrix(matrix);
+            matrix = Copy(matrix);
             int count = matrix.Length;
 
-            (double[][] l, double[][] u) = GetLUDecomp(matrix);
+            (double[][] l, double[][] u) = LUDecomp(matrix);
 
             double result = 1;
             for (int i = 0; i < count; i++)
@@ -114,10 +128,10 @@ namespace MSOsu.Common
         /// <param name="iDel"></param>
         /// <param name="jDel"></param>
         /// <returns></returns>
-        public static double GetExtraMinor(double[][] matrix, int iDel, int jDel)
+        public static double ExtraMinor(double[][] matrix, int iDel, int jDel)
         {
-            double[][] newMatrix = GetCopyMatrix(matrix, iDel, jDel);
-            return GetDeterminantLU(newMatrix);
+            double[][] newMatrix = Copy(matrix, iDel, jDel);
+            return DeterminantLU(newMatrix);
         }
 
         /// <summary>
@@ -125,7 +139,7 @@ namespace MSOsu.Common
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        public static double[][] GetCopyMatrix(double[][] matrix, int iDel, int jDel)
+        public static double[][] Copy(double[][] matrix, int iDel, int jDel)
         {
             int m = matrix.Length;
             int n = matrix[0].Length;
@@ -147,7 +161,7 @@ namespace MSOsu.Common
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        public static double[][] GetCopyMatrix(double[][] matrix)
+        public static double[][] Copy(double[][] matrix)
         {
             double[][] result = new double[matrix.Length][].Select(e => e = new double[matrix[0].Length]).ToArray();
             for (int i = 0; i < matrix.Length; i++)
@@ -162,7 +176,7 @@ namespace MSOsu.Common
         /// </summary>
         /// <param name="array"></param>
         /// <returns></returns>
-        public static double[] GetCopyMatrix(double[] array)
+        public static double[] Copy(double[] array)
         {
             return (double[])array.Clone();
         }
@@ -173,7 +187,7 @@ namespace MSOsu.Common
         /// <param name="m1"></param>
         /// <param name="m2"></param>
         /// <returns></returns>
-        public static double[] MultMatrixAndVector(double[][] matrix, double[] vector)
+        public static double[] Mult(double[][] matrix, double[] vector)
         {
             double[] result = new double[matrix.Length];
 
@@ -192,7 +206,7 @@ namespace MSOsu.Common
         /// <param name="m1"></param>
         /// <param name="m2"></param>
         /// <returns></returns>
-        public static double[][] MultMatrix(double[][] m1, double[][] m2)
+        public static double[][] Mult(double[][] m1, double[][] m2)
         {
             var result = new double[m1.Length][].Select(e => e = new double[m2[0].Length]).ToArray();
 
@@ -209,7 +223,7 @@ namespace MSOsu.Common
         /// <param name="matrix"></param>
         /// <param name="error"></param>
         /// <returns></returns>
-        public static double[][] GetInverseMatrixSLAU(double[][] matrix)
+        public static double[][] InverseSLAU(double[][] matrix)
         {
             int count = matrix.Length;
 
@@ -222,7 +236,65 @@ namespace MSOsu.Common
                 result[i] = SLAU.GetSLAUResolve(matrix, b, SLAU.GaussMethod.All);
             }
 
-            return GetTransposeTable(result);
+            return Transpose(result);
+        }
+
+        /// <summary>
+        /// Получить разность двух векторов
+        /// </summary>
+        /// <param name="b1"></param>
+        /// <param name="b2"></param>
+        /// <returns></returns>
+        public static double[] Subtraction(double[] b1, double[] b2)
+        {
+            double[] result = new double[b1.Length];
+            for (int i = 0; i < b1.Length; i++)
+                result[i] = b1[i] - b2[i];
+            return result;
+        }
+
+        /// <summary>
+        /// Получить разность двух массивов
+        /// </summary>
+        /// <param name="b1"></param>
+        /// <param name="b2"></param>
+        /// <returns></returns>
+        public static double[][] Subtraction(double[][] b1, double[][] b2)
+        {
+            double[][] result = new double[b1.Length][].Select(e => e = new double[b1[0].Length]).ToArray();
+            for (int i = 0; i < b1.Length; i++)
+                for (int j = 0; j < b1[0].Length; j++)
+                    result[i][j] = b1[i][j] - b2[i][j];
+            return result;
+        }
+
+        /// <summary>
+        /// Получить сумму двух векторов
+        /// </summary>
+        /// <param name="b1"></param>
+        /// <param name="b2"></param>
+        /// <returns></returns>
+        public static double[] Sum(double[] b1, double[] b2)
+        {
+            double[] result = new double[b1.Length];
+            for (int i = 0; i < b1.Length; i++)
+                result[i] = b1[i] + b2[i];
+            return result;
+        }
+
+        /// <summary>
+        /// Получить сумму двух массивов
+        /// </summary>
+        /// <param name="b1"></param>
+        /// <param name="b2"></param>
+        /// <returns></returns>
+        public static double[][] Sum(double[][] b1, double[][] b2)
+        {
+            double[][] result = new double[b1.Length][].Select(e => e = new double[b1[0].Length]).ToArray();
+            for (int i = 0; i < b1.Length; i++)
+                for (int j = 0; j < b1[0].Length; j++)
+                    result[i][j] = b1[i][j] + b2[i][j];
+            return result;
         }
     }
 }

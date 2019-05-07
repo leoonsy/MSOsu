@@ -96,7 +96,7 @@ namespace MSOsu.ViewModel
         /// <summary>
         /// Критическое значение Фишера (для определения значимости множественной корреляции)
         /// </summary>
-        public double FFisherKritSign;
+        public double FKritSignMultiple;
 
         /// <summary>
         /// Коэффициенты регрессии
@@ -114,9 +114,29 @@ namespace MSOsu.ViewModel
         public double[] AbsoluteErrorY;
 
         /// <summary>
-        /// Сумма квадратов отклонений
+        /// Ошибка аппроксимации
         /// </summary>
-        public double Qost;
+        public double ApproximationError;
+
+        /// <summary>
+        /// F-критическое для значимости уравнения регрессии
+        /// </summary>
+        public double FKritEquationSign;
+
+        /// <summary>
+        /// Значимость уравнения регрессии
+        /// </summary>
+        public double SignificanceEquation;
+
+        /// <summary>
+        /// Значимость коэффициентов уравнения регрессии
+        /// </summary>
+        public double[] SignificanceEquationCoeffs;
+
+        /// <summary>
+        /// T-критическое для значимости коэффициентов уравнения регрессии
+        /// </summary>
+        public double TKritEquationCoeffsSign;
 
         IViewService viewService; //сервис для отображения страниц
         IDialogService dialogService; //сервис для работы с диалоговыми окнами
@@ -175,13 +195,18 @@ namespace MSOsu.ViewModel
                             MultipleCorrelationMatrix = correlations.GetMultipleCorrelationMatrix();
                             int k = TableValues.Length;
                             int n = TableValues[0].Length;
-                            FFisherKritSign = DataBase.GetFCrit(k, n - k - 1);
+                            FKritSignMultiple = DataBase.GetFCrit(k, n - k - 1);
                             //регрессия
                             Regression regression = new Regression(TableNormalizedValues);
                             RegressionCoeffs = regression.GetRegressionCoeffs();
                             CalculatedY = regression.GetCalculatedY();
                             AbsoluteErrorY = regression.GetAbsoluteError();
-                            Qost = regression.GetQost();
+                            ApproximationError = regression.GetApproximationError();
+                            FKritEquationSign = regression.GetFKritEquation();
+                            SignificanceEquation = regression.GetSignificanceEquation();
+                            SignificanceEquationCoeffs = regression.GetSignificanceEquationCoeffs();
+                            TKritEquationCoeffsSign = regression.GetTKritEquationCoeffs();
+
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
                         }

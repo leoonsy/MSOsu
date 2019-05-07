@@ -14,25 +14,30 @@ namespace MSOsu.Model
         /// </summary>
         private double[][] matrix;
         /// <summary>
+        /// Матрица X с первым столбцом-единицей
+        /// </summary>
+        private double[][] xMatrix;
+        /// <summary>
         /// Вычисленные коеффициенты регрессии
         /// </summary>
         private double[] regressionCoeffs;
         /// <summary>
         /// Вычисленные значения Ỹ по данному уравнению регрессии
         /// </summary>
-        private double[] сalculatedY;
-        /// <summary>
-        /// Массив абсолютных ошибок
-        /// </summary>
-        private double[] absoluteErrorY;
+        private double[] calculatedY;
         /// <summary>
         /// Сумма квадратов отклонений
         /// </summary>
-        private double qost;
+        private double qOst = double.NaN;
+
+        private double[] standartErrorOfRegressionCoeff;
 
         public Regression(double[][] matrix)
         {
             this.matrix = matrix;
+            xMatrix = MatrixOperations.Transpose(matrix);
+            for (int i = 0; i < xMatrix.Length; i++)
+                xMatrix[i][0] = 1;
         }
 
         /// <summary>
@@ -43,20 +48,15 @@ namespace MSOsu.Model
         public double[] GetRegressionCoeffs()
         {
             double[] y = matrix[0];
-            double[][] x = MatrixOperations.GetTransposeTable(matrix);
-            for (int i = 0; i < x.Length; i++)
-                x[i][0] = 1;
-
-            double[][] xT = MatrixOperations.GetTransposeTable(x);
-            double[][] xTx = MatrixOperations.MultMatrix(xT, x);
-            double[][] xTx_ = MatrixOperations.GetInverseMatrixSLAU(xTx);
-            double[][] xTx_xT = MatrixOperations.MultMatrix(xTx_, xT);
-            double[] a = MatrixOperations.MultMatrixAndVector(xTx_xT, y);
-            return regressionCoeffs = a;
+            double[][] xT = MatrixOperations.Transpose(xMatrix);
+            double[][] xTx = MatrixOperations.Mult(xT, xMatrix);
+            double[][] xTx_ = MatrixOperations.InverseSLAU(xTx);
+            double[][] xTx_xT = MatrixOperations.Mult(xTx_, xT);
+            return regressionCoeffs = MatrixOperations.Mult(xTx_xT, y);
         }
 
         /// <summary>
-        /// Получить массив вычесленных значений выходного параметра
+        /// Получить массив вычисленных значений выходного параметра Ỹ (Xb)
         /// </summary>
         /// <returns></returns>
         public double[] GetCalculatedY()
@@ -64,15 +64,20 @@ namespace MSOsu.Model
             if (regressionCoeffs == null)
                 GetRegressionCoeffs();
 
-            double[] ys = new double[matrix[0].Length];
-            for (int i = 0; i < ys.Length; i++)
-            {
-                ys[i] += regressionCoeffs[0];
-                for (int j = 1; j < regressionCoeffs.Length; j++)
-                    ys[i] += regressionCoeffs[j] * matrix[j][i];
-            }
+            double[] ys = new double[xMatrix.Length];
 
-            return сalculatedY = ys;
+            return calculatedY = MatrixOperations.Mult(xMatrix, regressionCoeffs);
+        }
+
+        /// <summary>
+        /// Получить абсолютную ошибку вычисленного выходного параметра
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetAbsoluteError()
+        {
+            if (calculatedY == null)
+                GetCalculatedY();
+            return MatrixOperations.Subtraction(matrix[0], calculatedY);
         }
 
         /// <summary>
@@ -84,34 +89,98 @@ namespace MSOsu.Model
         /// <returns></returns>
         public double GetQost()
         {
-            if (absoluteErrorY == null)
-                GetAbsoluteError();
-            return qost = absoluteErrorY.Select(e => e * e).Sum();
+            if (calculatedY == null)
+                GetCalculatedY();
+            double[] y_Xb = MatrixOperations.Subtraction(matrix[0], calculatedY);
+            return qOst = MatrixOperations.Mult(MatrixOperations.Transpose(y_Xb), y_Xb)[0];
         }
 
         /// <summary>
-        /// Получить разность двух массивов
+        /// Получить значимость уравнения регрессии
         /// </summary>
-        /// <param name="b1"></param>
-        /// <param name="b2"></param>
         /// <returns></returns>
-        public static double[] GetDiff(double[] b1, double[] b2)
+        public double GetSignificanceEquation()
         {
-            double[] result = new double[b1.Length];
-            for (int i = 0; i < b1.Length; i++)
-                result[i] = b1[i] - b2[i];
+            if (double.IsNaN(qOst))
+                GetQost();
+
+            double qR = MatrixOperations.Mult(MatrixOperations.Transpose(calculatedY), calculatedY)[0];
+            int k = matrix.Length - 1;
+            int n = matrix[0].Length;
+            double result = qR / qOst * (n - k - 1) / (k + 1);
             return result;
         }
 
         /// <summary>
-        /// Получить абсолютную ошибку вычисленного выходного параметра
+        /// Получить стандартную ошибку для коэффициентов (sbj)
         /// </summary>
         /// <returns></returns>
-        public double[] GetAbsoluteError()
+        private double[] GetStandartErrorOfRegressionCoeff()
         {
-            if (сalculatedY == null)
+            int k = matrix.Length - 1;
+            int n = matrix[0].Length;
+            double s2 = qOst / (n - k - 1);
+            double[] result = new double[k + 1];
+            double[][] xT = MatrixOperations.Transpose(xMatrix);
+            double[][] xTx = MatrixOperations.Mult(xT, xMatrix);
+            double[][] xTx_ = MatrixOperations.InverseSLAU(xTx);
+            for (int i = 0; i < k + 1; i++)
+                result[i] = Math.Sqrt(s2 * xTx_[i][i]);
+            return standartErrorOfRegressionCoeff = result;
+        }
+
+        /// <summary>
+        /// Получить значимость коэффициентов уравнения
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetSignificanceEquationCoeffs()
+        {
+            if (standartErrorOfRegressionCoeff == null)
+                GetStandartErrorOfRegressionCoeff();
+
+            if (regressionCoeffs == null)
+                GetRegressionCoeffs();
+
+            double[] result = new double[matrix.Length];
+            for (int i = 0; i < result.Length; i++)
+                result[i] = Math.Abs(regressionCoeffs[i] / standartErrorOfRegressionCoeff[i]);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Получить t-критическое
+        /// </summary>
+        /// <returns></returns>
+        public double GetTKritEquationCoeffs()
+        {
+            int k = matrix.Length - 1;
+            int n = matrix[0].Length;
+            int v = n - k - 1; //число степеней свободы
+            return DataBase.GetTCrit(v);
+        }
+
+        /// <summary>
+        /// Получить критическое значение F-крит для определения значимости уравнения регрессии
+        /// </summary>
+        /// <returns></returns>
+        public double GetFKritEquation()
+        {
+            int k = matrix.Length - 1;
+            int n = matrix[0].Length;
+            return DataBase.GetFCrit(k + 1, n - k - 1);
+        }
+
+        /// <summary>
+        /// Получить ошибку аппроксимации
+        /// </summary>
+        /// <returns></returns>
+        public double GetApproximationError()
+        {
+            if (calculatedY == null)
                 GetCalculatedY();
-            return absoluteErrorY = GetDiff(matrix[0], сalculatedY);
+
+            return Enumerable.Range(0, calculatedY.Length).Select(idx => Math.Abs((matrix[0][idx] - calculatedY[idx]) / matrix[0][idx])).Sum() / matrix[0].Length;
         }
     }
 }

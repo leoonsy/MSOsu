@@ -66,8 +66,8 @@ namespace MSOsu.Model
                     if (i == j)
                         r[i][j] = 1;
                     else
-                        r[i][j] = -Math.Pow(-1, i + j) * MatrixOperations.GetExtraMinor(pairMatrix, i, j) /
-                            Math.Sqrt(MatrixOperations.GetExtraMinor(pairMatrix, i, i) * MatrixOperations.GetExtraMinor(pairMatrix, j, j));
+                        r[i][j] = -Math.Pow(-1, i + j) * MatrixOperations.ExtraMinor(pairMatrix, i, j) /
+                            Math.Sqrt(MatrixOperations.ExtraMinor(pairMatrix, i, i) * MatrixOperations.ExtraMinor(pairMatrix, j, j));
                 }
             }
             return particalMatrix = r;
@@ -130,7 +130,7 @@ namespace MSOsu.Model
         {
             if (pairMatrix == null)
                 pairMatrix = GetPairCorrelationsMatrix();
-            return Math.Sqrt(1 - MatrixOperations.GetDeterminantLU(pairMatrix) / MatrixOperations.GetExtraMinor(pairMatrix, idx, idx));
+            return Math.Sqrt(1 - MatrixOperations.DeterminantLU(pairMatrix) / MatrixOperations.ExtraMinor(pairMatrix, idx, idx));
         }
 
         /// <summary>

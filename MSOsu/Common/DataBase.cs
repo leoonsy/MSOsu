@@ -23,7 +23,7 @@ namespace MSOsu.Common
         /// </summary>
         /// <param name="k"></param>
         /// <returns></returns>
-        public static double GetTCrit(int k) //альфа = 0.05,  число степеней свободы k = n - 1 для предельной ошибки и k = n - 2 для проверки значимости коэффициентов матрицы корреляций
+        public static double GetTCrit(int k) //альфа = 0.05
         {
             if (k > kStudent.Last())
                 return tStudentKrit.Last();
@@ -93,7 +93,7 @@ namespace MSOsu.Common
             }
             if (vv2 != -1)
             {
-                double[] fline = MatrixOperations.GetTransposeTable(FFisherKrit)[vv2];
+                double[] fline = MatrixOperations.Transpose(FFisherKrit)[vv2];
                 y = 0;
                 while (Fv1[y] < v1)
                     y++;

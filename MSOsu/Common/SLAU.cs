@@ -57,8 +57,8 @@ namespace MSOsu.Common
         /// <returns></returns>
         public static double[] GetSLAUResolve(double[][] a, double[] b, GaussMethod type)
         {
-            a = MatrixOperations.GetCopyMatrix(a);
-            b = MatrixOperations.GetCopyMatrix(b);
+            a = MatrixOperations.Copy(a);
+            b = MatrixOperations.Copy(b);
             int varCount = a.Length;
 
             const double epsilon = 0.00000000000001; //точность нуля

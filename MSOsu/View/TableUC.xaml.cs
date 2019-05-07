@@ -44,6 +44,7 @@ namespace MSOsu.View
                     if (double.TryParse(tb.Text, out d) && pred(d))
                         tb.Background = colour;
                 }
+                return;
             }
 
             if (col != -1)
@@ -55,6 +56,7 @@ namespace MSOsu.View
                     if (double.TryParse(tb.Text, out d) && pred(d))
                         tb.Background = colour;
                 }
+                return;
             }
 
             foreach (var list in cells)

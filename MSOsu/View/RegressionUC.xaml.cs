@@ -36,9 +36,24 @@ namespace MSOsu.View
             tblRegressionEquation.Text = equation;
         }
 
-        public void SetQost(string error)
+        public void SetApproximationError(string error)
         {
-            tblQost.Text = error;
+            tblApproximationError.Text = error;
+        }
+
+        public void SetSignificanceEquation(double fKrit, double significanceEquation)
+        {
+            tblFkrit.Text = fKrit.ToString();
+            tblSignificanceEquation.Text = significanceEquation.ToString();
+            if (significanceEquation > fKrit)
+                tblSignificanceEquation.Foreground = Brushes.LimeGreen;
+            else
+                tblSignificanceEquation.Foreground = Brushes.Red;
+        }
+
+        public void SetTKrit(double tKrit)
+        {
+            tblTKrit.Text = tKrit.ToString();
         }
     }
 }
