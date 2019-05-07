@@ -39,7 +39,7 @@ namespace MSOsu.Common
         /// <summary>
         /// Таблица распределения Фишера
         /// </summary>
-        public static double[][] fFisherKrit = new double[][]
+        public static double[][] FFisherKrit = new double[][]
             {
                 new double[] { 161.4476,  18.5128,  10.128,  7.7086,  6.6079,  5.9874,  5.5914,  5.3177,  5.1174,  4.9646,  4.8443,  4.7472,  4.6672,  4.6001,  4.5431,  4.494,  4.4513,  4.4139,  4.3807,  4.3512,  4.3248,  4.3009,  4.2793,  4.2597,  4.2417,  4.2252,  4.21,  4.196,  4.183,  4.1709,  4.0847,  4.0012,  3.9201,  3.8415},
                 new double[] { 199.5,  19,  9.5521,  6.9443,  5.7861,  5.1433,  4.7374,  4.459,  4.2565,  4.1028,  3.9823,  3.8853,  3.8056,  3.7389,  3.6823,  3.6337,  3.5915,  3.5546,  3.5219,  3.4928,  3.4668,  3.4434,  3.4221,  3.4028,  3.3852,  3.369,  3.3541,  3.3404,  3.3277,  3.3158,  3.2317,  3.1504,  3.0718,  2.9957},
@@ -80,12 +80,12 @@ namespace MSOsu.Common
             int vv1 = Fv1.ToList().FindIndex(x => x == v1);
             int vv2 = Fv2.ToList().FindIndex(x => x == v2);
             if (vv1 != -1 && vv2 != -1)
-                return fFisherKrit[vv1][vv2];
+                return FFisherKrit[vv1][vv2];
 
             int y, w;
             if (vv1 != -1)
             {
-                double[] fLine = fFisherKrit[vv1];
+                double[] fLine = FFisherKrit[vv1];
                 y = 0;
                 while (Fv2[y] < v2)
                     y++;
@@ -93,7 +93,7 @@ namespace MSOsu.Common
             }
             if (vv2 != -1)
             {
-                double[] fline = MatrixOperations.GetTransposeTable(fFisherKrit)[vv2];
+                double[] fline = MatrixOperations.GetTransposeTable(FFisherKrit)[vv2];
                 y = 0;
                 while (Fv1[y] < v1)
                     y++;
@@ -104,8 +104,8 @@ namespace MSOsu.Common
                 y++;
             while (Fv2[w] < v2)
                 w++;
-            double t1 = fFisherKrit[y - 1][w - 1] + (fFisherKrit[y - 1][w] - fFisherKrit[y - 1][w - 1]) * (v2 - Fv2[w - 1]) / (Fv2[w] - Fv2[w - 1]);
-            double t2 = fFisherKrit[y][w - 1] + (fFisherKrit[y][w] - fFisherKrit[y][w - 1]) * (v2 - Fv2[w - 1]) / (Fv2[w] - Fv2[w - 1]);
+            double t1 = FFisherKrit[y - 1][w - 1] + (FFisherKrit[y - 1][w] - FFisherKrit[y - 1][w - 1]) * (v2 - Fv2[w - 1]) / (Fv2[w] - Fv2[w - 1]);
+            double t2 = FFisherKrit[y][w - 1] + (FFisherKrit[y][w] - FFisherKrit[y][w - 1]) * (v2 - Fv2[w - 1]) / (Fv2[w] - Fv2[w - 1]);
             return t1 + (t2 - t1) * (v1 - Fv1[y - 1]) / (Fv1[y] - Fv1[y - 1]);
         }
     }
