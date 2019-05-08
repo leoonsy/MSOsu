@@ -51,6 +51,27 @@ namespace MSOsu.Common
         }
 
         /// <summary>
+        /// Округлить матрицу
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="round"></param>
+        /// <returns></returns>
+        public static string[][] Round(string[][] matrix, int round)
+        {
+            matrix = Copy(matrix);
+            for (int i = 0; i < matrix.Length; i++)
+                for (int j = 0; j < matrix[i].Length; j++)
+                {
+                    double val;
+                    if (double.TryParse(matrix[i][j], out val))
+                    {
+                        matrix[i][j] = Math.Round(val, round).ToString();
+                    }
+                }
+            return matrix;
+        }
+
+        /// <summary>
         /// Скалярное произведение векторов
         /// </summary>
         /// <param name="x"></param>
@@ -161,9 +182,9 @@ namespace MSOsu.Common
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        public static double[][] Copy(double[][] matrix)
+        public static T[][] Copy<T>(T[][] matrix)
         {
-            double[][] result = new double[matrix.Length][].Select(e => e = new double[matrix[0].Length]).ToArray();
+            T[][] result = new T[matrix.Length][].Select(e => e = new T[matrix[0].Length]).ToArray();
             for (int i = 0; i < matrix.Length; i++)
                 for (int j = 0; j < matrix[i].Length; j++)
                     result[i][j] = matrix[i][j];
@@ -176,9 +197,9 @@ namespace MSOsu.Common
         /// </summary>
         /// <param name="array"></param>
         /// <returns></returns>
-        public static double[] Copy(double[] array)
+        public static T[] Copy<T>(T[] array)
         {
-            return (double[])array.Clone();
+            return (T[])array.Clone();
         }
 
         /// <summary>

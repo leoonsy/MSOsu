@@ -187,12 +187,12 @@ namespace MSOsu.View
                         //формирование коэффициентов уравнения
                         string[][] regressionCoeffs = new string[4][];
                         regressionCoeffs[0] = new string[] { "-" }.Concat(mainVM.TableHeaders.Skip(1)).ToArray();
-                        regressionCoeffs[1] = mainVM.RegressionCoeffs.Select(e => Math.Round(e, round).ToString()).ToArray();
+                        regressionCoeffs[1] = mainVM.RegressionCoeffs.Select(e => e.ToString()).ToArray();
                         regressionCoeffs[2] = Enumerable.Range(0, mainVM.RegressionCoeffs.Length).Select(idx => $"{Math.Round(mainVM.RegressionCoeffs[idx], round)} ± {Math.Round(mainVM.IntervalEstimateCoeffs[idx], round)}").ToArray();
-                        regressionCoeffs[3] = mainVM.SignificanceEquationCoeffs.Select(e => Math.Round(e, round).ToString()).ToArray();
+                        regressionCoeffs[3] = mainVM.SignificanceEquationCoeffs.Select(e => e.ToString()).ToArray();
                         string[] rowHeader = { "Название параметра", "Коэффициент регрессии b", "Интервальная оценка β", "Значимость" };
                         string[] colHeader = new string[mainVM.TableHeaders.Length].Select((e, idx) => $"{idx}").ToArray();
-                        regression.CoeffTable.SetTable(regressionCoeffs, colHeader, rowHeader);
+                        regression.CoeffTable.SetTable(MatrixOperations.Round(regressionCoeffs, round), colHeader, rowHeader);
                         regression.SetTKrit(mainVM.TKritEquationCoeffsSign);
                         regression.CoeffTable.Highlight(e => e >= mainVM.TKritEquationCoeffsSign, Brushes.LightGreen, 3);
                         //--формирование уравнения регрессии в виде строки--//
@@ -207,11 +207,12 @@ namespace MSOsu.View
                         regression.SetSignificanceEquation(mainVM.FKritEquationSign, Math.Round(mainVM.SignificanceEquation, round));
 
                         //Формирование матрицы оценки точности уравнения (точечная)//
-                        double[][] errors = new double[3][].Select(e => e = new double[mainVM.TableNormalizedValues[0].Length]).ToArray();
-                        errors[0] = mainVM.TableNormalizedValues[0];
-                        errors[1] = mainVM.CalculatedY;
-                        errors[2] = mainVM.AbsoluteErrorY;
-                        regression.ErrorTable.SetTable(MatrixOperations.Round(errors, round), null, new string[] { "Y исходные", "Ŷ расчетные (Ŷ = X*b)", "Абсолютная ошибка (Y - Ŷ)" });
+                        string[][] errors = new string[4][].Select(e => e = new string[mainVM.TableNormalizedValues[0].Length]).ToArray();
+                        errors[0] = mainVM.TableNormalizedValues[0].Select(e => e.ToString()).ToArray();
+                        errors[1] = mainVM.CalculatedY.Select(e => e.ToString()).ToArray();
+                        errors[2] = mainVM.AbsoluteErrorY.Select(e => e.ToString()).ToArray();
+                        errors[3] = Enumerable.Range(0, mainVM.CalculatedY.Length).Select(idx => $"{Math.Round(mainVM.CalculatedY[idx], round)} ± {Math.Round(mainVM.IntervalEstimateEquation[idx], round)}").ToArray();
+                        regression.ErrorTable.SetTable(MatrixOperations.Round(errors, round), null, new string[] { "Y исходные", "Ŷ расчетные (Ŷ = X*b)", "Абсолютная ошибка (Y - Ŷ)", "Интервальная оценка Ỹ" });
                         regression.SetApproximationError(Math.Round(mainVM.ApproximationError * 100, round).ToString());
                         //--//
                     }

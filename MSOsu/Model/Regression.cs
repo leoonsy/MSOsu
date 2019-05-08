@@ -213,6 +213,30 @@ namespace MSOsu.Model
         }
 
         /// <summary>
+        /// Получить интервальную оценку уравнения (истинных значений)
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetIntervalEstimateEquation()
+        {
+            double tKrit = GetTKritEquationCoeffs();
+            double[] result = new double[matrix[0].Length];
+            double qOst = GetQost();
+            int k = matrix.Length - 1;
+            int n = matrix[0].Length;
+            double s = Math.Sqrt(qOst / (n - k - 1));
+            for (int i = 0; i < result.Length; i++)
+            {
+                double[][] x0T = MatrixOperations.Transpose(xMatrix[i]);
+                double[][] xTx = MatrixOperations.Mult(MatrixOperations.Transpose(xMatrix), xMatrix);
+                double[][] xTx_ = MatrixOperations.InverseSLAU(xTx);
+                double[][] x0TxTx_ = MatrixOperations.Mult(x0T, xTx_);
+                double fin = MatrixOperations.Mult(x0TxTx_, xMatrix[i])[0];
+                result[i] = tKrit * s * Math.Sqrt(fin);
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Получить ошибку аппроксимации
         /// </summary>
         /// <returns></returns>

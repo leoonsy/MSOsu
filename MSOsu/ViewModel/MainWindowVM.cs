@@ -143,6 +143,11 @@ namespace MSOsu.ViewModel
         /// </summary>
         public double[] IntervalEstimateCoeffs;
 
+        /// <summary>
+        /// Интервальная оценка уравнения (истинных значений)
+        /// </summary>
+        public double[] IntervalEstimateEquation;
+
         IViewService viewService; //сервис для отображения страниц
         IDialogService dialogService; //сервис для работы с диалоговыми окнами
 
@@ -212,6 +217,7 @@ namespace MSOsu.ViewModel
                             SignificanceEquationCoeffs = regression.GetSignificanceEquationCoeffs();
                             TKritEquationCoeffsSign = regression.GetTKritEquationCoeffs();
                             IntervalEstimateCoeffs = regression.GetIntervalEstimateCoeffs();
+                            IntervalEstimateEquation = regression.GetIntervalEstimateEquation();
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
                         }
