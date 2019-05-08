@@ -18,16 +18,16 @@
             </WrapPanel>
             <ContentPresenter x:Name="cpCoeffTable" />
             <WrapPanel Margin="7 5 5 2">
-                <TextBlock Text="Уравнение регрессии: " VerticalAlignment="Center" />
-                <TextBlock x:Name="tblRegressionEquation" VerticalAlignment="Center" />
-            </WrapPanel>
-            <WrapPanel Margin="7 5 5 2">
                 <TextBlock Text="Значимость уравнения регрессии (F-крит = " />
                 <TextBlock x:Name="tblFkrit" />
                 <TextBlock Text="): " />
                 <TextBlock x:Name="tblSignificanceEquation" />
             </WrapPanel>
-            <TextBlock Margin="7 5 5 5" Text="Оценка точности приближения (точечная):" />
+            <WrapPanel Margin="7 5 5 2">
+                <TextBlock Text="Уравнение регрессии: " VerticalAlignment="Center" />
+                <TextBlock x:Name="tblRegressionEquation" VerticalAlignment="Center" />
+            </WrapPanel>
+            <TextBlock Margin="7 5 5 5" Text="Оценка уравнения:" />
             <ContentPresenter x:Name="cpErrorTable" />
             <WrapPanel Margin="7 5 5 0">
                 <TextBlock Text="Ошибка аппроксимации: " />

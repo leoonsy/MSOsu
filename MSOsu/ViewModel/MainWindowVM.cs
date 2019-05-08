@@ -138,6 +138,11 @@ namespace MSOsu.ViewModel
         /// </summary>
         public double TKritEquationCoeffsSign;
 
+        /// <summary>
+        /// Интервальная оценка коэффициентов
+        /// </summary>
+        public double[] IntervalEstimateCoeffs;
+
         IViewService viewService; //сервис для отображения страниц
         IDialogService dialogService; //сервис для работы с диалоговыми окнами
 
@@ -206,7 +211,7 @@ namespace MSOsu.ViewModel
                             SignificanceEquation = regression.GetSignificanceEquation();
                             SignificanceEquationCoeffs = regression.GetSignificanceEquationCoeffs();
                             TKritEquationCoeffsSign = regression.GetTKritEquationCoeffs();
-
+                            IntervalEstimateCoeffs = regression.GetIntervalEstimateCoeffs();
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
                         }

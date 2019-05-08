@@ -185,15 +185,16 @@ namespace MSOsu.View
                     {
                         regression = new RegressionUC();
                         //формирование коэффициентов уравнения
-                        string[][] regressionCoeffs = new string[3][];
+                        string[][] regressionCoeffs = new string[4][];
                         regressionCoeffs[0] = new string[] { "-" }.Concat(mainVM.TableHeaders.Skip(1)).ToArray();
                         regressionCoeffs[1] = mainVM.RegressionCoeffs.Select(e => Math.Round(e, round).ToString()).ToArray();
-                        regressionCoeffs[2] = mainVM.SignificanceEquationCoeffs.Select(e => Math.Round(e, round).ToString()).ToArray();
-                        string[] rowHeader = { "Параметр", "Коэффициент регрессии", "Значимость" };
-                        string[] colHeader = new string[mainVM.TableHeaders.Length].Select((e, idx) => $"b{idx}").ToArray();
+                        regressionCoeffs[2] = Enumerable.Range(0, mainVM.RegressionCoeffs.Length).Select(idx => $"{Math.Round(mainVM.RegressionCoeffs[idx], round)} ± {Math.Round(mainVM.IntervalEstimateCoeffs[idx], round)}").ToArray();
+                        regressionCoeffs[3] = mainVM.SignificanceEquationCoeffs.Select(e => Math.Round(e, round).ToString()).ToArray();
+                        string[] rowHeader = { "Название параметра", "Коэффициент регрессии b", "Интервальная оценка β", "Значимость" };
+                        string[] colHeader = new string[mainVM.TableHeaders.Length].Select((e, idx) => $"{idx}").ToArray();
                         regression.CoeffTable.SetTable(regressionCoeffs, colHeader, rowHeader);
                         regression.SetTKrit(mainVM.TKritEquationCoeffsSign);
-                        regression.CoeffTable.Highlight(e => e >= mainVM.TKritEquationCoeffsSign, Brushes.LightGreen, 2);
+                        regression.CoeffTable.Highlight(e => e >= mainVM.TKritEquationCoeffsSign, Brushes.LightGreen, 3);
                         //--формирование уравнения регрессии в виде строки--//
                         string equation = "y = ";
                         for (int i = 1; i < regressionCoeffs[1].Length; i++)

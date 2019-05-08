@@ -29,8 +29,22 @@ namespace MSOsu.Model
         /// Сумма квадратов отклонений
         /// </summary>
         private double qOst = double.NaN;
-
+        /// <summary>
+        /// Интервальная оценка коэффициентов
+        /// </summary>
+        private double[] intervalEstimateCoeffs;
+        /// <summary>
+        /// Cтандартная ошибка для коэффициентов (sbj)
+        /// </summary>
         private double[] standartErrorOfRegressionCoeff;
+        /// <summary>
+        /// t-критическое
+        /// </summary>
+        private double tKrit = double.NaN;
+        /// <summary>
+        /// F-критическое
+        /// </summary>
+        private double fKrit = double.NaN;
 
         public Regression(double[][] matrix)
         {
@@ -47,6 +61,9 @@ namespace MSOsu.Model
         /// <returns></returns>
         public double[] GetRegressionCoeffs()
         {
+            if (regressionCoeffs != null)
+                return regressionCoeffs;
+
             double[] y = matrix[0];
             double[][] xT = MatrixOperations.Transpose(xMatrix);
             double[][] xTx = MatrixOperations.Mult(xT, xMatrix);
@@ -61,9 +78,10 @@ namespace MSOsu.Model
         /// <returns></returns>
         public double[] GetCalculatedY()
         {
-            if (regressionCoeffs == null)
-                GetRegressionCoeffs();
+            if (calculatedY != null)
+                return calculatedY;
 
+            double[] regressionCoeffs = GetRegressionCoeffs();
             double[] ys = new double[xMatrix.Length];
 
             return calculatedY = MatrixOperations.Mult(xMatrix, regressionCoeffs);
@@ -75,8 +93,7 @@ namespace MSOsu.Model
         /// <returns></returns>
         public double[] GetAbsoluteError()
         {
-            if (calculatedY == null)
-                GetCalculatedY();
+            double[] calculatedY = GetCalculatedY();
             return MatrixOperations.Subtraction(matrix[0], calculatedY);
         }
 
@@ -89,8 +106,10 @@ namespace MSOsu.Model
         /// <returns></returns>
         public double GetQost()
         {
-            if (calculatedY == null)
-                GetCalculatedY();
+            if (!double.IsNaN(qOst))
+                return qOst;
+
+            double[] calculatedY = GetCalculatedY();
             double[] y_Xb = MatrixOperations.Subtraction(matrix[0], calculatedY);
             return qOst = MatrixOperations.Mult(MatrixOperations.Transpose(y_Xb), y_Xb)[0];
         }
@@ -101,9 +120,8 @@ namespace MSOsu.Model
         /// <returns></returns>
         public double GetSignificanceEquation()
         {
-            if (double.IsNaN(qOst))
-                GetQost();
-
+            double[] calculatedY = GetCalculatedY();
+            double qOst = GetQost();
             double qR = MatrixOperations.Mult(MatrixOperations.Transpose(calculatedY), calculatedY)[0];
             int k = matrix.Length - 1;
             int n = matrix[0].Length;
@@ -115,8 +133,12 @@ namespace MSOsu.Model
         /// Получить стандартную ошибку для коэффициентов (sbj)
         /// </summary>
         /// <returns></returns>
-        private double[] GetStandartErrorOfRegressionCoeff()
+        public double[] GetStandartErrorOfRegressionCoeff()
         {
+            if (standartErrorOfRegressionCoeff != null)
+                return standartErrorOfRegressionCoeff;
+
+            double qOst = GetQost();
             int k = matrix.Length - 1;
             int n = matrix[0].Length;
             double s2 = qOst / (n - k - 1);
@@ -130,17 +152,30 @@ namespace MSOsu.Model
         }
 
         /// <summary>
+        /// Получить интервальную оценку коэффициентов
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetIntervalEstimateCoeffs()
+        {
+            if (intervalEstimateCoeffs != null)
+                return intervalEstimateCoeffs;
+
+            double[] standartErrorOfRegressionCoeff = GetStandartErrorOfRegressionCoeff();
+            double tKrit = GetTKritEquationCoeffs();
+            double[] result = new double[standartErrorOfRegressionCoeff.Length];
+            for (int i = 0; i < result.Length; i++)
+                result[i] = Math.Abs(standartErrorOfRegressionCoeff[i] * tKrit);
+            return intervalEstimateCoeffs = result;
+        }
+
+        /// <summary>
         /// Получить значимость коэффициентов уравнения
         /// </summary>
         /// <returns></returns>
         public double[] GetSignificanceEquationCoeffs()
         {
-            if (standartErrorOfRegressionCoeff == null)
-                GetStandartErrorOfRegressionCoeff();
-
-            if (regressionCoeffs == null)
-                GetRegressionCoeffs();
-
+            double[] standartErrorOfRegressionCoeff = GetStandartErrorOfRegressionCoeff();
+            double[] regressionCoeffs = GetRegressionCoeffs();
             double[] result = new double[matrix.Length];
             for (int i = 0; i < result.Length; i++)
                 result[i] = Math.Abs(regressionCoeffs[i] / standartErrorOfRegressionCoeff[i]);
@@ -154,10 +189,13 @@ namespace MSOsu.Model
         /// <returns></returns>
         public double GetTKritEquationCoeffs()
         {
+            if (!double.IsNaN(tKrit))
+                return tKrit;
+
             int k = matrix.Length - 1;
             int n = matrix[0].Length;
             int v = n - k - 1; //число степеней свободы
-            return DataBase.GetTCrit(v);
+            return tKrit = DataBase.GetTCrit(v);
         }
 
         /// <summary>
@@ -166,9 +204,12 @@ namespace MSOsu.Model
         /// <returns></returns>
         public double GetFKritEquation()
         {
+            if (!double.IsNaN(fKrit))
+                return fKrit;
+
             int k = matrix.Length - 1;
             int n = matrix[0].Length;
-            return DataBase.GetFCrit(k + 1, n - k - 1);
+            return fKrit = DataBase.GetFCrit(k + 1, n - k - 1);
         }
 
         /// <summary>
@@ -177,9 +218,7 @@ namespace MSOsu.Model
         /// <returns></returns>
         public double GetApproximationError()
         {
-            if (calculatedY == null)
-                GetCalculatedY();
-
+            double[] calculatedY = GetCalculatedY();
             return Enumerable.Range(0, calculatedY.Length).Select(idx => Math.Abs((matrix[0][idx] - calculatedY[idx]) / matrix[0][idx])).Sum() / matrix[0].Length;
         }
     }
