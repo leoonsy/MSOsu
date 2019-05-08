@@ -12,7 +12,7 @@
                 <TextBlock Text="Регрессионный анализ:" />
             </Border>
             <WrapPanel Margin="7 5 5 5">
-                <TextBlock Text="Коэффициенты уравнения (t-крит = "  />
+                <TextBlock Text="Анализ коэффициентов уравнения (t-крит = "  />
                 <TextBlock x:Name="tblTKrit"  />
                 <TextBlock Text="):"  />
             </WrapPanel>
@@ -34,6 +34,10 @@
                 <TextBlock x:Name="tblApproximationError" />
                 <TextBlock Text="%" />
             </WrapPanel>
+            <TextBlock Text="Введите значения параметров в уравнение для прогнозирования:" Margin="7 5 5 0" />
+            <WrapPanel x:Name="wpForecast" Margin="7 5 5 0" />
+            <Button Content="Спрогнозировать"  Padding="5" HorizontalAlignment="Left" Margin="7 5 5 0" Command="{Binding CheckForecastCommand}"/>
+            <TextBlock x:Name="tblForecastResult" Margin="7 5 5 0" Text="{Binding ForecastingYNormalized}" />
         </StackPanel>
     </Grid>
 </UserControl>

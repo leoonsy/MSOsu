@@ -43,7 +43,7 @@ namespace MSOsu.Model
             StringBuilder result = new StringBuilder();
             int countOfValues = headers.Length;
             result.AppendLine(String.Join(";", headers));
-            for (int i = 0; i < countOfValues; i++)
+            for (int i = 0; i < values.Length; i++)
                 result.AppendLine(String.Join(";", values[i]));
 
             File.WriteAllText(path, result.ToString(), Encoding.GetEncoding(1251));

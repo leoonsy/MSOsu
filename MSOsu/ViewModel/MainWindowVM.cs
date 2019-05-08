@@ -33,6 +33,39 @@ namespace MSOsu.ViewModel
         }
 
         /// <summary>
+        /// Спрогнозированное значение выходного параметра в нормализованном виде
+        /// </summary>
+        private double forecastingYNormalized;
+        public double ForecastingYNormalized
+        {
+            get => forecastingYNormalized;
+            set
+            {
+                forecastingYNormalized = value;
+                RaisePropetyChanged("ForecastingYNormalized");
+            }
+        }
+
+        /// <summary>
+        /// Спрогнозированное значение выходного параметра
+        /// </summary>
+        private double forecastingY;
+        public double ForecastingY
+        {
+            get => forecastingY;
+            set
+            {
+                forecastingY = value;
+                RaisePropetyChanged("ForecastingY");
+            }
+        }
+
+        /// <summary>
+        /// Коэффициенты параметров для прогнозированного значения
+        /// </summary>
+        public string[] ForecastingParamCoeffs;
+
+        /// <summary>
         /// Таблица с нормированными данными
         /// </summary>
         public double[][] TableNormalizedValues;
@@ -220,9 +253,32 @@ namespace MSOsu.ViewModel
                             IntervalEstimateEquation = regression.GetIntervalEstimateEquation();
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
+
+                            //TableControl.SaveTable(TableHeaders, MatrixOperations.Transpose(TableNormalizedValues), "kek.csv");
                         }
                     });
                 return loadTableCommand;
+            }
+        }
+
+        /// <summary>
+        /// Предсказать выходной параметр
+        /// </summary>
+        IDelegateCommand checkForecastCommand;
+        public IDelegateCommand CheckForecastCommand
+        {
+            get
+            {
+                if (checkForecastCommand == null)
+                    checkForecastCommand = new DelegateCommand(obj =>
+                    {
+                        double[] paramCoeffs = ForecastingParamCoeffs.Select(e => double.Parse(e)).ToArray();
+                        double result = RegressionCoeffs[0];
+                        for (int i = 0; i < paramCoeffs.Length; i++)
+                            result += RegressionCoeffs[i + 1] * paramCoeffs[i];
+                        ForecastingYNormalized = result;
+                    });
+                return checkForecastCommand;
             }
         }
 

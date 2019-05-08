@@ -183,7 +183,7 @@ namespace MSOsu.View
                 case ViewType.Regression:
                     if (regression == null)
                     {
-                        regression = new RegressionUC();
+                        regression = new RegressionUC(mainVM);
                         //формирование коэффициентов уравнения
                         string[][] regressionCoeffs = new string[4][];
                         regressionCoeffs[0] = new string[] { "-" }.Concat(mainVM.TableHeaders.Skip(1)).ToArray();
@@ -197,9 +197,10 @@ namespace MSOsu.View
                         regression.CoeffTable.Highlight(e => e >= mainVM.TKritEquationCoeffsSign, Brushes.LightGreen, 3);
                         //--формирование уравнения регрессии в виде строки--//
                         string equation = "y = ";
-                        for (int i = 1; i < regressionCoeffs[1].Length; i++)
-                            equation += double.Parse(regressionCoeffs[1][i]) < 0 ? $"({regressionCoeffs[1][i]})⋅x{i} + " : $"{regressionCoeffs[1][i]}⋅x{i} + ";
-                        equation += regressionCoeffs[1][0].ToString();
+                        double[] regressionCoeffsVMCopy = mainVM.RegressionCoeffs.Select(e => Math.Round(e, round)).ToArray();
+                        for (int i = 1; i < regressionCoeffsVMCopy.Length; i++)
+                            equation += regressionCoeffsVMCopy[i] < 0 ? $"({regressionCoeffsVMCopy[i]})⋅x{i} + " : $"{regressionCoeffsVMCopy[i]}⋅x{i} + ";
+                        equation += regressionCoeffsVMCopy[0];
                         //--//
                         regression.SetRegressionEquation(equation);
 
@@ -215,6 +216,9 @@ namespace MSOsu.View
                         regression.ErrorTable.SetTable(MatrixOperations.Round(errors, round), null, new string[] { "Y исходные", "Ŷ расчетные (Ŷ = X*b)", "Абсолютная ошибка (Y - Ŷ)", "Интервальная оценка Ỹ" });
                         regression.SetApproximationError(Math.Round(mainVM.ApproximationError * 100, round).ToString());
                         //--//
+
+                        //Формирование прогнозирования//
+                        regression.SetForecast(regressionCoeffsVMCopy);
                     }
                     cpMainContent.Content = regression;
                     break;
