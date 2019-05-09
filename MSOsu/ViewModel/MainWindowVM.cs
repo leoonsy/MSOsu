@@ -14,6 +14,11 @@ namespace MSOsu.ViewModel
     public class MainWindowVM : INotifyPropertyChanged
     {
         /// <summary>
+        /// Объект для работы с регрессией
+        /// </summary>
+        Regression regression;
+
+        /// <summary>
         /// Заголовки таблицы
         /// </summary>
         public string[] TableHeaders;
@@ -33,55 +38,22 @@ namespace MSOsu.ViewModel
         }
 
         /// <summary>
-        /// Спрогнозированное значение выходного параметра в нормализованном виде
+        /// Матрица с нормированными данными
         /// </summary>
-        private double forecastingYNormalized;
-        public double ForecastingYNormalized
-        {
-            get => forecastingYNormalized;
-            set
-            {
-                forecastingYNormalized = value;
-                RaisePropetyChanged("ForecastingYNormalized");
-            }
-        }
+        public double[][] MatrixNormalizedValues;
 
         /// <summary>
-        /// Спрогнозированное значение выходного параметра
+        /// Матрица с описательной статистикой для нормализированной выборки
         /// </summary>
-        private double forecastingY;
-        public double ForecastingY
-        {
-            get => forecastingY;
-            set
-            {
-                forecastingY = value;
-                RaisePropetyChanged("ForecastingY");
-            }
-        }
+        public double[][] MatrixNormalizedStatisticsValues;
 
         /// <summary>
-        /// Коэффициенты параметров для прогнозированного значения
+        /// Матрица с проверкой на нормальность распределения
         /// </summary>
-        public string[] ForecastingParamCoeffs;
+        public string[][] MatrixNormalDistribution;
 
         /// <summary>
-        /// Таблица с нормированными данными
-        /// </summary>
-        public double[][] TableNormalizedValues;
-
-        /// <summary>
-        /// Таблица с описательной статистикой для нормализированной выборки
-        /// </summary>
-        public double[][] TableNormalizedStatisticsValues;
-
-        /// <summary>
-        /// Таблица с проверкой на нормальность распределения
-        /// </summary>
-        public string[][] TableNormalDistribution;
-
-        /// <summary>
-        /// Таблица с проверкой на нормальность распределения
+        /// Заголовки строк для нормального распределения
         /// </summary>
         public string[] NormalDistributionHeaders = new string[] { "Значение χ2", "Нормальность распределения" };
 
@@ -108,7 +80,7 @@ namespace MSOsu.ViewModel
         /// <summary>
         /// Критические значение хи-квадрат
         /// </summary>
-        public double ChiSquareKrit;
+        public double ChiSquareCrit;
 
         /// <summary>
         /// Матрица для множественной корреляции (с коэффициентом детерминации и значимостью)
@@ -124,12 +96,12 @@ namespace MSOsu.ViewModel
         /// <summary>
         /// Критическое значение Стьюдента (для определения значимости корреляции)
         /// </summary>
-        public double TStudentKritSign;
+        public double TStudentCritSign;
 
         /// <summary>
         /// Критическое значение Фишера (для определения значимости множественной корреляции)
         /// </summary>
-        public double FKritSignMultiple;
+        public double FCritSignMultiple;
 
         /// <summary>
         /// Коэффициенты регрессии
@@ -154,7 +126,7 @@ namespace MSOsu.ViewModel
         /// <summary>
         /// F-критическое для значимости уравнения регрессии
         /// </summary>
-        public double FKritEquationSign;
+        public double FСritEquationSign;
 
         /// <summary>
         /// Значимость уравнения регрессии
@@ -169,7 +141,7 @@ namespace MSOsu.ViewModel
         /// <summary>
         /// T-критическое для значимости коэффициентов уравнения регрессии
         /// </summary>
-        public double TKritEquationCoeffsSign;
+        public double TCritEquationCoeffsSign;
 
         /// <summary>
         /// Интервальная оценка коэффициентов
@@ -180,6 +152,133 @@ namespace MSOsu.ViewModel
         /// Интервальная оценка уравнения (истинных значений)
         /// </summary>
         public double[] IntervalEstimateEquation;
+
+        /// <summary>
+        /// Интервал (для каждого параметра), на который делили при нормализации
+        /// </summary>
+        public double[] IntervalNormallized;
+
+        /// <summary>
+        /// Коэффициенты параметров для прогнозированного значения
+        /// </summary>
+        public string[] PredicationParamCoeffs;
+
+        /// <summary>
+        /// Спрогнозированное значение выходного параметра в нормализованном виде
+        /// </summary>
+        private double predictionYNormalized;
+        public double PredictionYNormalized
+        {
+            get => predictionYNormalized;
+            set
+            {
+                predictionYNormalized = value;
+                RaisePropetyChanged("PredictionYNormalized");
+            }
+        }
+
+        /// <summary>
+        /// Интервал предсказания значения выходного параметра в нормализованном виде
+        /// </summary>
+        private double predictionIntervalYNormalized;
+        public double PredictionIntervalYNormalized
+        {
+            get => predictionIntervalYNormalized;
+            set
+            {
+                predictionIntervalYNormalized = value;
+                RaisePropetyChanged("PredictionIntervalYNormalized");
+            }
+        }
+
+        /// <summary>
+        /// Спрогнозированное значение выходного параметра
+        /// </summary>
+        private double predictionY;
+        public double PredictionY
+        {
+            get => predictionY;
+            set
+            {
+                predictionY = value;
+                RaisePropetyChanged("PredictionY");
+            }
+        }
+
+        /// <summary>
+        /// Интервал предсказания значения выходного параметра
+        /// </summary>
+        private double predictionIntervalY;
+        public double PredictionIntervalY
+        {
+            get => predictionIntervalY;
+            set
+            {
+                predictionIntervalY = value;
+                RaisePropetyChanged("PredictionIntervalY");
+            }
+        }
+
+        /// <summary>
+        /// Коэффициенты параметров для прогнозированного значения 2
+        /// </summary>
+        public string[] PredicationParamCoeffs2;
+
+        /// <summary>
+        /// Спрогнозированное значение выходного параметра в нормализованном виде 2
+        /// </summary>
+        private double predictionYNormalized2;
+        public double PredictionYNormalized2
+        {
+            get => predictionYNormalized2;
+            set
+            {
+                predictionYNormalized2 = value;
+                RaisePropetyChanged("PredictionYNormalized2");
+            }
+        }
+
+        /// <summary>
+        /// Интервал предсказания значения выходного параметра в нормализованном виде 2
+        /// </summary>
+        private double predictionIntervalYNormalized2;
+        public double PredictionIntervalYNormalized2
+        {
+            get => predictionIntervalYNormalized2;
+            set
+            {
+                predictionIntervalYNormalized2 = value;
+                RaisePropetyChanged("PredictionIntervalYNormalized2");
+            }
+        }
+
+        /// <summary>
+        /// Спрогнозированное значение выходного параметра 2
+        /// </summary>
+        private double predictionY2;
+        public double PredictionY2
+        {
+            get => predictionY2;
+            set
+            {
+                predictionY2 = value;
+                RaisePropetyChanged("PredictionY2");
+            }
+        }
+
+        /// <summary>
+        /// Интервал предсказания значения выходного параметра 2
+        /// </summary>
+        private double predictionIntervalY2;
+        public double PredictionIntervalY2
+        {
+            get => predictionIntervalY2;
+            set
+            {
+                predictionIntervalY2 = value;
+                RaisePropetyChanged("PredictionIntervalY2");
+            }
+        }
 
         IViewService viewService; //сервис для отображения страниц
         IDialogService dialogService; //сервис для работы с диалоговыми окнами
@@ -223,34 +322,36 @@ namespace MSOsu.ViewModel
                         {
                             (TableHeaders, TableValues) = TableControl.GetTable(dialogService.GetFilePath());
                             //статистики
-                            TableNormalizedValues = DescriptiveStatistic.GetNormalizedValues(TableValues);
-                            TableNormalizedStatisticsValues = DescriptiveStatistic.GetTotalStatistic(TableNormalizedValues);
+                            MatrixNormalizedValues = DescriptiveStatistic.GetNormalizedValues(TableValues);
+                            IntervalNormallized = DescriptiveStatistic.GetNormallizedCoeffs(TableValues);
+                            MatrixNormalizedStatisticsValues = DescriptiveStatistic.GetTotalStatistic(MatrixNormalizedValues);
                             //нормальное распределение
-                            TableNormalDistribution = PiersonTest.GetNormalDistributionTable(TableNormalizedValues);
-                            ChiSquareKrit = PiersonTest.GetChiSquareKrit();
+                            MatrixNormalDistribution = PiersonTest.GetNormalDistributionTable(MatrixNormalizedValues);
+                            ChiSquareCrit = PiersonTest.GetChiSquareKrit();
                             //корреляция
-                            CorrelationsAnalysis correlations = new CorrelationsAnalysis(TableNormalizedValues);
+                            CorrelationsAnalysis correlations = new CorrelationsAnalysis(MatrixNormalizedValues);
                             PairCorrelationsMatrix = correlations.GetPairCorrelationsMatrix();
                             ParticalCorrelationsMatrix = correlations.GetParticalCorrelationsMatrix();
                             PairSignificanceCorrelationsMatrix = correlations.GetPairSignificanceCorrelationMatrix();
                             ParticalSignificanceCorrelationsMatrix = correlations.GetParticalSignificanceCorrelationMatrix();
-                            TStudentKritSign = DataBase.GetTCrit(TableNormalizedValues[0].Length - 2);
+                            TStudentCritSign = DataBase.GetTCrit(MatrixNormalizedValues[0].Length - 2);
                             MultipleCorrelationMatrix = correlations.GetMultipleCorrelationMatrix();
                             int k = TableValues.Length;
                             int n = TableValues[0].Length;
-                            FKritSignMultiple = DataBase.GetFCrit(k, n - k - 1);
+                            FCritSignMultiple = DataBase.GetFCrit(k, n - k - 1);
                             //регрессия
-                            Regression regression = new Regression(TableNormalizedValues);
+                            regression = new Regression(MatrixNormalizedValues);
                             RegressionCoeffs = regression.GetRegressionCoeffs();
                             CalculatedY = regression.GetCalculatedY();
                             AbsoluteErrorY = regression.GetAbsoluteError();
                             ApproximationError = regression.GetApproximationError();
-                            FKritEquationSign = regression.GetFKritEquation();
+                            FСritEquationSign = regression.GetFСritEquation();
                             SignificanceEquation = regression.GetSignificanceEquation();
                             SignificanceEquationCoeffs = regression.GetSignificanceEquationCoeffs();
-                            TKritEquationCoeffsSign = regression.GetTKritEquationCoeffs();
+                            TCritEquationCoeffsSign = regression.GetTKritEquationCoeffs();
                             IntervalEstimateCoeffs = regression.GetIntervalEstimateCoeffs();
                             IntervalEstimateEquation = regression.GetIntervalEstimateEquation();
+
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
 
@@ -264,21 +365,74 @@ namespace MSOsu.ViewModel
         /// <summary>
         /// Предсказать выходной параметр
         /// </summary>
-        IDelegateCommand checkForecastCommand;
-        public IDelegateCommand CheckForecastCommand
+        IDelegateCommand checkPredicationCommand;
+        public IDelegateCommand CheckPredicationCommand
         {
             get
             {
-                if (checkForecastCommand == null)
-                    checkForecastCommand = new DelegateCommand(obj =>
+                if (checkPredicationCommand == null)
+                    checkPredicationCommand = new DelegateCommand(obj =>
                     {
-                        double[] paramCoeffs = ForecastingParamCoeffs.Select(e => double.Parse(e)).ToArray();
+                        double[] paramCoeffs = PredicationParamCoeffs.Select(e => double.Parse(e)).ToArray();
                         double result = RegressionCoeffs[0];
                         for (int i = 0; i < paramCoeffs.Length; i++)
                             result += RegressionCoeffs[i + 1] * paramCoeffs[i];
-                        ForecastingYNormalized = result;
+                        PredictionYNormalized = result;
+                        PredictionIntervalYNormalized = regression.GetIntervalPredication(new double[] { 1 }.Concat(paramCoeffs).ToArray());
+                        PredictionY = PredictionYNormalized * IntervalNormallized[0];
+                        PredictionIntervalY = PredictionIntervalYNormalized * IntervalNormallized[0];
                     });
-                return checkForecastCommand;
+                return checkPredicationCommand;
+            }
+        }
+
+        /// <summary>
+        /// Предсказать выходной параметр 2 (для исходных коэффициентов)
+        /// </summary>
+        IDelegateCommand checkPredicationCommand2;
+        public IDelegateCommand CheckPredicationCommand2
+        {
+            get
+            {
+                if (checkPredicationCommand2 == null)
+                    checkPredicationCommand2 = new DelegateCommand(obj =>
+                    {
+                        double[] paramCoeffs2 = Enumerable.Range(0, PredicationParamCoeffs2.Length).Select(idx => double.Parse(PredicationParamCoeffs2[idx]) / IntervalNormallized[idx + 1]).ToArray();
+                        double result = RegressionCoeffs[0];
+                        for (int i = 0; i < paramCoeffs2.Length; i++)
+                            result += RegressionCoeffs[i + 1] * paramCoeffs2[i];
+                        PredictionYNormalized2 = result;
+                        PredictionIntervalYNormalized2 = regression.GetIntervalPredication(new double[] { 1 }.Concat(paramCoeffs2).ToArray());
+                        PredictionY2 = PredictionYNormalized2 * IntervalNormallized[0];
+                        PredictionIntervalY2 = PredictionIntervalYNormalized2 * IntervalNormallized[0];
+                    });
+                return checkPredicationCommand2;
+            }
+        }
+
+        /// <summary>
+        /// Заголовки таблицы для регрессии
+        /// </summary>
+        public string[] TableHeadersRegression;
+        /// <summary>
+        /// 
+        /// </summary>
+        public double[] TableNormalizedValuesRegression;
+        private bool[] EnabledParams;
+        /// <summary>
+        /// Посчитать регрессию
+        /// </summary>
+        IDelegateCommand calculateRegressionCommand;
+        public IDelegateCommand CalculateRegressionCommand
+        {
+            get
+            {
+                if (calculateRegressionCommand == null)
+                    calculateRegressionCommand = new DelegateCommand(obj =>
+                    {
+                        
+                    });
+                return calculateRegressionCommand;
             }
         }
 

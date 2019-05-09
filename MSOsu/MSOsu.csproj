@@ -96,6 +96,7 @@
     <Compile Include="View\RegressionUC.xaml.cs">
       <DependentUpon>RegressionUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\RoundConverter.cs" />
     <Compile Include="View\SignificanceUC.xaml.cs">
       <DependentUpon>SignificanceUC.xaml</DependentUpon>
     </Compile>

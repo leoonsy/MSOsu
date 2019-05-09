@@ -183,7 +183,6 @@ namespace MSOsu.Model
         /// <summary>
         /// Получить массив нормированных значений
         /// </summary>
-        /// <param name="table"></param>
         /// <returns></returns>
         public static double[][] GetNormalizedValues(double[][] values)
         {
@@ -199,15 +198,15 @@ namespace MSOsu.Model
         /// <summary>
         /// Получить таблицу со статистиками
         /// </summary>
-        /// <param name="table"></param>
+        /// <param name="matrix"></param>
         /// <param name="round"></param>
         /// <returns></returns>
-        public static double[][] GetTotalStatistic(double[][] table)
+        public static double[][] GetTotalStatistic(double[][] matrix)
         {
-            double[][] result = new double[Headers.Length][].Select(e => e = new double[table.Length]).ToArray();
-            for (int i = 0; i < table.Length; i++)
+            double[][] result = new double[Headers.Length][].Select(e => e = new double[matrix.Length]).ToArray();
+            for (int i = 0; i < matrix.Length; i++)
             {
-                DescriptiveStatistic stat = new DescriptiveStatistic(table[i]);
+                DescriptiveStatistic stat = new DescriptiveStatistic(matrix[i]);
                 int j = 0;
                 foreach (double value in stat.GetNextStatistic())
                 {
@@ -241,6 +240,11 @@ namespace MSOsu.Model
             yield return LimitError;
             yield return RequiredValuesCount;
             yield return RecalculatedLimitError;
+        }
+
+        public static double[] GetNormallizedCoeffs(double[][] matrix)
+        {
+            return matrix.Select(e => new DescriptiveStatistic(e).Interval).ToArray();
         }
 
         /// <summary>

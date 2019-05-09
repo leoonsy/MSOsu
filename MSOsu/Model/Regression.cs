@@ -133,7 +133,7 @@ namespace MSOsu.Model
         /// Получить стандартную ошибку для коэффициентов (sbj)
         /// </summary>
         /// <returns></returns>
-        public double[] GetStandartErrorOfRegressionCoeff()
+        public double[] GetStandartErrorOfRegressionCoeffs()
         {
             if (standartErrorOfRegressionCoeff != null)
                 return standartErrorOfRegressionCoeff;
@@ -160,7 +160,7 @@ namespace MSOsu.Model
             if (intervalEstimateCoeffs != null)
                 return intervalEstimateCoeffs;
 
-            double[] standartErrorOfRegressionCoeff = GetStandartErrorOfRegressionCoeff();
+            double[] standartErrorOfRegressionCoeff = GetStandartErrorOfRegressionCoeffs();
             double tKrit = GetTKritEquationCoeffs();
             double[] result = new double[standartErrorOfRegressionCoeff.Length];
             for (int i = 0; i < result.Length; i++)
@@ -174,7 +174,7 @@ namespace MSOsu.Model
         /// <returns></returns>
         public double[] GetSignificanceEquationCoeffs()
         {
-            double[] standartErrorOfRegressionCoeff = GetStandartErrorOfRegressionCoeff();
+            double[] standartErrorOfRegressionCoeff = GetStandartErrorOfRegressionCoeffs();
             double[] regressionCoeffs = GetRegressionCoeffs();
             double[] result = new double[matrix.Length];
             for (int i = 0; i < result.Length; i++)
@@ -202,7 +202,7 @@ namespace MSOsu.Model
         /// Получить критическое значение F-крит для определения значимости уравнения регрессии
         /// </summary>
         /// <returns></returns>
-        public double GetFKritEquation()
+        public double GetFСritEquation()
         {
             if (!double.IsNaN(fKrit))
                 return fKrit;
@@ -234,6 +234,27 @@ namespace MSOsu.Model
                 result[i] = tKrit * s * Math.Sqrt(fin);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Получить интервал предсказания
+        /// </summary>
+        /// <param name="paramValues"></param>
+        /// <returns></returns>
+        public double GetIntervalPredication(double[] paramValues)
+        {
+            double tKrit = GetTKritEquationCoeffs();
+            double qOst = GetQost();
+            int k = matrix.Length - 1;
+            int n = matrix[0].Length;
+            double s = Math.Sqrt(qOst / (n - k - 1));
+
+            double[][] x0T = MatrixOperations.Transpose(paramValues);
+            double[][] xTx = MatrixOperations.Mult(MatrixOperations.Transpose(xMatrix), xMatrix);
+            double[][] xTx_ = MatrixOperations.InverseSLAU(xTx);
+            double[][] x0TxTx_ = MatrixOperations.Mult(x0T, xTx_);
+            double fin = MatrixOperations.Mult(x0TxTx_, paramValues)[0] + 1;
+            return tKrit * s * Math.Sqrt(fin);
         }
 
         /// <summary>

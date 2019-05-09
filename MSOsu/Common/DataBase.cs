@@ -11,7 +11,7 @@ namespace MSOsu.Common
         /// <summary>
         /// Таблица распределения Стьюдента
         /// </summary>
-        private static double[] tStudentKrit = new double[] { 12.706,  4.303,  3.182,  2.776,  2.571,  2.447,  2.365,  2.306,  2.262,  2.228,  2.201,  2.179,  2.16,  2.145,  2.131,  2.12,  2.11,  2.101,  2.093,  2.086,  2.08,  2.074,  2.069,  2.064,  2.06,  2.056,  2.052,  2.048,  2.045,  2.042,  2.021,  2.009,  2,  1.99,  1.984,  1.98,  1.972 };
+        private static double[] tStudentСrit = new double[] { 12.706,  4.303,  3.182,  2.776,  2.571,  2.447,  2.365,  2.306,  2.262,  2.228,  2.201,  2.179,  2.16,  2.145,  2.131,  2.12,  2.11,  2.101,  2.093,  2.086,  2.08,  2.074,  2.069,  2.064,  2.06,  2.056,  2.052,  2.048,  2.045,  2.042,  2.021,  2.009,  2,  1.99,  1.984,  1.98,  1.972 };
 
         /// <summary>
         /// Число степеней свободы
@@ -26,20 +26,20 @@ namespace MSOsu.Common
         public static double GetTCrit(int k) //альфа = 0.05
         {
             if (k > kStudent.Last())
-                return tStudentKrit.Last();
+                return tStudentСrit.Last();
             int tIndex = kStudent.ToList().IndexOf(k);
             if (tIndex != -1)
-                return tStudentKrit[tIndex];
+                return tStudentСrit[tIndex];
             int y = 0;
             while (kStudent[y] < k)
                 y++;
-            return tStudentKrit[y - 1] + (tStudentKrit[y] - tStudentKrit[y - 1]) * (k - kStudent[y - 1]) / (kStudent[y] - kStudent[y - 1]);
+            return tStudentСrit[y - 1] + (tStudentСrit[y] - tStudentСrit[y - 1]) * (k - kStudent[y - 1]) / (kStudent[y] - kStudent[y - 1]);
         }
 
         /// <summary>
         /// Таблица распределения Фишера
         /// </summary>
-        public static double[][] FFisherKrit = new double[][]
+        public static double[][] FFisherСrit = new double[][]
             {
                 new double[] { 161.4476,  18.5128,  10.128,  7.7086,  6.6079,  5.9874,  5.5914,  5.3177,  5.1174,  4.9646,  4.8443,  4.7472,  4.6672,  4.6001,  4.5431,  4.494,  4.4513,  4.4139,  4.3807,  4.3512,  4.3248,  4.3009,  4.2793,  4.2597,  4.2417,  4.2252,  4.21,  4.196,  4.183,  4.1709,  4.0847,  4.0012,  3.9201,  3.8415},
                 new double[] { 199.5,  19,  9.5521,  6.9443,  5.7861,  5.1433,  4.7374,  4.459,  4.2565,  4.1028,  3.9823,  3.8853,  3.8056,  3.7389,  3.6823,  3.6337,  3.5915,  3.5546,  3.5219,  3.4928,  3.4668,  3.4434,  3.4221,  3.4028,  3.3852,  3.369,  3.3541,  3.3404,  3.3277,  3.3158,  3.2317,  3.1504,  3.0718,  2.9957},
@@ -80,12 +80,12 @@ namespace MSOsu.Common
             int vv1 = Fv1.ToList().FindIndex(x => x == v1);
             int vv2 = Fv2.ToList().FindIndex(x => x == v2);
             if (vv1 != -1 && vv2 != -1)
-                return FFisherKrit[vv1][vv2];
+                return FFisherСrit[vv1][vv2];
 
             int y, w;
             if (vv1 != -1)
             {
-                double[] fLine = FFisherKrit[vv1];
+                double[] fLine = FFisherСrit[vv1];
                 y = 0;
                 while (Fv2[y] < v2)
                     y++;
@@ -93,7 +93,7 @@ namespace MSOsu.Common
             }
             if (vv2 != -1)
             {
-                double[] fline = MatrixOperations.Transpose(FFisherKrit)[vv2];
+                double[] fline = MatrixOperations.Transpose(FFisherСrit)[vv2];
                 y = 0;
                 while (Fv1[y] < v1)
                     y++;
@@ -104,8 +104,8 @@ namespace MSOsu.Common
                 y++;
             while (Fv2[w] < v2)
                 w++;
-            double t1 = FFisherKrit[y - 1][w - 1] + (FFisherKrit[y - 1][w] - FFisherKrit[y - 1][w - 1]) * (v2 - Fv2[w - 1]) / (Fv2[w] - Fv2[w - 1]);
-            double t2 = FFisherKrit[y][w - 1] + (FFisherKrit[y][w] - FFisherKrit[y][w - 1]) * (v2 - Fv2[w - 1]) / (Fv2[w] - Fv2[w - 1]);
+            double t1 = FFisherСrit[y - 1][w - 1] + (FFisherСrit[y - 1][w] - FFisherСrit[y - 1][w - 1]) * (v2 - Fv2[w - 1]) / (Fv2[w] - Fv2[w - 1]);
+            double t2 = FFisherСrit[y][w - 1] + (FFisherСrit[y][w] - FFisherСrit[y][w - 1]) * (v2 - Fv2[w - 1]) / (Fv2[w] - Fv2[w - 1]);
             return t1 + (t2 - t1) * (v1 - Fv1[y - 1]) / (Fv1[y] - Fv1[y - 1]);
         }
     }

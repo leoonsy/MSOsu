@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:MSOsu.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" FontSize="14">
+    <UserControl.Resources>
+        <local:RoundConverter x:Key="myRoundConverter" />
+    </UserControl.Resources>
     <Grid>
         <StackPanel>
             <Border Padding="7 5 5 5" Background="#FFF7F7F7">
@@ -13,13 +16,13 @@
             </Border>
             <WrapPanel Margin="7 5 5 5">
                 <TextBlock Text="Анализ коэффициентов уравнения (t-крит = "  />
-                <TextBlock x:Name="tblTKrit"  />
+                <TextBlock x:Name="tblTCrit"  />
                 <TextBlock Text="):"  />
             </WrapPanel>
             <ContentPresenter x:Name="cpCoeffTable" />
             <WrapPanel Margin="7 5 5 2">
                 <TextBlock Text="Значимость уравнения регрессии (F-крит = " />
-                <TextBlock x:Name="tblFkrit" />
+                <TextBlock x:Name="tblFCrit" />
                 <TextBlock Text="): " />
                 <TextBlock x:Name="tblSignificanceEquation" />
             </WrapPanel>
@@ -29,15 +32,44 @@
             </WrapPanel>
             <TextBlock Margin="7 5 5 5" Text="Оценка уравнения:" />
             <ContentPresenter x:Name="cpErrorTable" />
-            <WrapPanel Margin="7 5 5 0">
+            <WrapPanel Margin="7 5 5 5">
                 <TextBlock Text="Ошибка аппроксимации: " />
                 <TextBlock x:Name="tblApproximationError" />
                 <TextBlock Text="%" />
             </WrapPanel>
-            <TextBlock Text="Введите значения параметров в уравнение для прогнозирования:" Margin="7 5 5 0" />
-            <WrapPanel x:Name="wpForecast" Margin="7 5 5 0" />
-            <Button Content="Спрогнозировать"  Padding="5" HorizontalAlignment="Left" Margin="7 5 5 0" Command="{Binding CheckForecastCommand}"/>
-            <TextBlock x:Name="tblForecastResult" Margin="7 5 5 0" Text="{Binding ForecastingYNormalized}" />
+            <Separator />
+            <TextBlock Text="Введите значения параметров в НОРМИРОВАННОМ виде в уравнение для прогнозирования:" Margin="7 3 5 0" />
+            <WrapPanel x:Name="wpPredicationCoeffs" Margin="7 5 5 0" />
+            <WrapPanel Margin="7 5 5 0">
+                <Button Content="Спрогнозировать" Margin="0 0 10 0"  Padding="5" HorizontalAlignment="Left" Command="{Binding CheckPredicationCommand}" VerticalAlignment="Center"/>
+                <WrapPanel x:Name="wpPredicationResult" Visibility="Collapsed" VerticalAlignment="Center">
+                    <TextBlock Text="ỹ = " />
+                    <TextBlock Text="{Binding PredictionYNormalized, Converter={StaticResource myRoundConverter}}" />
+                    <TextBlock Text=" ± " />
+                    <TextBlock Text="{Binding PredictionIntervalYNormalized, Converter={StaticResource myRoundConverter}}" />
+                    <TextBlock Text=" (норм.) ->" />
+                    <TextBlock Text="{Binding PredictionY, Converter={StaticResource myRoundConverter}}" />
+                    <TextBlock Text=" ± " />
+                    <TextBlock Text="{Binding PredictionIntervalY, Converter={StaticResource myRoundConverter}}" />
+                    <TextBlock Text=" (исх.)" />
+                </WrapPanel>
+            </WrapPanel>
+            <TextBlock Text="Введите значения параметров в ИСХОДНОМ виде в уравнение для прогнозирования:" Margin="7 5 5 0" />
+            <WrapPanel x:Name="wpPredicationCoeffs2" Margin="7 5 5 0" />
+            <WrapPanel Margin="7 5 5 0">
+                <Button Content="Спрогнозировать" Margin="0 0 10 0"  Padding="5" HorizontalAlignment="Left" Command="{Binding CheckPredicationCommand2}" VerticalAlignment="Center"/>
+                <WrapPanel x:Name="wpPredicationResult2" Visibility="Collapsed" VerticalAlignment="Center">
+                    <TextBlock Text="ỹ = " />
+                    <TextBlock Text="{Binding PredictionYNormalized2, Converter={StaticResource myRoundConverter}}" />
+                    <TextBlock Text=" ± " />
+                    <TextBlock Text="{Binding PredictionIntervalYNormalized2, Converter={StaticResource myRoundConverter}}" />
+                    <TextBlock Text=" (норм.) ->" />
+                    <TextBlock Text="{Binding PredictionY2, Converter={StaticResource myRoundConverter}}" />
+                    <TextBlock Text=" ± " />
+                    <TextBlock Text="{Binding PredictionIntervalY2, Converter={StaticResource myRoundConverter}}" />
+                    <TextBlock Text=" (исх.)" />
+                </WrapPanel>
+            </WrapPanel>
         </StackPanel>
     </Grid>
 </UserControl>
