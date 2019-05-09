@@ -93,6 +93,9 @@
     <Compile Include="View\CorrelationSignDiagram.xaml.cs">
       <DependentUpon>CorrelationSignDiagram.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\MetroMessage.xaml.cs">
+      <DependentUpon>MetroMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\RegressionParamsControlUC.xaml.cs">
       <DependentUpon>RegressionParamsControlUC.xaml</DependentUpon>
     </Compile>
@@ -150,6 +153,10 @@
     <Page Include="View\CorrelationSignDiagram.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MetroMessage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\RegressionParamsControlUC.xaml">
       <SubType>Designer</SubType>

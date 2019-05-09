@@ -364,7 +364,16 @@ namespace MSOsu.ViewModel
                 if (checkPredicationCommand == null)
                     checkPredicationCommand = new DelegateCommand(obj =>
                     {
-                        double[] paramCoeffs = PredicationParamCoeffs.Select(e => double.Parse(e)).ToArray();
+                        double[] paramCoeffs = null;
+                        try
+                        {
+                            paramCoeffs = PredicationParamCoeffs.Select(e => double.Parse(e)).ToArray();
+                        }
+                        catch (Exception)
+                        {
+                            dialogService.ShowErrorMessage("Неверно введены значения параметров", "Ошибка");
+                            return;
+                        }
                         double result = RegressionCoeffs[0];
                         for (int i = 0; i < paramCoeffs.Length; i++)
                             result += RegressionCoeffs[i + 1] * paramCoeffs[i];
@@ -388,7 +397,16 @@ namespace MSOsu.ViewModel
                 if (checkPredicationCommand2 == null)
                     checkPredicationCommand2 = new DelegateCommand(obj =>
                     {
-                        double[] paramCoeffs2 = Enumerable.Range(0, PredicationParamCoeffs2.Length).Select(idx => double.Parse(PredicationParamCoeffs2[idx]) / IntervalNormallizedRegression[idx + 1]).ToArray();
+                        double[] paramCoeffs2 = null;
+                        try
+                        {
+                            paramCoeffs2 = Enumerable.Range(0, PredicationParamCoeffs2.Length).Select(idx => double.Parse(PredicationParamCoeffs2[idx]) / IntervalNormallizedRegression[idx + 1]).ToArray();
+                        }
+                        catch(Exception)
+                        {
+                            dialogService.ShowErrorMessage("Неверно введены значения параметров", "Ошибка");
+                            return;
+                        }
                         double result = RegressionCoeffs[0];
                         for (int i = 0; i < paramCoeffs2.Length; i++)
                             result += RegressionCoeffs[i + 1] * paramCoeffs2[i];

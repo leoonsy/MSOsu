@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System.Windows;
 using System.Text.RegularExpressions;
+using MSOsu.View;
 
 namespace MSOsu.Service.DialogServices
 {
@@ -49,12 +50,16 @@ namespace MSOsu.Service.DialogServices
 
         public void ShowErrorMessage(string message, string caption) 
         {
-            MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+            MetroMessage metroDialog = new MetroMessage();
+            metroDialog.SetMessage(message, caption, true);
+            metroDialog.ShowDialog();
         }
 
         public void ShowInformationMessage(string message, string caption) 
         {
-            MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+            MetroMessage metroDialog = new MetroMessage();
+            metroDialog.SetMessage(message, caption, false);
+            metroDialog.ShowDialog();
         }
 
         public bool ShowChoiceMessage(string message, string caption) 

@@ -57,8 +57,8 @@
             <TextBlock Text="Введите значения параметров в ИСХОДНОМ виде в уравнение для прогнозирования:" Margin="7 5 5 0" />
             <WrapPanel x:Name="wpPredicationCoeffs2" Margin="7 5 5 0" />
             <WrapPanel Margin="7 5 5 0">
-                <Button Content="Спрогнозировать" Margin="0 0 10 0"  Padding="5" HorizontalAlignment="Left" Command="{Binding CheckPredicationCommand2}" VerticalAlignment="Center"/>
-                <WrapPanel x:Name="wpPredicationResult2" Visibility="Collapsed" VerticalAlignment="Center">
+                <Button Content="Спрогнозировать" Margin="0 0 10 5"  Padding="5" HorizontalAlignment="Left" Command="{Binding CheckPredicationCommand2}" VerticalAlignment="Center"/>
+                <WrapPanel x:Name="wpPredicationResult2" Visibility="Collapsed" VerticalAlignment="Center" >
                     <TextBlock Text="ỹ = " VerticalAlignment="Center" />
                     <TextBlock Text="{Binding PredictionYNormalized2, Converter={StaticResource myRoundConverter}}"  />
                     <TextBlock Text=" ± " VerticalAlignment="Center" />
