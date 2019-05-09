@@ -49,7 +49,8 @@ namespace MSOsu.View
         SignificanceUC significanceCorrelationsUC = null;
         DataTableUC multipleCorrelationUC = null;
         CorrelationDiagramMainUC correlationDiagramPageUC = null;
-        RegressionUC regression = null;
+        RegressionUC regressionUC = null;
+        RegressionParamsControlUC regressionParamsControlUC = null;
         /// <summary>
         /// Загрузить контент
         /// </summary>
@@ -72,7 +73,7 @@ namespace MSOsu.View
                     {
                         normalDataUC = new DataTableUC();
                         normalDataUC.SetHeader("Исходные данные:");
-                        normalDataUC.Table.SetTable( MatrixOperations.Round(MatrixOperations.Transpose(mainVM.TableValues), round), mainVM.TableHeaders);
+                        normalDataUC.Table.SetTable( MatrixOperations.Round(MatrixOperations.Transpose(mainVM.MatrixValues), round), mainVM.MatrixHeaders);
                     }
                     cpMainContent.Content = normalDataUC;
                     break;
@@ -81,7 +82,7 @@ namespace MSOsu.View
                     {
                         normalizedDataUC = new DataTableUC();
                         normalizedDataUC.SetHeader("Нормированные данные:");
-                        normalizedDataUC.Table.SetTable(MatrixOperations.Round(MatrixOperations.Transpose(mainVM.MatrixNormalizedValues), round), mainVM.TableHeaders);
+                        normalizedDataUC.Table.SetTable(MatrixOperations.Round(MatrixOperations.Transpose(mainVM.MatrixNormalizedValues), round), mainVM.MatrixHeaders);
                     }
                     cpMainContent.Content = normalizedDataUC;
                     break;
@@ -90,7 +91,7 @@ namespace MSOsu.View
                     {
                         normilizeStatisticsUC = new DataTableUC();
                         normilizeStatisticsUC.SetHeader("Описательная статистика для нормированной выборки:");
-                        normilizeStatisticsUC.Table.SetTable(MatrixOperations.Round(MatrixOperations.Transpose(mainVM.MatrixNormalizedStatisticsValues), round), mainVM.TableHeaders, mainVM.StatisticsHeaders);
+                        normilizeStatisticsUC.Table.SetTable(MatrixOperations.Round(MatrixOperations.Transpose(mainVM.MatrixNormalizedStatisticsValues), round), mainVM.MatrixHeaders, mainVM.StatisticsHeaders);
                     }
                     cpMainContent.Content = normilizeStatisticsUC;
                     break;
@@ -99,7 +100,7 @@ namespace MSOsu.View
                     {
                         normalDistributionUC = new DataTableUC();
                         normalDistributionUC.SetHeader($"Проверка гипотезы о нормальности распределения выборок (χ2-крит = {mainVM.ChiSquareCrit}):");
-                        normalDistributionUC.Table.SetTable(mainVM.MatrixNormalDistribution, mainVM.TableHeaders, mainVM.NormalDistributionHeaders);
+                        normalDistributionUC.Table.SetTable(mainVM.MatrixNormalDistribution, mainVM.MatrixHeaders, mainVM.NormalDistributionHeaders);
                     }
                     cpMainContent.Content = normalDistributionUC;
                     break;
@@ -108,7 +109,7 @@ namespace MSOsu.View
                     {
                         pairCorrelationsUC = new DataTableUC();
                         pairCorrelationsUC.SetHeader($"Матрица парных корреляций:");
-                        pairCorrelationsUC.Table.SetTable(MatrixOperations.Round(mainVM.PairCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
+                        pairCorrelationsUC.Table.SetTable(MatrixOperations.Round(mainVM.PairCorrelationsMatrix, round), mainVM.MatrixHeaders, mainVM.MatrixHeaders);
                         pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.3 && Math.Abs(e) < 0.5, Brushes.LightGreen);
                         pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, new SolidColorBrush(Color.FromArgb(0xFF, 0xDF, 0x9B, 0xFF)));
                         pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, Brushes.Orange);
@@ -123,7 +124,7 @@ namespace MSOsu.View
                     {
                         particalCorrelationsUC = new DataTableUC();
                         particalCorrelationsUC.SetHeader($"Матрица частных корреляций:");
-                        particalCorrelationsUC.Table.SetTable(MatrixOperations.Round(mainVM.ParticalCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
+                        particalCorrelationsUC.Table.SetTable(MatrixOperations.Round(mainVM.ParticalCorrelationsMatrix, round), mainVM.MatrixHeaders, mainVM.MatrixHeaders);
                         particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.3 && Math.Abs(e) < 0.5, Brushes.LightGreen);
                         particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, new SolidColorBrush(Color.FromArgb(0xFF, 0xDF, 0x9B, 0xFF)));
                         particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, Brushes.Orange);
@@ -138,10 +139,10 @@ namespace MSOsu.View
                     {
                         significanceCorrelationsUC = new SignificanceUC();
                         significanceCorrelationsUC.SetHeader1($"Значимость коэффициентов парной корреляции (t-крит = {mainVM.TStudentCritSign}):");
-                        significanceCorrelationsUC.Table1.SetTable(MatrixOperations.Round(mainVM.PairSignificanceCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
+                        significanceCorrelationsUC.Table1.SetTable(MatrixOperations.Round(mainVM.PairSignificanceCorrelationsMatrix, round), mainVM.MatrixHeaders, mainVM.MatrixHeaders);
                         significanceCorrelationsUC.Table1.Highlight(e => e >= mainVM.TStudentCritSign, Brushes.LightGreen);
                         significanceCorrelationsUC.SetHeader2($"Значимость коэффициентов частной корреляции (t-крит = {mainVM.TStudentCritSign}):");
-                        significanceCorrelationsUC.Table2.SetTable(MatrixOperations.Round(mainVM.ParticalSignificanceCorrelationsMatrix, round), mainVM.TableHeaders, mainVM.TableHeaders);
+                        significanceCorrelationsUC.Table2.SetTable(MatrixOperations.Round(mainVM.ParticalSignificanceCorrelationsMatrix, round), mainVM.MatrixHeaders, mainVM.MatrixHeaders);
                         significanceCorrelationsUC.Table2.Highlight(e => e >= mainVM.TStudentCritSign, Brushes.LightGreen);
                     }
                     cpMainContent.Content = significanceCorrelationsUC;
@@ -152,7 +153,7 @@ namespace MSOsu.View
                         multipleCorrelationUC = new DataTableUC();
                         multipleCorrelationUC.SetHeader($"Множественная корреляция (F-крит = {mainVM.FCritSignMultiple}):");
                         double[][] table = mainVM.MultipleCorrelationMatrix;
-                        multipleCorrelationUC.Table.SetTable(MatrixOperations.Round(table, round), mainVM.TableHeaders, new string[] { "R", "D", "Значимость" });
+                        multipleCorrelationUC.Table.SetTable(MatrixOperations.Round(table, round), mainVM.MatrixHeaders, new string[] { "R", "D", "Значимость" });
                         multipleCorrelationUC.Table.Highlight(e => e >= mainVM.FCritSignMultiple, Brushes.LightGreen, 2);
                     }
                     cpMainContent.Content = multipleCorrelationUC;
@@ -170,9 +171,9 @@ namespace MSOsu.View
                         StringBuilder statHeader = new StringBuilder();
 
                         //--формирование statHeader--//
-                        statHeader.AppendLine($"Y: {mainVM.TableHeaders[0]}");
-                        for (int i = 1; i < mainVM.TableHeaders.Length; i++)
-                            statHeader.AppendLine($"X{i}: {mainVM.TableHeaders[i]}");
+                        statHeader.AppendLine($"Y: {mainVM.MatrixHeaders[0]}");
+                        for (int i = 1; i < mainVM.MatrixHeaders.Length; i++)
+                            statHeader.AppendLine($"X{i}: {mainVM.MatrixHeaders[i]}");
                         //--//
 
                         correlationDiagramPageUC.SetStatHeader(statHeader.ToString());
@@ -181,20 +182,20 @@ namespace MSOsu.View
                     cpMainContent.Content = correlationDiagramPageUC;
                     break;
                 case ViewType.Regression:
-                    if (regression == null)
+                    if (regressionUC == null)
                     {
-                        regression = new RegressionUC(mainVM);
+                        regressionUC = new RegressionUC(mainVM);
                         //формирование коэффициентов уравнения
                         string[][] regressionCoeffs = new string[4][];
-                        regressionCoeffs[0] = new string[] { "-" }.Concat(mainVM.TableHeaders.Skip(1)).ToArray();
+                        regressionCoeffs[0] = new string[] { "-" }.Concat(mainVM.MatrixHeadersRegression.Skip(1)).ToArray();
                         regressionCoeffs[1] = mainVM.RegressionCoeffs.Select(e => e.ToString()).ToArray();
                         regressionCoeffs[2] = Enumerable.Range(0, mainVM.RegressionCoeffs.Length).Select(idx => $"{Math.Round(mainVM.RegressionCoeffs[idx], round)} ± {Math.Round(mainVM.IntervalEstimateCoeffs[idx], round)}").ToArray();
                         regressionCoeffs[3] = mainVM.SignificanceEquationCoeffs.Select(e => e.ToString()).ToArray();
                         string[] rowHeader = { "Название параметра", "Коэффициент регрессии b", "Интервальная оценка β", "Значимость" };
-                        string[] colHeader = new string[mainVM.TableHeaders.Length].Select((e, idx) => $"{idx}").ToArray();
-                        regression.CoeffTable.SetTable(MatrixOperations.Round(regressionCoeffs, round), colHeader, rowHeader);
-                        regression.SetTKrit(mainVM.TCritEquationCoeffsSign);
-                        regression.CoeffTable.Highlight(e => e >= mainVM.TCritEquationCoeffsSign, Brushes.LightGreen, 3);
+                        string[] colHeader = new string[mainVM.MatrixHeadersRegression.Length].Select((e, idx) => $"{idx}").ToArray();
+                        regressionUC.CoeffTable.SetTable(MatrixOperations.Round(regressionCoeffs, round), colHeader, rowHeader);
+                        regressionUC.SetTKrit(mainVM.TCritEquationCoeffsSign);
+                        regressionUC.CoeffTable.Highlight(e => e >= mainVM.TCritEquationCoeffsSign, Brushes.LightGreen, 3);
                         //--формирование уравнения регрессии в виде строки--//
                         string equation = "y = ";
                         double[] regressionCoeffsVMCopy = mainVM.RegressionCoeffs.Select(e => Math.Round(e, round)).ToArray();
@@ -202,27 +203,35 @@ namespace MSOsu.View
                             equation += regressionCoeffsVMCopy[i] < 0 ? $"({regressionCoeffsVMCopy[i]})⋅x{i} + " : $"{regressionCoeffsVMCopy[i]}⋅x{i} + ";
                         equation += regressionCoeffsVMCopy[0];
                         //--//
-                        regression.SetRegressionEquation(equation);
+                        regressionUC.SetRegressionEquation(equation);
 
                         //значимость уравнения регрессии
-                        regression.SetSignificanceEquation(mainVM.FСritEquationSign, Math.Round(mainVM.SignificanceEquation, round));
+                        regressionUC.SetSignificanceEquation(mainVM.FСritEquationSign, Math.Round(mainVM.SignificanceEquation, round));
 
                         //Формирование матрицы оценки точности уравнения (точечная)//
-                        string[][] errors = new string[4][].Select(e => e = new string[mainVM.MatrixNormalizedValues[0].Length]).ToArray();
-                        errors[0] = mainVM.MatrixNormalizedValues[0].Select(e => e.ToString()).ToArray();
+                        string[][] errors = new string[4][].Select(e => e = new string[mainVM.MatrixNormalizedValuesRegression[0].Length]).ToArray();
+                        errors[0] = mainVM.MatrixNormalizedValuesRegression[0].Select(e => e.ToString()).ToArray();
                         errors[1] = mainVM.CalculatedY.Select(e => e.ToString()).ToArray();
                         errors[2] = mainVM.AbsoluteErrorY.Select(e => e.ToString()).ToArray();
                         errors[3] = Enumerable.Range(0, mainVM.CalculatedY.Length).Select(idx => $"{Math.Round(mainVM.CalculatedY[idx], round)} ± {Math.Round(mainVM.IntervalEstimateEquation[idx], round)}").ToArray();
-                        regression.ErrorTable.SetTable(MatrixOperations.Round(errors, round), null, new string[] { "Y исходные", "Ŷ расчетные (Ŷ = X*b)", "Абсолютная ошибка (Y - Ŷ)", "Интервальная оценка Ỹ" });
-                        regression.SetApproximationError(Math.Round(mainVM.ApproximationError * 100, round).ToString());
+                        regressionUC.ErrorTable.SetTable(MatrixOperations.Round(errors, round), null, new string[] { "Y исходные", "Ŷ расчетные (Ŷ = X*b)", "Абсолютная ошибка (Y - Ŷ)", "Интервальная оценка Ỹ" });
+                        regressionUC.SetApproximationError(Math.Round(mainVM.ApproximationError * 100, round).ToString());
                         //--//
 
                         //Формирование прогнозирования//
-                        regression.SetPredication(mainVM.RegressionCoeffs, mainVM.IntervalNormallized);
+                        regressionUC.SetPredication(mainVM.RegressionCoeffs, mainVM.IntervalNormallized);
                         Label kek = new Label();
 
                     }
-                    cpMainContent.Content = regression;
+                    cpMainContent.Content = regressionUC;
+                    break;
+                case ViewType.RegressionParamsControl:
+                    if (regressionParamsControlUC == null)
+                    {
+                        regressionParamsControlUC = new RegressionParamsControlUC(mainVM);
+                        regressionParamsControlUC.SetChoiceParamsTable(mainVM.MatrixHeaders);
+                    }
+                    cpMainContent.Content = regressionParamsControlUC;
                     break;
             }
         }
@@ -247,7 +256,12 @@ namespace MSOsu.View
                         significanceCorrelationsUC = null;
                         multipleCorrelationUC = null;
                         correlationDiagramPageUC = null;
-                        regression = null;
+                        regressionUC = null;
+                        regressionParamsControlUC = null;
+                        break;
+                    case "MatrixHeadersRegression":
+                        //обнулить кэш
+                        regressionUC = null;
                         break;
                 }
             };

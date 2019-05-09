@@ -59,15 +59,15 @@
             <WrapPanel Margin="7 5 5 0">
                 <Button Content="Спрогнозировать" Margin="0 0 10 0"  Padding="5" HorizontalAlignment="Left" Command="{Binding CheckPredicationCommand2}" VerticalAlignment="Center"/>
                 <WrapPanel x:Name="wpPredicationResult2" Visibility="Collapsed" VerticalAlignment="Center">
-                    <TextBlock Text="ỹ = " />
-                    <TextBlock Text="{Binding PredictionYNormalized2, Converter={StaticResource myRoundConverter}}" />
-                    <TextBlock Text=" ± " />
-                    <TextBlock Text="{Binding PredictionIntervalYNormalized2, Converter={StaticResource myRoundConverter}}" />
-                    <TextBlock Text=" (норм.) ->" />
-                    <TextBlock Text="{Binding PredictionY2, Converter={StaticResource myRoundConverter}}" />
-                    <TextBlock Text=" ± " />
-                    <TextBlock Text="{Binding PredictionIntervalY2, Converter={StaticResource myRoundConverter}}" />
-                    <TextBlock Text=" (исх.)" />
+                    <TextBlock Text="ỹ = " VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding PredictionYNormalized2, Converter={StaticResource myRoundConverter}}"  />
+                    <TextBlock Text=" ± " VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding PredictionIntervalYNormalized2, Converter={StaticResource myRoundConverter}}"  />
+                    <TextBlock Text=" (норм.) ->" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding PredictionY2, Converter={StaticResource myRoundConverter}}"  />
+                    <TextBlock Text=" ± " VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding PredictionIntervalY2, Converter={StaticResource myRoundConverter}}"  />
+                    <TextBlock Text=" (исх.)"  />
                 </WrapPanel>
             </WrapPanel>
         </StackPanel>

@@ -19,21 +19,21 @@ namespace MSOsu.ViewModel
         Regression regression;
 
         /// <summary>
-        /// Заголовки таблицы
+        /// Заголовки матрицы
         /// </summary>
-        public string[] TableHeaders;
+        public string[] MatrixHeaders;
 
         /// <summary>
-        /// Таблица с исходными данными
+        /// Матрица с исходными данными
         /// </summary>
-        private double[][] tableValues;
-        public double[][] TableValues
+        private double[][] matrixValues;
+        public double[][] MatrixValues
         {
-            get => tableValues;
+            get => matrixValues;
             set
             {
-                tableValues = value;
-                RaisePropetyChanged("TableValues");
+                matrixValues = value;
+                RaisePropetyChanged("MatrixValues");
             }
         }
 
@@ -301,7 +301,7 @@ namespace MSOsu.ViewModel
                     loadPageCommand = new DelegateCommand(obj =>
                     {
                         viewService.LoadView((ViewType)obj);
-                    }, obj => TableValues != null ? true : false);
+                    }, obj => MatrixValues != null ? true : false);
                 return loadPageCommand;
             }
         }
@@ -320,10 +320,10 @@ namespace MSOsu.ViewModel
                         string filter = "Файл CSV|*.csv";
                         if (dialogService.OpenFileDialog(filter))
                         {
-                            (TableHeaders, TableValues) = TableControl.GetTable(dialogService.GetFilePath());
+                            (MatrixHeaders, MatrixValues) = TableControl.GetTable(dialogService.GetFilePath());
                             //статистики
-                            MatrixNormalizedValues = DescriptiveStatistic.GetNormalizedValues(TableValues);
-                            IntervalNormallized = DescriptiveStatistic.GetNormallizedCoeffs(TableValues);
+                            MatrixNormalizedValues = DescriptiveStatistic.GetNormalizedValues(MatrixValues);
+                            IntervalNormallized = DescriptiveStatistic.GetNormallizedCoeffs(MatrixValues);
                             MatrixNormalizedStatisticsValues = DescriptiveStatistic.GetTotalStatistic(MatrixNormalizedValues);
                             //нормальное распределение
                             MatrixNormalDistribution = PiersonTest.GetNormalDistributionTable(MatrixNormalizedValues);
@@ -336,21 +336,12 @@ namespace MSOsu.ViewModel
                             ParticalSignificanceCorrelationsMatrix = correlations.GetParticalSignificanceCorrelationMatrix();
                             TStudentCritSign = DataBase.GetTCrit(MatrixNormalizedValues[0].Length - 2);
                             MultipleCorrelationMatrix = correlations.GetMultipleCorrelationMatrix();
-                            int k = TableValues.Length;
-                            int n = TableValues[0].Length;
+                            int k = MatrixValues.Length;
+                            int n = MatrixValues[0].Length;
                             FCritSignMultiple = DataBase.GetFCrit(k, n - k - 1);
                             //регрессия
-                            regression = new Regression(MatrixNormalizedValues);
-                            RegressionCoeffs = regression.GetRegressionCoeffs();
-                            CalculatedY = regression.GetCalculatedY();
-                            AbsoluteErrorY = regression.GetAbsoluteError();
-                            ApproximationError = regression.GetApproximationError();
-                            FСritEquationSign = regression.GetFСritEquation();
-                            SignificanceEquation = regression.GetSignificanceEquation();
-                            SignificanceEquationCoeffs = regression.GetSignificanceEquationCoeffs();
-                            TCritEquationCoeffsSign = regression.GetTKritEquationCoeffs();
-                            IntervalEstimateCoeffs = regression.GetIntervalEstimateCoeffs();
-                            IntervalEstimateEquation = regression.GetIntervalEstimateEquation();
+                            EnabledParamRegression = new bool[MatrixNormalizedValues.Length].Select(e => true).ToArray();
+                            CalculateRegression();
 
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
@@ -397,7 +388,7 @@ namespace MSOsu.ViewModel
                 if (checkPredicationCommand2 == null)
                     checkPredicationCommand2 = new DelegateCommand(obj =>
                     {
-                        double[] paramCoeffs2 = Enumerable.Range(0, PredicationParamCoeffs2.Length).Select(idx => double.Parse(PredicationParamCoeffs2[idx]) / IntervalNormallized[idx + 1]).ToArray();
+                        double[] paramCoeffs2 = Enumerable.Range(0, PredicationParamCoeffs2.Length).Select(idx => double.Parse(PredicationParamCoeffs2[idx]) / IntervalNormallizedRegression[idx + 1]).ToArray();
                         double result = RegressionCoeffs[0];
                         for (int i = 0; i < paramCoeffs2.Length; i++)
                             result += RegressionCoeffs[i + 1] * paramCoeffs2[i];
@@ -411,14 +402,31 @@ namespace MSOsu.ViewModel
         }
 
         /// <summary>
-        /// Заголовки таблицы для регрессии
+        /// Заголовки таблицы (для регрессии)
         /// </summary>
-        public string[] TableHeadersRegression;
+        private string[] matrixHeadersRegression;
+        public string[] MatrixHeadersRegression
+        {
+            get => matrixHeadersRegression;
+            set
+            {
+                matrixHeadersRegression = value;
+                RaisePropetyChanged("MatrixHeadersRegression");
+            }
+        }
         /// <summary>
-        /// 
+        /// Матрица нормированных значениий (для регрессии)
         /// </summary>
-        public double[] TableNormalizedValuesRegression;
-        private bool[] EnabledParams;
+        public double[][] MatrixNormalizedValuesRegression;
+        /// <summary>
+        /// Активные параметры для регрессии
+        /// </summary>
+        public bool[] EnabledParamRegression;
+        /// <summary>
+        /// Интервал (для каждого параметра), на который делили при нормализации (для регрессии)
+        /// </summary>
+        public double[] IntervalNormallizedRegression;
+
         /// <summary>
         /// Посчитать регрессию
         /// </summary>
@@ -430,10 +438,40 @@ namespace MSOsu.ViewModel
                 if (calculateRegressionCommand == null)
                     calculateRegressionCommand = new DelegateCommand(obj =>
                     {
-                        
+                        CalculateRegression();
+                        LoadPageCommand.Execute(ViewType.Regression);
                     });
                 return calculateRegressionCommand;
             }
+        }
+
+        public void CalculateRegression()
+        {
+            List<double[]> matrixNormalizedValues = new List<double[]>();
+            List<string> matrixHeadersRegression = new List<string>();
+            List<double> intervalNormallizedRegression = new List<double>();
+            for (int i = 0; i < EnabledParamRegression.Length; i++)
+                if (EnabledParamRegression[i])
+                {
+                    matrixNormalizedValues.Add(MatrixNormalizedValues[i]);
+                    matrixHeadersRegression.Add(MatrixHeaders[i]);
+                    intervalNormallizedRegression.Add(IntervalNormallized[i]);
+                }
+            MatrixHeadersRegression = matrixHeadersRegression.ToArray();
+            MatrixNormalizedValuesRegression = matrixNormalizedValues.ToArray();
+            IntervalNormallizedRegression = intervalNormallizedRegression.ToArray();
+
+            regression = new Regression(MatrixNormalizedValuesRegression);
+            RegressionCoeffs = regression.GetRegressionCoeffs();
+            CalculatedY = regression.GetCalculatedY();
+            AbsoluteErrorY = regression.GetAbsoluteError();
+            ApproximationError = regression.GetApproximationError();
+            FСritEquationSign = regression.GetFСritEquation();
+            SignificanceEquation = regression.GetSignificanceEquation();
+            SignificanceEquationCoeffs = regression.GetSignificanceEquationCoeffs();
+            TCritEquationCoeffsSign = regression.GetTKritEquationCoeffs();
+            IntervalEstimateCoeffs = regression.GetIntervalEstimateCoeffs();
+            IntervalEstimateEquation = regression.GetIntervalEstimateEquation();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

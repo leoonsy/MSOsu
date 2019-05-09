@@ -93,6 +93,9 @@
     <Compile Include="View\CorrelationSignDiagram.xaml.cs">
       <DependentUpon>CorrelationSignDiagram.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\RegressionParamsControlUC.xaml.cs">
+      <DependentUpon>RegressionParamsControlUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\RegressionUC.xaml.cs">
       <DependentUpon>RegressionUC.xaml</DependentUpon>
     </Compile>
@@ -145,6 +148,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CorrelationSignDiagram.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RegressionParamsControlUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
