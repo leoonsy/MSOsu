@@ -275,7 +275,7 @@ namespace MSOsu.Common
         }
 
         /// <summary>
-        /// Получить разность двух массивов
+        /// Получить разность двух матриц
         /// </summary>
         /// <param name="b1"></param>
         /// <param name="b2"></param>
@@ -304,7 +304,7 @@ namespace MSOsu.Common
         }
 
         /// <summary>
-        /// Получить сумму двух массивов
+        /// Получить сумму двух матриц
         /// </summary>
         /// <param name="b1"></param>
         /// <param name="b2"></param>

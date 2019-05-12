@@ -326,7 +326,7 @@ namespace MSOsu.ViewModel
                             IntervalNormallized = DescriptiveStatistic.GetNormallizedCoeffs(MatrixValues);
                             MatrixNormalizedStatisticsValues = DescriptiveStatistic.GetTotalStatistic(MatrixNormalizedValues);
                             //нормальное распределение
-                            MatrixNormalDistribution = PiersonTest.GetNormalDistributionTable(MatrixNormalizedValues);
+                            MatrixNormalDistribution = PiersonTest.GetNormalDistributionMatrix(MatrixNormalizedValues);
                             ChiSquareCrit = PiersonTest.GetChiSquareKrit();
                             //корреляция
                             CorrelationsAnalysis correlations = new CorrelationsAnalysis(MatrixNormalizedValues);
@@ -346,7 +346,7 @@ namespace MSOsu.ViewModel
                             LoadPageCommand.Execute(ViewType.Data);
                             LoadPageCommand.RaiseCanExecuteChanged();
 
-                            //TableControl.SaveTable(TableHeaders, MatrixOperations.Transpose(TableNormalizedValues), "kek.csv");
+                            //TableControl.SaveTable(MatrixHeaders, MatrixNormalDistribution, "kek5.csv");
                         }
                     });
                 return loadTableCommand;

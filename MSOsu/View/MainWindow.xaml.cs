@@ -109,10 +109,10 @@ namespace MSOsu.View
                         pairCorrelationsUC = new DataTableUC();
                         pairCorrelationsUC.SetHeader($"Матрица парных корреляций:");
                         pairCorrelationsUC.Table.SetTable(MatrixOperations.Round(mainVM.PairCorrelationsMatrix, RoundConverter.Round), mainVM.MatrixHeaders, mainVM.MatrixHeaders);
-                        pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.3 && Math.Abs(e) < 0.5, Brushes.LightGreen);
-                        pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, new SolidColorBrush(Color.FromArgb(0xFF, 0xDF, 0x9B, 0xFF)));
-                        pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, Brushes.Orange);
-                        pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) <= 1, Brushes.Red);
+                        pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.2 && Math.Abs(e) < 0.4, Brushes.LightGreen);
+                        pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.4 && Math.Abs(e) < 0.6, new SolidColorBrush(Color.FromArgb(0xFF, 0xDF, 0x9B, 0xFF)));
+                        pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.6 && Math.Abs(e) < 0.8, Brushes.Orange);
+                        pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.8 && Math.Abs(e) <= 1, Brushes.Red);
                         pairCorrelationsUC.Table.Highlight(e => Math.Abs(e) == 1, Brushes.Black);
                         pairCorrelationsUC.cpFooter.Content = new CorrelationColor();
                     }
@@ -124,10 +124,10 @@ namespace MSOsu.View
                         particalCorrelationsUC = new DataTableUC();
                         particalCorrelationsUC.SetHeader($"Матрица частных корреляций:");
                         particalCorrelationsUC.Table.SetTable(MatrixOperations.Round(mainVM.ParticalCorrelationsMatrix, RoundConverter.Round), mainVM.MatrixHeaders, mainVM.MatrixHeaders);
-                        particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.3 && Math.Abs(e) < 0.5, Brushes.LightGreen);
-                        particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.5 && Math.Abs(e) < 0.7, new SolidColorBrush(Color.FromArgb(0xFF, 0xDF, 0x9B, 0xFF)));
-                        particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.7 && Math.Abs(e) < 0.9, Brushes.Orange);
-                        particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.9 && Math.Abs(e) < 1, Brushes.Red);
+                        particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.2 && Math.Abs(e) < 0.4, Brushes.LightGreen);
+                        particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.4 && Math.Abs(e) < 0.6, new SolidColorBrush(Color.FromArgb(0xFF, 0xDF, 0x9B, 0xFF)));
+                        particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.6 && Math.Abs(e) < 0.8, Brushes.Orange);
+                        particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) >= 0.8 && Math.Abs(e) < 1, Brushes.Red);
                         particalCorrelationsUC.Table.Highlight(e => Math.Abs(e) == 1, Brushes.Black);
                         particalCorrelationsUC.cpFooter.Content = new CorrelationColor();
                     }

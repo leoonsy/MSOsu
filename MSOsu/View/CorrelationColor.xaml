@@ -9,19 +9,19 @@
     <StackPanel >
         <WrapPanel Margin="0 0 0 10">
             <Rectangle Fill="LightGreen" Width="70" Height="30" Margin="0 0 10 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <TextBlock Text="0.3 ⩽ |r| &lt; 0.5 - слабая связь" VerticalAlignment="Center" FontSize="14" />
+            <TextBlock Text="0.2 ⩽ |r| &lt; 0.4 - слабая связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
         <WrapPanel Margin="0 0 0 10">
             <Rectangle Fill="#FFDF9BFF" Width="70" Height="30" Margin="0 0 10 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <TextBlock Text="0.5 ⩽ |r| &lt; 0.7 - средняя связь" VerticalAlignment="Center" FontSize="14" />
+            <TextBlock Text="0.4 ⩽ |r| &lt; 0.6 - средняя связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
         <WrapPanel Margin="0 0 0 10">
             <Rectangle Fill="Orange" Width="70" Height="30" Margin="0 0 10 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <TextBlock Text="0.7 ⩽ |r| &lt; 0.9 - сильная связь" VerticalAlignment="Center" FontSize="14" />
+            <TextBlock Text="0.6 ⩽ |r| &lt; 0.8 - сильная связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
         <WrapPanel>
             <Rectangle Fill="Red" Width="70" Height="30" Margin="0 0 10 0" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <TextBlock Text="0.9 ⩽ |r| ⩽ 1 - очень сильная связь" VerticalAlignment="Center" FontSize="14" />
+            <TextBlock Text="0.8 ⩽ |r| ⩽ 1 - очень сильная связь" VerticalAlignment="Center" FontSize="14" />
         </WrapPanel>
     </StackPanel>
 </UserControl>

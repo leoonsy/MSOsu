@@ -38,7 +38,7 @@ namespace MSOsu.Model
         /// </summary>
         /// <param name="values"></param>
         /// <param name="path"></param>
-        public static void SaveTable(string[] headers, double[][] values, string path)
+        public static void SaveTable<T>(string[] headers, T[][] values, string path)
         {
             StringBuilder result = new StringBuilder();
             int countOfValues = headers.Length;

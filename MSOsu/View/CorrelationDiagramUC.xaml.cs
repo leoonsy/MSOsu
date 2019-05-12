@@ -106,28 +106,28 @@ namespace MSOsu.View
                     double val = correlationsMatrix[i][j];
                     if (val < 0)
                     {
-                        //if (val > -0.3)
+                        //if (val > -0.2)
                         //    ggLinesNotNeg.Children.Add(new LineGeometry(start, end));
-                        if (val > -0.5 && val <= -0.3)
+                        if (val > -0.4 && val <= -0.2)
                             ggLinesWeakNeg.Children.Add(new LineGeometry(start, end));
-                        if (val > -0.7 && val <= -0.5)
+                        if (val > -0.6 && val <= -0.4)
                             ggLinesMediumNeg.Children.Add(new LineGeometry(start, end));
-                        if (val > -0.9 && val <= -0.7)
+                        if (val > -0.8 && val <= -0.6)
                             ggLinesStrongNeg.Children.Add(new LineGeometry(start, end));
-                        if (val >= -1 && val <= -0.9)
+                        if (val >= -1 && val <= -0.8)
                             ggLinesVeryStrongNeg.Children.Add(new LineGeometry(start, end));
                     }
                     else
                     {
-                        //if (val < 0.3)
+                        //if (val < 0.2)
                         //    ggLinesNotPos.Children.Add(new LineGeometry(start, end));
-                        if (val < 0.5 && val >= 0.3)
+                        if (val < 0.4 && val >= 0.2)
                             ggLinesWeakPos.Children.Add(new LineGeometry(start, end));
-                        if (val < 0.7 && val >= 0.5)
+                        if (val < 0.6 && val >= 0.4)
                             ggLinesMediumPos.Children.Add(new LineGeometry(start, end));
-                        if (val < 0.9 && val >= 0.7)
+                        if (val < 0.8 && val >= 0.6)
                             ggLinesStrongPos.Children.Add(new LineGeometry(start, end));
-                        if (val <= 1 && val >= 0.9)
+                        if (val <= 1 && val >= 0.8)
                             ggLinesVeryStrongPos.Children.Add(new LineGeometry(start, end));
                     }
                 }

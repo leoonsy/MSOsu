@@ -192,8 +192,8 @@ namespace MSOsu.Model
         /// <summary>
         /// Заголовки для статистик
         /// </summary>
-        public static string[] Headers = new string[] { "Среднее", "Стандартная ошибка", "Медиана", "Мода", "Стандартное отклонение", "Дисперсия выборки",
-            "Эксцесс", "Ассиметричность", "Интервал", "Минимум", "Максимум", "Сумма", "Счет", "Предельная ошибка", "Необходимый объем выборки", "Предельная ошибка при необходимом объеме выборки" };
+        public static string[] Headers = new string[] { "Среднее", "Дисперсия", "Стандартное отклонение", "Мода", "Медиана", "Минимум", "Максимум",
+            "Интервал", "Ассиметричность", "Эксцесс", "Сумма", "Счет", "Стандартная ошибка", "Предельная ошибка", "Необходимый объем выборки", "Предельная ошибка при необходимом объеме выборки" };
 
         /// <summary>
         /// Получить таблицу со статистиками
@@ -225,18 +225,18 @@ namespace MSOsu.Model
         public IEnumerable<double> GetNextStatistic()
         {
             yield return Average;
-            yield return StandardError;
-            yield return Median;
-            yield return Mode;
-            yield return StandardDeviation;
             yield return Dispersion;
-            yield return Excess;
-            yield return Asymmetry;
-            yield return Interval;
+            yield return StandardDeviation;
+            yield return Mode;
+            yield return Median;
             yield return Min;
             yield return Max;
+            yield return Interval;
+            yield return Asymmetry;
+            yield return Excess;
             yield return Sum;
             yield return Count;
+            yield return StandardError;
             yield return LimitError;
             yield return RequiredValuesCount;
             yield return RecalculatedLimitError;

@@ -11,7 +11,7 @@ namespace MSOsu.View
 {
     public class RoundConverter : IValueConverter
     {
-        public static int Round = 4;
+        public static int Round = 3;
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return Math.Round(((double)value), Round);

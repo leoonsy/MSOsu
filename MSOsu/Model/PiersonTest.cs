@@ -81,7 +81,7 @@ namespace MSOsu.Model
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>
-        public static string[][] GetNormalDistributionTable(double[][] values)
+        public static string[][] GetNormalDistributionMatrix(double[][] values)
         {
             string[][] result = new string[2][].Select(e => e = new string[values.Length]).ToArray();
             for (int i = 0; i < values.Length; i++)
