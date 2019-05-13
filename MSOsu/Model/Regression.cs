@@ -213,7 +213,7 @@ namespace MSOsu.Model
         }
 
         /// <summary>
-        /// Получить интервальную оценку уравнения (истинных значений)
+        /// Получить интервальную оценку уравнения y~
         /// </summary>
         /// <returns></returns>
         public double[] GetIntervalEstimateEquation()
@@ -255,6 +255,18 @@ namespace MSOsu.Model
             double[][] x0TxTx_ = MatrixOperations.Mult(x0T, xTx_);
             double fin = MatrixOperations.Mult(x0TxTx_, paramValues)[0] + 1;
             return tKrit * s * Math.Sqrt(fin);
+        }
+
+        /// <summary>
+        /// Получить интервал предсказания для всех значений y
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetIntervalPredicationAll()
+        {
+            double[] result = new double[xMatrix.Length];
+            for (int i = 0; i < result.Length; i++)
+                result[i] = GetIntervalPredication(xMatrix[i]);
+            return result;
         }
 
         /// <summary>

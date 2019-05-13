@@ -149,9 +149,14 @@ namespace MSOsu.ViewModel
         public double[] IntervalEstimateCoeffs;
 
         /// <summary>
-        /// Интервальная оценка уравнения (истинных значений)
+        /// Интервальная оценка y~
         /// </summary>
         public double[] IntervalEstimateEquation;
+
+        /// <summary>
+        /// Интервал предсказания y
+        /// </summary>
+        public double[] IntervalPredicationEquation;
 
         /// <summary>
         /// Интервал (для каждого параметра), на который делили при нормализации
@@ -490,6 +495,9 @@ namespace MSOsu.ViewModel
             TCritEquationCoeffsSign = regression.GetTKritEquationCoeffs();
             IntervalEstimateCoeffs = regression.GetIntervalEstimateCoeffs();
             IntervalEstimateEquation = regression.GetIntervalEstimateEquation();
+            IntervalPredicationEquation = regression.GetIntervalPredicationAll();
+
+            TableControl.SaveTable(MatrixHeaders, MatrixOperations.Round(MatrixOperations.Transpose(SignificanceEquationCoeffs), 3), "kek2.csv");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
