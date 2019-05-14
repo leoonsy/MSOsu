@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MSOsu.Model
 {
-    static class PiersonTest
+    static class PearsonTest
     {
         /// <summary>
         /// Вычислить значение хи-квадрат

@@ -90,8 +90,8 @@
     <Compile Include="View\DataTableUC.xaml.cs">
       <DependentUpon>DataTableUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\CorrelationSignDiagram.xaml.cs">
-      <DependentUpon>CorrelationSignDiagram.xaml</DependentUpon>
+    <Compile Include="View\CorrelationSignDiagramUC.xaml.cs">
+      <DependentUpon>CorrelationSignDiagramUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MetroMessage.xaml.cs">
       <DependentUpon>MetroMessage.xaml</DependentUpon>
@@ -136,7 +136,7 @@
     <Compile Include="Command\DelegateCommand.cs" />
     <Compile Include="Command\IDelegateCommand.cs" />
     <Compile Include="Model\DescriptiveStatistics.cs" />
-    <Compile Include="Model\PiersonTest.cs" />
+    <Compile Include="Model\PearsonTest.cs" />
     <Compile Include="Model\TableControl.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="View\MainUC.xaml.cs">
@@ -150,7 +150,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\CorrelationSignDiagram.xaml">
+    <Page Include="View\CorrelationSignDiagramUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

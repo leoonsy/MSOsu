@@ -331,8 +331,8 @@ namespace MSOsu.ViewModel
                             IntervalNormallized = DescriptiveStatistic.GetNormallizedCoeffs(MatrixValues);
                             MatrixNormalizedStatisticsValues = DescriptiveStatistic.GetTotalStatistic(MatrixNormalizedValues);
                             //нормальное распределение
-                            MatrixNormalDistribution = PiersonTest.GetNormalDistributionMatrix(MatrixNormalizedValues);
-                            ChiSquareCrit = PiersonTest.GetChiSquareKrit();
+                            MatrixNormalDistribution = PearsonTest.GetNormalDistributionMatrix(MatrixNormalizedValues);
+                            ChiSquareCrit = PearsonTest.GetChiSquareKrit();
                             //корреляция
                             CorrelationsAnalysis correlations = new CorrelationsAnalysis(MatrixNormalizedValues);
                             PairCorrelationsMatrix = correlations.GetPairCorrelationsMatrix();

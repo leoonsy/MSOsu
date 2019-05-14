@@ -18,9 +18,9 @@ namespace MSOsu.View
     /// <summary>
     /// Логика взаимодействия для SignCorrelationDiagram.xaml
     /// </summary>
-    public partial class CorrelationSignDiagram : UserControl
+    public partial class CorrelationSignDiagramUC : UserControl
     {
-        public CorrelationSignDiagram()
+        public CorrelationSignDiagramUC()
         {
             InitializeComponent();
         }

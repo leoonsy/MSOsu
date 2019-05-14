@@ -176,7 +176,7 @@ namespace MSOsu.View
                         //--//
 
                         correlationDiagramPageUC.SetStatHeader(statHeader.ToString());
-                        correlationDiagramPageUC.SetCorrelationSign(new CorrelationSignDiagram());
+                        correlationDiagramPageUC.SetCorrelationSign(new CorrelationSignDiagramUC());
                     }
                     cpMainContent.Content = correlationDiagramPageUC;
                     break;
@@ -208,13 +208,13 @@ namespace MSOsu.View
                         regressionUC.SetSignificanceEquation(mainVM.FСritEquationSign, Math.Round(mainVM.SignificanceEquation, RoundConverter.Round));
 
                         //Формирование матрицы оценки точности уравнения (точечная)//
-                        string[][] errors = new string[5][].Select(e => e = new string[mainVM.MatrixNormalizedValuesRegression[0].Length]).ToArray();
+                        string[][] errors = new string[4][].Select(e => e = new string[mainVM.MatrixNormalizedValuesRegression[0].Length]).ToArray();
                         errors[0] = mainVM.MatrixNormalizedValuesRegression[0].Select(e => e.ToString()).ToArray();
                         errors[1] = mainVM.CalculatedY.Select(e => e.ToString()).ToArray();
                         errors[2] = mainVM.AbsoluteErrorY.Select(e => e.ToString()).ToArray();
                         errors[3] = Enumerable.Range(0, mainVM.CalculatedY.Length).Select(idx => $"{Math.Round(mainVM.CalculatedY[idx], RoundConverter.Round)} ± {Math.Round(mainVM.IntervalEstimateEquation[idx], RoundConverter.Round)}").ToArray();
-                        errors[4] = Enumerable.Range(0, mainVM.CalculatedY.Length).Select(idx => $"{Math.Round(mainVM.CalculatedY[idx], RoundConverter.Round)} ± {Math.Round(mainVM.IntervalPredicationEquation[idx], RoundConverter.Round)}").ToArray();
-                        regressionUC.ErrorTable.SetTable(MatrixOperations.Round(errors, RoundConverter.Round), null, new string[] { "Y исходные", "Ŷ расчетные (Ŷ = X*b)", "Абсолютная ошибка (Y - Ŷ)", "Интервальная оценка Ỹ", "Интервал предсказания Y" });
+                        //errors[4] = Enumerable.Range(0, mainVM.CalculatedY.Length).Select(idx => $"{Math.Round(mainVM.CalculatedY[idx], RoundConverter.Round)} ± {Math.Round(mainVM.IntervalPredicationEquation[idx], RoundConverter.Round)}").ToArray();
+                        regressionUC.ErrorTable.SetTable(MatrixOperations.Round(errors, RoundConverter.Round), null, new string[] { "Y исходные", "Ŷ расчетные (Ŷ = X*b)", "Абсолютная ошибка (Y - Ŷ)", "Интервальная оценка Ỹ" });
                         regressionUC.SetApproximationError(Math.Round(mainVM.ApproximationError * 100, RoundConverter.Round).ToString());
                         //--//
 
@@ -245,7 +245,7 @@ namespace MSOsu.View
             {
                 switch (e.PropertyName)
                 {
-                    case "TableValues":
+                    case "MatrixValues":
                         //обнулить кэш
                         mainUC = null;
                         normalDataUC = null;
