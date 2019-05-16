@@ -497,7 +497,7 @@ namespace MSOsu.ViewModel
             IntervalEstimateEquation = regression.GetIntervalEstimateEquation();
             IntervalPredicationEquation = regression.GetIntervalPredicationAll();
 
-            TableControl.SaveTable(MatrixHeaders, MatrixOperations.Round(MatrixOperations.Transpose(SignificanceEquationCoeffs), 3), "kek2.csv");
+            //TableControl.SaveTable(MatrixHeaders, MatrixOperations.Round(MatrixOperations.Transpose(SignificanceEquationCoeffs), 3), "test.csv");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

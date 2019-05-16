@@ -252,6 +252,7 @@ namespace MSOsu.View
                         normalizedDataUC = null;
                         normilizeStatisticsUC = null;
                         normalDistributionUC = null;
+                        pairCorrelationsUC = null;
                         particalCorrelationsUC = null;
                         significanceCorrelationsUC = null;
                         multipleCorrelationUC = null;
