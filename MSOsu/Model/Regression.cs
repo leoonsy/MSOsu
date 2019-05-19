@@ -73,7 +73,7 @@ namespace MSOsu.Model
         }
 
         /// <summary>
-        /// Получить массив вычисленных значений выходного параметра Ỹ (Xb)
+        /// Получить массив вычисленных значений выходного параметра (Xb)
         /// </summary>
         /// <returns></returns>
         public double[] GetCalculatedY()

@@ -325,7 +325,15 @@ namespace MSOsu.ViewModel
                         string filter = "Файл CSV|*.csv";
                         if (dialogService.OpenFileDialog(filter))
                         {
-                            (MatrixHeaders, MatrixValues) = TableControl.GetTable(dialogService.GetFilePath());
+                            try
+                            {
+                                (MatrixHeaders, MatrixValues) = TableControl.GetTable(dialogService.GetFilePath());
+                            }
+                            catch (Exception)
+                            {
+                                dialogService.ShowErrorMessage("Входной файл имел неверный формат", "Ошибка");
+                                return;
+                            }
                             //статистики
                             MatrixNormalizedValues = DescriptiveStatistic.GetNormalizedValues(MatrixValues);
                             IntervalNormallized = DescriptiveStatistic.GetNormallizedCoeffs(MatrixValues);
