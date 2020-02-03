@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Icon="/favicon.ico"
         ShowIconOnTitleBar="True"
-        Title="Курсовая работа по ТВМС (ЯШАНОВСКИЙ С.В.)" Height="650" Width="1200" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" FontSize="10" FontFamily="Segoe UI Symbol"  MinWidth="910" MinHeight="250" GlowBrush="{DynamicResource AccentColorBrush}">
+        Title="MSOsu" Height="650" Width="1200" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" FontSize="10" FontFamily="Segoe UI Symbol"  MinWidth="910" MinHeight="250" GlowBrush="{DynamicResource AccentColorBrush}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
